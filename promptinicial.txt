@@ -1,0 +1,13 @@
+Act as a senior web developer. 
+
+Build me a single-page, responsive website in English with the following requirements:
+
+1.  **Game**: Include only one game: the classic Klondike Solitaire card game. No login, no registration, no extra pages. The game must be playable immediately when the page loads.
+2.  **Ads**: The site must be ready for Google AdSense. Add placeholder ad slots: 1 banner at the top, 1 banner at the bottom, and 1 sidebar ad on desktop. Use proper divs with id="adsense-top" etc so I can paste my AdSense code later.
+3.  **Design**: Clean, minimalist, mobile-first responsive design. Must work perfectly on mobile, tablet and desktop. No clutter.
+4.  **SEO**: Optimize for SEO so Google can easily find and rank it. Include: proper title tag "Play Solitaire Online Free - No Signup", meta description, H1 tag, semantic HTML5, fast loading, and clean URLs.
+5.  **Tech**: Use only HTML, CSS and vanilla JavaScript. No frameworks, no backend, no database. Everything must run in the browser.
+6.  **Extra**: Add a simple footer with "Privacy Policy" and "Contact" links as placeholder pages.
+
+The final product should be a single .html file or minimal files that I can upload to any hosting and immediately apply for Google AdSense.
+
