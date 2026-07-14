@@ -1,14 +1,2 @@
-Quiero que tengas en cuenta que tengo la siguiente configuración en D:\xampp\apache\conf\extra\httpd-vhosts.conf
-```
-<VirtualHost *:8081>
-    ServerName topsolitaire.local
-    DocumentRoot "D:/xampp/htdocs/topsolitaire"
-    <Directory "D:/xampp/htdocs/topsolitaire">
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-</VirtualHost>
-```
-¿afecta esto de algun modo la configuración del proyecto y/o el acceso a los archivos necesarios?
-como podrás verificar, veo que hay un directorio "dist" dentro del proyecto "D:\xampp\htdocs\topsolitaire\" ¿cuál sería el directorio raíz en este caso? ¿es correcto que se ubique dentro de "D:\xampp\htdocs\topsolitaire\dist" o debería ser fuera del directorio del proyecto "topsolitaire" y ubicarse en "D:\xampp\htdocs\"? ¿o está bien así como está?
+No hace falta corregir host virtual, ya carga correctamente el sitio web.
+En todo el proyecto hay mucha referencia y mención a base44, quiero que lo quites y reemplaces con otras palabras relacionadas al proyecto topsolitaire teniendo en cuenta todas las vinculaciones actuales para que todo siga funcionando y no se rompa ningún vínculo.
