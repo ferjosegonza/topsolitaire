@@ -22,6 +22,16 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
+
+      const hasBase44Config = Boolean(appParams.appId || appParams.appBaseUrl || appParams.token);
+      if (!hasBase44Config) {
+        setAppPublicSettings(null);
+        setIsLoadingPublicSettings(false);
+        setIsLoadingAuth(false);
+        setIsAuthenticated(false);
+        setAuthChecked(true);
+        return;
+      }
       
       // First, check app public settings (with token if available)
       // This will tell us if auth is required, user not registered, etc.
