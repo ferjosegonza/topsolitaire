@@ -15,7 +15,7 @@ export default function Contact() {
             reach out using the email below.
           </p>
           <p>
-            Email: <a href="mailto:support@example.com" className="text-slate-900 underline">support@example.com</a>
+            Email: <a href="mailto:fer.jose.gonza@gmail.com" className="text-slate-900 underline">fer.jose.gonza@gmail.com</a>
           </p>
           <p>
             This is a placeholder contact page. Update it with your real contact details before
