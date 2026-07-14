@@ -1,0 +1,8 @@
+# Cuando termine de copiar todos los archivos
+
+# Pedir al LLM p/ q modifique
+
+## P/ modificar en el juego:
+
+Quiero que añadas estos comportamientos:
+1. en el juego actualmente el usuario tiene que hacer clic en una carta y luego clic en la otra carta donde quiere llevar la carta en la que hizo clic inicialmente, pero quiero que el usuario también pueda "arrastrar" una carta haciendo clic sin soltar el clic y soltando recién sobre la carta o el lugar donde la quiere dejar y se vea visualmente agradable ese "arrastre".
