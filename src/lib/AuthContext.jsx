@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { topsolitaireClient } from '@/api/topsolitaireClient';
 import { appParams } from '@/lib/app-params';
-import { createAxiosClient } from '@base44/sdk/dist/utils/axios-client';
+import { createAxiosClient } from '@/api/topsolitaireClient';
 
 const AuthContext = createContext();
 
@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
 
-      const hasBase44Config = Boolean(appParams.appId || appParams.appBaseUrl || appParams.token);
-      if (!hasBase44Config) {
+      const hasTopsolitaireConfig = Boolean(appParams.appId || appParams.appBaseUrl || appParams.token);
+      if (!hasTopsolitaireConfig) {
         setAppPublicSettings(null);
         setIsLoadingPublicSettings(false);
         setIsLoadingAuth(false);
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Now check if the user is authenticated
       setIsLoadingAuth(true);
-      const currentUser = await base44.auth.me();
+      const currentUser = await topsolitaireClient.auth.me();
       setUser(currentUser);
       setIsAuthenticated(true);
       setIsLoadingAuth(false);
@@ -130,16 +130,16 @@ export const AuthProvider = ({ children }) => {
     
     if (shouldRedirect) {
       // Use the SDK's logout method which handles token cleanup and redirect
-      base44.auth.logout(window.location.href);
+      topsolitaireClient.auth.logout(window.location.href);
     } else {
       // Just remove the token without redirect
-      base44.auth.logout();
+      topsolitaireClient.auth.logout();
     }
   };
 
   const navigateToLogin = () => {
     // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    topsolitaireClient.auth.redirectToLogin(window.location.href);
   };
 
   return (
