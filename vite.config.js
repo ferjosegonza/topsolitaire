@@ -8,7 +8,8 @@ export default defineConfig(({ mode }) => {
   const repoName = 'topsolitaire'
 
   return {
-    base: mode === 'production' ? `/${repoName}/` : '/',
+    //base: mode === 'production' ? `/${repoName}/` : '/',
+    base: '/',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
