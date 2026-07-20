@@ -1,0 +1,49 @@
+# Lista de archivos a copiar
+# Las líneas que empiezan con # son comentarios
+# Cada línea debe contener la ruta COMPLETA de un archivo
+
+# Archivos de ejemplo:
+# C:\Users\desarrollo\documento1.pdf
+# D:\backups\imagen.png
+# E:\proyectos\archivo.docx
+
+# Puedes añadir más rutas aquí
+# C:\otra\ruta\archivo.txt
+
+# RUTAS DE CERTIF DE DEUDA
+#D:\xampp\htdocs\iprodha\app\Services\Juridico\EstadoDeudaService.php
+#D:\xampp\htdocs\iprodha\app\Http\Controllers\Juridico\EstadoDeuda\EstadoDeudaController.php
+#D:\xampp\htdocs\iprodha\resources\views\juridicos\EstadoDeuda\pdf\estado_deuda_pdf_pi.blade.php
+#D:\xampp\htdocs\iprodha\resources\views\juridicos\EstadoDeuda\pdf\estado_deuda_pdf_cr.blade.php
+#D:\xampp\htdocs\iprodha\routes\Juridicos\Estado_Deuda.php
+#D:\xampp\htdocs\iprodha\resources\views\juridicos\Estado#Deuda\estadoDeuda.blade.php
+#D:\xampp\htdocs\iprodha\public\js\juridicos\EstadoDeuda\estado_deudas.js
+#D:\xampp\htdocs\iprodha\app\Models\Juridicos\FcIncobrableCab.php
+#D:\xampp\htdocs\iprodha\app\Models\Juridicos\JurJuicioDeuda.php
+
+# RUTAS DE GUARDA
+#D:\xampp\htdocs\iprodha\public\js\juridicos\Guarda\guarda.js
+#D:\xampp\htdocs\iprodha\app\Http\Controllers\Juridico\Guarda\GuardaController.php
+#D:\xampp\htdocs\iprodha\app\Services\Juridico\GuardaService.php
+#D:\xampp\htdocs\iprodha\app\Models\Juridicos\Guarda.php
+#D:\xampp\htdocs\iprodha\resources\views\juridicos\Guarda\index.blade.php
+#D:\xampp\htdocs\iprodha\routes\Juridicos\Juridicos.php
+
+# RUTAS DE DEMANDA
+#D:\xampp\htdocs\iprodha\app\Http\Controllers\Juridico\JuiciosController.php
+#D:\xampp\htdocs\iprodha\public\js\juridicos\funciones_varias.js
+#D:\xampp\htdocs\iprodha\routes\Juridicos\Juridicos.php
+#D:\xampp\htdocs\iprodha\public\js\juridicos\Demandas\buscador_demandas.js
+#D:\xampp\htdocs\iprodha\resources\views\juridicos\juicios\etapaJuicio.blade.php
+
+# RUTAS TOPSOL
+D:\xampp\htdocs\topsolitaire\vite.config.js
+D:\xampp\htdocs\topsolitaire\package.json
+D:\xampp\htdocs\topsolitaire\dist\index.html
+D:\xampp\htdocs\topsolitaire\index.html
+D:\xampp\htdocs\topsolitaire\topsolitaire-config\config.jsonc
+D:\xampp\htdocs\topsolitaire\postcss.config.js
+D:\xampp\htdocs\topsolitaire\tailwind.config.js
+D:\xampp\htdocs\topsolitaire\src\App.jsx
+D:\xampp\htdocs\topsolitaire\src\main.jsx
+D:\xampp\htdocs\topsolitaire\src\utils\index.ts

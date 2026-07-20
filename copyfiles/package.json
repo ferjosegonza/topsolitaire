@@ -1,0 +1,11 @@
+{
+  "name": "genprompt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generar_prompt.js",
+  "bin": {
+    "genprompt": "./generar_prompt.js",
+    "copyfiles": "./copiar_archivos.js",
+    "genprompte": "./generar_prompt_e.js"
+  }
+}
