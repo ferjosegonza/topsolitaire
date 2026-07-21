@@ -5,4 +5,9 @@
 ## P/ modificar en el juego:
 
 Quiero que añadas estos comportamientos:
-1. en el juego actualmente el usuario tiene que hacer clic en una carta y luego clic en la otra carta donde quiere llevar la carta en la que hizo clic inicialmente, pero quiero que el usuario también pueda "arrastrar" una carta haciendo clic sin soltar el clic y soltando recién sobre la carta o el lugar donde la quiere dejar y se vea visualmente agradable ese "arrastre".
+1. Poder arrastrar las cartas ya sea con el clic o con el dedo (si es táctil): en el juego actualmente el usuario tiene que hacer clic en una carta y luego clic en la otra carta adonde quiere llevar la carta en la que hizo clic inicialmente, pero quiero que el usuario también pueda "arrastrar" una carta haciendo clic sin soltar el clic y soltando recién sobre la carta o el lugar donde la quiere dejar y se vea visualmente agradable ese "arrastre".
+2. Mazo color más clarito o q se note mas, ten en cuenta que este juego lo pueden jugar personas ancianas con baja visión, la responsividad debe tener en cuenta también eso.
+3. Q se noten más 4 los espacios donde figuran las letras "A" que es donde se van poniendo las cartas.
+4. Adaptar el tamaño pa q se pueda jugar en el cel con sentido vertical, fijate la mejor estrategia para que sea responsivo.
+
+Antes de realizar todo esto, dime lo que entendiste y lo que vas a hacer para que yo te corrija si lo veo necesario o te confirme para que comiences con los cambios.
