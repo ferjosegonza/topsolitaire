@@ -9,8 +9,8 @@ import {
 import SolitaireCard from './SolitaireCard';
 
 const CARD_VARS = {
-  '--card-w': 'clamp(36px, 11vw, 78px)',
-  '--card-height': 'calc(var(--card-w) * 1.4)',
+  '--card-w': 'clamp(30px, calc((100vw - 24px) / 7), 82px)',
+  '--card-height': 'calc(var(--card-w) * 1.25)',
   '--card-font': 'calc(var(--card-w) * 0.24)',
   '--card-font-lg': 'calc(var(--card-w) * 0.5)',
 };
@@ -247,29 +247,29 @@ export default function SolitaireGame() {
   }
 
   const topCardStyle = (prevFaceUp, i) => ({
-    marginTop: i === 0 ? 0 : prevFaceUp ? 'calc(var(--card-w) * -1.0)' : 'calc(var(--card-w) * -1.2)',
+    marginTop: i === 0 ? 0 : prevFaceUp ? 'calc(var(--card-w) * -0.86)' : 'calc(var(--card-w) * -1.0)',
   });
 
   return (
     <div style={CARD_VARS} className="w-full">
       {/* Status bar */}
-      <div className="flex items-center justify-between mb-3 text-emerald-50/90 text-sm">
-        <div className="flex gap-4">
+      <div className="flex items-center justify-between mb-1 sm:mb-3 text-emerald-50/90 text-xs sm:text-sm">
+        <div className="flex gap-2 sm:gap-4">
           <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
         </div>
         <button
           onClick={newGame}
-          className="px-3 py-1.5 rounded-md bg-white/15 hover:bg-white/25 text-white text-sm font-medium transition-colors"
+          className="px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-md bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-medium transition-colors"
         >
           New Game
         </button>
       </div>
 
       {/* Board */}
-      <div className="relative rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-900 p-2 sm:p-4 shadow-xl">
+      <div className="relative rounded-lg sm:rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-900 p-0.5 sm:p-4 shadow-xl">
         {/* Top row: stock, waste, foundations */}
-        <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-3">
+        <div className="grid grid-cols-7 gap-[1px] sm:gap-2 mb-[1px] sm:mb-3">
           {/* Stock */}
           <div>
             {game.stock.length > 0 ? (
@@ -358,7 +358,7 @@ export default function SolitaireGame() {
       </div>
 
       {/* How to play */}
-      <details className="mt-4 text-sm text-slate-600">
+      <details className="hidden sm:block mt-4 text-sm text-slate-600">
         <summary className="cursor-pointer font-medium text-slate-700">How to play</summary>
         <ul className="mt-2 space-y-1 list-disc pl-5">
           <li>Tap the stock pile (top-left) to draw a card.</li>

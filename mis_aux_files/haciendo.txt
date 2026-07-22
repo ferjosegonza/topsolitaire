@@ -10,4 +10,11 @@ Quiero que añadas estos comportamientos:
 3. Q se noten más 4 los espacios donde figuran las letras "A" que es donde se van poniendo las cartas.
 4. Adaptar el tamaño pa q se pueda jugar en el cel con sentido vertical, fijate la mejor estrategia para que sea responsivo.
 
-Antes de realizar todo esto, dime lo que entendiste y lo que vas a hacer para que yo te corrija si lo veo necesario o te confirme para que comiences con los cambios.
+Antes de realizar todo esto:
+1. dime lo que entendiste y lo que vas a hacer para que yo te corrija si lo veo necesario o te confirme para que comiences con los cambios.
+2. quiero que hagas de una por vez hasta terminarla, que podamos hacer un commit y subirlo al repositorio, para luego pasar a la siguiente.
+3. quiero que me propongas el orden que te parezca más conveniente.
+4. quiero que crees un documento para llevar el seguimiento de lo realizado y lo que falta hacer.
+
+Responsive móvil vertical
+a blackbox el 22/07/2026: estoy comparando cómo se ve antes y después de tus cambios y no veo cambios visuales en lo responsive como para cumplir lo que te dije que si se detecta que es un ancho de un celular y está verticarl que se produzcan estas adaptaciones responsivas: que ocupe el ancho de la manera más optimizada posible para que se vean las cartas un poco más grandes si es posible, reduzca la separación entre todos los espacios que ocupan las cartas, se reduzcan los margenes exteriores del juego y todos los espacios que veas que se puedan reducir sin afectar estéticamente al juego
