@@ -1,8 +1,10 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2204003132702383"
      crossorigin="anonymous"></script>
+    
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/images/89a4d5b03_logo.png?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,6 +18,7 @@
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Play Solitaire Online Free" />
     <link rel="canonical" href="https://topsolitaire.online/" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Play Solitaire Online Free - No Signup" />
@@ -29,19 +32,25 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Play Solitaire Online">
     <meta property="og:locale" content="en_US" />
-    <!-- Twitter Card-->
-    <meta name="twitter:card" content="summary" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Play Solitaire Online Free - No Signup" />
     <meta
       name="twitter:description"
       content="Play classic Klondike Solitaire online for free. No signup, no download — play instantly."
     />
+    <meta name="twitter:image" content="https://topsolitaire.online/images/og-image.jpg" />
+
+    <!-- PWA / Mobile -->
     <meta name="theme-color" content="#065f46" />
     <meta name="application-name" content="Play Solitaire Online" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Solitaire" />
     <meta name="format-detection" content="telephone=no" />
+
+    <!-- Schema.org -->
     <script type="application/ld+json">
       {
         "@context":"https://schema.org",
@@ -51,9 +60,156 @@
         "description":"Play classic Klondike Solitaire online for free. No download, no signup."
       }
     </script>
+
+    <!-- ============================================================ -->
+    <!-- 🆕 ESTILOS PARA ANUNCIOS -->
+    <!-- ============================================================ -->
+    <style>
+      /* Contenedor general de anuncios */
+      .ad-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 12px auto;
+        min-height: 90px;
+        background: transparent;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      /* Anuncio superior */
+      .ad-top {
+        margin-top: 4px;
+        margin-bottom: 12px;
+        min-height: 90px;
+      }
+
+      /* Anuncio inferior */
+      .ad-bottom {
+        margin-top: 12px;
+        margin-bottom: 4px;
+        min-height: 90px;
+      }
+
+      /* Anuncio lateral (solo escritorio) */
+      .ad-side {
+        position: fixed;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 160px;
+        min-height: 600px;
+        z-index: 100;
+        display: none; /* Oculto por defecto */
+      }
+
+      /* Mostrar lateral solo en pantallas grandes */
+      @media (min-width: 1200px) {
+        .ad-side {
+          display: flex;
+        }
+        /* Ajustar el juego para que no se superponga */
+        #root {
+          margin-right: 180px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .ad-top, .ad-bottom {
+          min-height: 60px;
+        }
+        .ad-container {
+          margin: 6px auto;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- ============================================================ -->
+    <!-- 🆕 ANUNCIO SUPERIOR (HORIZONTAL / RESPONSIVO) -->
+    <!-- ============================================================ -->
+    <div class="ad-container ad-top">
+      <!-- anuncio grafico horizontal -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2204003132702383"
+           data-ad-slot="2778338000"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🆕 ANUNCIO LATERAL (VERTICAL) - SOLO ESCRITORIO -->
+    <!-- ============================================================ -->
+    <div class="ad-container ad-side">
+
+      <!-- lo q sugirio deepseek -->
+      <!-- <ins class="adsbygoogle"
+           style="display:inline-block;width:160px;height:600px"
+           data-ad-client="ca-pub-2204003132702383"
+           data-ad-slot="1348751976"
+           data-ad-format="vertical"></ins> -->
+
+      <!-- codigo de google, tiene de diferente el display con el codigo de deepseek -->
+      <!-- anuncio vertical lateral -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-2204003132702383"
+          data-ad-slot="1348751976"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
+    <!-- ============================================================ -->
     <div id="root"></div>
+
+    <!-- ============================================================ -->
+    <!-- 🆕 ANUNCIO INFERIOR (HORIZONTAL / RESPONSIVO) -->
+    <!-- ============================================================ -->
+    <div class="ad-container ad-bottom">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-2204003132702383"
+           data-ad-slot="5866581486"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 🆕 SCRIPT PARA CARGAR ANUNCIOS -->
+    <!-- ============================================================ -->
+    <script>
+      // Función para cargar todos los anuncios
+      function loadAllAds() {
+        try {
+          // Verificar que el script de AdSense esté cargado
+          if (typeof window.adsbygoogle !== 'undefined') {
+            // Esto carga todos los <ins class="adsbygoogle"> de la página
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          } else {
+            console.warn('AdSense script not loaded yet');
+          }
+        } catch (e) {
+          console.warn('AdSense error:', e);
+        }
+      }
+
+      // Cargar cuando el DOM esté listo
+      if (document.readyState === 'complete') {
+        loadAllAds();
+      } else {
+        window.addEventListener('load', loadAllAds);
+      }
+
+      // Cargar después de que React renderice (con retraso)
+      setTimeout(loadAllAds, 1500);
+    </script>
+
+    <!-- React entry point -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
