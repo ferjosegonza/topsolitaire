@@ -1,19 +1,28 @@
-    <!-- ============================================================ -->
-    <!-- FAVICONS -->
-    <!-- ============================================================ -->
-    
-    <!-- Favicon principal (ICO para compatibilidad, p/ navegadores antiguos) -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    
-    <!-- PNG para navegadores modernos -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
-    
-    <!-- Apple Touch Icon (iOS) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    
-    <!-- Manifest (PWA) -->
-    <link rel="manifest" href="/manifest.json" />
-    
-    <!-- Fallback: logo original (solo si existe en assets) -->
-    <!-- <link rel="icon" type="image/png" href="/assets/89a4d5b03_logo-Bq-mu573.png?v=2" /> -->
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom';
+
+// Limpiar después de cada test
+afterEach(() => {
+  cleanup();
+});
+
+// Mock de window.adsbygoogle para evitar errores en tests
+if (typeof window !== 'undefined') {
+  window.adsbygoogle = window.adsbygoogle || [];
+}
+
+// Mock de matchMedia para evitar errores en tests
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
