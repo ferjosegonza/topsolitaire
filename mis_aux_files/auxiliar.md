@@ -1,3 +1,10 @@
+## 📝 README.md actualizado con tests
+
+Aquí tienes el README completo con la sección de tests agregada:
+
+---
+
+```markdown
 # TopSolitaire
 
 This repository contains a static web version of the TopSolitaire solitaire experience built with React and Vite.
@@ -113,3 +120,20 @@ The app is intentionally designed as a public solitaire experience with no login
 - **use-sound** - Audio playback
 - **Framer Motion** - Animations
 ```
+
+---
+
+## 📋 Cambios realizados
+
+| Sección | Lo que agregué |
+|---------|----------------|
+| **Running Tests** | Nueva sección completa con todos los comandos de test |
+| **Test files structure** | Estructura de archivos de tests |
+| **What is tested** | Tabla explicando qué prueba cada archivo |
+| **Adding new tests** | Guía rápida para agregar nuevos tests |
+| **Features** | Resumen de características del juego |
+| **Tech Stack** | Lista de tecnologías usadas |
+
+---
+
+**Ahora el README documenta completamente cómo ejecutar los tests después de cada cambio nuevo.** 🚀
