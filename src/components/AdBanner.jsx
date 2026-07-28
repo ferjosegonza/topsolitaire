@@ -1,42 +1,31 @@
 import React, { useEffect, useRef } from 'react';
 
+/**
+ * Componente para mostrar anuncios de Google AdSense
+ * @param {string} slot - El data-ad-slot de la unidad de anuncio
+ * @param {string} format - Formato: 'auto', 'horizontal', 'vertical'
+ * @param {object} style - Estilos adicionales para el contenedor
+ * @param {string} className - Clases CSS adicionales
+ */
 const AdBanner = ({ slot, format = 'auto', style = {}, className = '' }) => {
   const adRef = useRef(null);
   const isLoaded = useRef(false);
 
   useEffect(() => {
+    // Evitar cargar múltiples veces
     if (isLoaded.current) return;
     isLoaded.current = true;
 
-    // 🔥 AUMENTAR EL RETRASO de 100ms a 500ms
-    // Esto da tiempo a que el contenedor se renderice
+    // Pequeño retraso para asegurar que el DOM esté listo
     const timer = setTimeout(() => {
       try {
-        // 🔥 VERIFICAR que el contenedor tenga tamaño
-        if (adRef.current) {
-          const rect = adRef.current.getBoundingClientRect();
-          if (rect.width === 0) {
-            // Si el contenedor no tiene tamaño, reintentar después
-            setTimeout(() => {
-              try {
-                if (window.adsbygoogle) {
-                  (window.adsbygoogle = window.adsbygoogle || []).push({});
-                }
-              } catch (e) {
-                console.warn('AdSense retry error:', e);
-              }
-            }, 500);
-            return;
-          }
-        }
-
         if (window.adsbygoogle) {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         }
       } catch (error) {
         console.warn('AdSense error:', error);
       }
-    }, 500); // ← CAMBIADO de 100 a 500ms
+    }, 100);
 
     return () => clearTimeout(timer);
   }, []);
