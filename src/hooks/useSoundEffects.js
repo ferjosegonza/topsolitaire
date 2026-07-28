@@ -9,22 +9,27 @@ export function useSoundEffects() {
   // Cargar todos los sonidos
   const [playFlip] = useSound(`${SOUND_BASE_PATH}card-flip.mp3`, { 
     volume: 0.3,
+    soundEnabled: !isMuted
   });
   
   const [playPlace] = useSound(`${SOUND_BASE_PATH}card-place.mp3`, { 
     volume: 0.25,
+    soundEnabled: !isMuted
   });
   
   const [playDeal] = useSound(`${SOUND_BASE_PATH}deal.mp3`, { 
     volume: 0.2,
+    soundEnabled: !isMuted
   });
   
   const [playWin] = useSound(`${SOUND_BASE_PATH}win.mp3`, { 
     volume: 0.4,
+    soundEnabled: !isMuted
   });
   
   const [playClick] = useSound(`${SOUND_BASE_PATH}click.mp3`, { 
     volume: 0.15,
+    soundEnabled: !isMuted
   });
 
   // Función para alternar mute

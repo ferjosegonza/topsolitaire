@@ -7,6 +7,7 @@ import {
   SUIT_SYMBOLS,
 } from '@/lib/solitaire';
 import SolitaireCard from './SolitaireCard';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 const CARD_VARS = {
   '--card-w': 'clamp(36px, 11vw, 78px)',
@@ -34,6 +35,17 @@ export default function SolitaireGame() {
   const [won, setWon] = useState(false);
   const timerRef = useRef(null);
 
+  // Sonidos
+  const {
+    isMuted,
+    toggleMute,
+    playFlipSound,
+    playPlaceSound,
+    playDealSound,
+    playWinSound,
+    playClickSound,
+  } = useSoundEffects();
+
   // Timer
   useEffect(() => {
     if (won) {
@@ -46,8 +58,11 @@ export default function SolitaireGame() {
 
   // Win detection
   useEffect(() => {
-    if (isWon(game)) setWon(true);
-  }, [game]);
+    if (isWon(game)) {
+      setWon(true);
+      playWinSound();
+    }
+  }, [game, playWinSound]);
 
   const newGame = useCallback(() => {
     setGame(deal());
@@ -55,7 +70,8 @@ export default function SolitaireGame() {
     setMoves(0);
     setSeconds(0);
     setWon(false);
-  }, []);
+    playDealSound();
+  }, [playDealSound]);
 
   const getSelectedCards = useCallback((sel, g) => {
     if (!sel) return [];
@@ -85,6 +101,23 @@ export default function SolitaireGame() {
       }
       const newStock = [...g.stock];
       const card = newStock.pop();
+      playFlipSound();
+      return { ...g, stock: newStock, waste: [...g.waste, { ...card, faceUp: true }] };
+    });
+  }
+
+  function handleStockClick() {
+    if (won) return;
+    setSelection(null);
+    setGame((g) => {
+      if (g.stock.length === 0) {
+        if (g.waste.length === 0) return g;
+        const newStock = [...g.waste].reverse().map((c) => ({ ...c, faceUp: false }));
+        return { ...g, stock: newStock, waste: [] };
+      }
+      const newStock = [...g.stock];
+      const card = newStock.pop();
+      playFlipSound(); // ← AGREGAR
       return { ...g, stock: newStock, waste: [...g.waste, { ...card, faceUp: true }] };
     });
   }
@@ -116,6 +149,7 @@ export default function SolitaireGame() {
     });
     setSelection(null);
     setMoves((m) => m + 1);
+    playPlaceSound();
   }
 
   function tryMoveToFoundation(destF) {
@@ -145,6 +179,7 @@ export default function SolitaireGame() {
     });
     setSelection(null);
     setMoves((m) => m + 1);
+    playPlaceSound();
   }
 
   // Auto-send a card to a foundation (double-click / double-tap).
@@ -181,6 +216,7 @@ export default function SolitaireGame() {
         });
         setMoves((m) => m + 1);
         setSelection(null);
+        playPlaceSound();
         return;
       }
     }
@@ -258,12 +294,28 @@ export default function SolitaireGame() {
           <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
         </div>
-        <button
-          onClick={newGame}
-          className="px-3 py-1.5 rounded-md bg-white/15 hover:bg-white/25 text-white text-sm font-medium transition-colors"
-        >
-          New Game
-        </button>
+        <div className="flex gap-2">
+          {/* ← BOTÓN DE MUTE/UNMUTE */}
+          <button
+            onClick={toggleMute}
+            className={` rounded-2xl text-white font-bold transition-all duration-200 flex items-center gap-4 min-h-[64px]  text-xl shadow-xl ${
+              isMuted 
+                ? 'bg-red-600/60 hover:bg-red-600/80 border-2 border-red-400/60' 
+                : 'bg-emerald-600/60 hover:bg-emerald-600/80 border-2 border-emerald-400/60'
+            }`}
+            aria-label={isMuted ? "Activar sonido" : "Silenciar sonido"}
+          >
+            <span className="text-5xl">{isMuted ? '🔇' : '🔊'}</span>
+          </button>
+
+          <button
+            onClick={newGame}
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-lg transition-all duration-200 flex items-center gap-2 min-h-[56px] min-w-[140px] shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+          >
+            <span className="text-2xl">🔄</span>
+            New Game
+          </button>
+        </div>
       </div>
 
       {/* Board */}
