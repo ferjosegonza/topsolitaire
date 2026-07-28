@@ -7,7 +7,7 @@ import SolitaireGame from '@/components/solitaire/SolitaireGame';
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* <AdSlot id="adsense-top" className="w-full" minHeight="90px" /> */}
+
       <AdBanner
         slot="2778338000"
         format="auto"
@@ -30,7 +30,7 @@ export default function Home() {
 
           <aside className="hidden lg:block w-[300px] shrink-0">
             <div className="sticky top-4">
-              {/* <AdSlot id="adsense-sidebar" className="w-full" minHeight="600px" /> */}
+
               <AdBanner
                 slot="1348751976"
                 format="auto"
@@ -44,7 +44,7 @@ export default function Home() {
 
       <Footer />
 
-      {/* <AdSlot id="adsense-bottom" className="w-full" minHeight="90px" /> */}
+
       <AdBanner
         slot="5866581486"
         format="auto"
