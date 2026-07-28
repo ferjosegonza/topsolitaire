@@ -1,8 +1,4 @@
-# Cuando termine de copiar todos los archivos
-
-# Pedir al LLM p/ q modifique
-
-## P/ modificar en el juego:
+# P/ modificar en el juego:
 
 Quiero que añadas estos comportamientos:
 1. en el juego actualmente el usuario tiene que hacer clic en una carta y luego clic en la otra carta donde quiere llevar la carta en la que hizo clic inicialmente, pero quiero que el usuario también pueda "arrastrar" una carta haciendo clic sin soltar el clic y soltando recién sobre la carta o el lugar donde la quiere dejar y se vea visualmente agradable ese "arrastre".
@@ -18,3 +14,4 @@ Quiero que añadas estos comportamientos:
 3.8 Agregar un botón para volver a dar o barajar nuevamente (por ejemplo si el usuario quiere empezar de nuevo).
 3.9 dale 3 niveles de dificultad.
 4. quiero que todo lo que te pedí lo pongas en orden de prioridad según tu criterio y vayas haciendo de una cosa por vez y siempre actualizando un archivo TODO.md
+5. antes de efectuar todos estos cambios quiero que crees una batería de todo tipo de tests automatizados que yo pueda correr después de aplicar cada uno de los cambios que te pido así verifico que absolutamente todo siga funcionando correctamente en el sitio web, ya sea funcionamiento del juego, links, referencias, enlaces y todo lo que se te ocurra que debiera ser testeado para garantizar que todo siga funcionando correctamente en todo el sitio web.
