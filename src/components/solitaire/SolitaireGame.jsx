@@ -101,6 +101,7 @@ export default function SolitaireGame() {
       }
       const newStock = [...g.stock];
       const card = newStock.pop();
+      playFlipSound();
       return { ...g, stock: newStock, waste: [...g.waste, { ...card, faceUp: true }] };
     });
   }
