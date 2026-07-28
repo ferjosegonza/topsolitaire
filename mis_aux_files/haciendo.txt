@@ -6,39 +6,15 @@
 
 Quiero que añadas estos comportamientos:
 1. en el juego actualmente el usuario tiene que hacer clic en una carta y luego clic en la otra carta donde quiere llevar la carta en la que hizo clic inicialmente, pero quiero que el usuario también pueda "arrastrar" una carta haciendo clic sin soltar el clic y soltando recién sobre la carta o el lugar donde la quiere dejar y se vea visualmente agradable ese "arrastre".
-
-
-Dudas:
-1. ¿qué es el canonical y para qué sirve?
-2. ¿qué es el open graph y para qué sirve?
-3. para un sitio web que sólo tiene para jugar al solitario en su única página sin necesidad de login, qué tipo de manifiesto puedo hacer?
-4. para un sitio web que sólo tiene para jugar al solitario en su única página sin necesidad de login, qué tipo de política de privacidad puedo hacer? ¿es necesario o conveniente tenerla? en caso de sí, qué diría?
-5. para un sitio web de estas características es necesario tener cookies? hasta ahora creo que no tengo
-6. para un sitio web de estas características es necesario tener un sitemap? ¿qué pongo?
-
-
-
-quiero que me crees lo siguiente para este proyecto, que esté alineado estéticamente y alineado a lo que es, un simple sitio web con un solo juego de solitario para jugar sin login:
-```text
-Manifest
-Política de privacidad (o Privacy Policy)
-Cookies	(Cookie Policy)
-Contacto
-About	
-sitemap.xml
-robots.txt (ya tengo algo hecho, dime si es correcto su contenido y si la ubicación debería ser otra o es la correcta)
-404 personalizada
-```
-además quiero que verifiques si lo referente a open graph está bien en el archivo topsolitaire\index.html
-
-
-⚠️ ADVERTENCIAS IMPORTANTES
-El código de AdSense que tienes (ca-pub-2204003132702383) es un ejemplo - Cuando recibas la aprobación, reemplázalo con tu propio ID de publicador.
-
-Asegúrate de tener contenido suficiente - AdSense rechaza sitios con poco contenido. Tu juego debe ser funcional y tener valor para los usuarios.
-
-Cumple con las políticas de AdSense - Lee y sigue todas las políticas de Google AdSense para evitar penalizaciones.
-
-No hagas clic en tus propios anuncios - Esto está estrictamente prohibido y resultará en la desactivación de tu cuenta.
-
-Mantén la página de inicio actualizada - Actualiza la fecha en privacy.html, cookies.html y sitemap.xml periódicamente.
+2. si el contenido de los archivos es consistente con el resto del proyecto quiero que analices lo de qué se trata el sitio web y que el contenido de todos los archivos se corresponda con el mismo.
+3. Quiero que realices los siguientes efectos visuales:
+3.1 Cuando se da vuelta una carta (ya sea en el mazo o la q esta boca abajo debajo en una de las columnas) que se vea un efecto bonito y un sonido.
+3.2 Cuando una carta aterriza en el destino.
+3.3 Cuando empieza a barajarse el juego (como un effcto de repartir, quiero que se haga a una velocidad rápida pero aún visible).
+3.4 Cuando se gana o resuelve el juego, que haya algún efecto visual bonito.
+3.5 Cuando se toca la carta, que se vaya automaticamente donde puede irse, si tiene dos opciones de carta donde pudiera irse la carta clicada, aplica tu mejor criterio.
+3.6 Reproducir breves y simpáticos sonidos de dar vuelta la carta, de repartir cuando comienza y de festejar cuando termina
+3.7 Que haya un boton bien visible para mute/unmute
+3.8 Agregar un botón para volver a dar o barajar nuevamente (por ejemplo si el usuario quiere empezar de nuevo).
+3.9 dale 3 niveles de dificultad.
+4. quiero que todo lo que te pedí lo pongas en orden de prioridad según tu criterio y vayas haciendo de una cosa por vez y siempre actualizando un archivo TODO.md
