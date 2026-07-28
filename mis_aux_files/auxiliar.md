@@ -1,139 +1,87 @@
-## 📝 README.md actualizado con tests
+# TODO - Mejoras del Solitario
 
-Aquí tienes el README completo con la sección de tests agregada:
+## ✅ COMPLETADO
+- [x] Sistema de sonidos (useSound)
+  - Hook `useSoundEffects.js` creado
+  - Sonidos: card-flip, card-place, deal, win, click
+  - Botón Mute/Unmute integrado en el juego
+  - Sonidos reproducidos en acciones: repartir, voltear, colocar, ganar
+- [x] Botón Mute/Unmute
+  - Implementado en el header del juego
+  - Iconos 🔊/🔇 con toggle funcional
+- [x] Efecto de voltear carta + sonido
+  - Sonido `card-flip.mp3` al sacar carta del stock
+  - Sonido `card-flip.mp3` al reiniciar el stock
+- [x] Efecto de aterrizaje + sonido
+  - Sonido `card-place.mp3` al mover a tableau
+  - Sonido `card-place.mp3` al mover a foundation
+- [x] Efecto de reparto al inicio
+  - Sonido `deal.mp3` al hacer clic en "New Game"
+- [x] Efecto de victoria
+  - Sonido `win.mp3` al completar el juego
+  - Detectado automáticamente por `isWon(game)`
 
----
+## 🔄 EN PROGRESO
+- [ ] Sistema de efectos visuales
+  - Animaciones con framer-motion (instalado)
+  - Efecto de voltear carta visual
+  - Efecto de aterrizaje visual
+  - Efecto de reparto visual
+  - Efecto de victoria visual (confeti, etc.)
+- [ ] Drag & Drop de cartas
+  - Arrastrar cartas con el mouse
+  - Feedback visual durante el arrastre
+  - Soltar en destino válido
 
-```markdown
-# TopSolitaire
+## 📝 PENDIENTE
+- [ ] Auto-move al hacer clic (doble clic ya funciona)
+- [ ] 3 niveles de dificultad
+  - Fácil: más tiempo, sugerencias
+  - Normal: estándar
+  - Difícil: menos tiempo, penalizaciones
+- [ ] Verificar funcionamiento en móvil
+  - Touch events para drag & drop
+  - Responsive adjustments
+- [ ] Verificar rendimiento
+  - Carga de sonidos
+  - Animaciones fluidas
+  - Memoria y renders
 
-This repository contains a static web version of the TopSolitaire solitaire experience built with React and Vite.
+## 🧪 TESTS
+- [x] Configuración de tests (vitest + jsdom)
+- [x] Tests de lógica del juego (14 tests)
+  - createDeck, shuffle, deal
+  - canPlaceOnTableau, canPlaceOnFoundation
+  - isWon, isRed, constantes
+- [x] Tests de sonidos (useSoundEffects)
+  - Mute/Unmute toggle
+  - Estado inicial
+- [ ] Tests de Drag & Drop
+- [ ] Tests de efectos visuales
+- [ ] Tests de niveles de dificultad
 
-## Prerequisites
+## 🐛 BUGS CONOCIDOS
+- [ ] Ninguno reportado
 
-1. Clone the repository.
-2. Navigate to the project directory.
-3. Install dependencies: `npm install`.
-4. Build the production assets: `npx.cmd vite build`.
+## 📝 NOTAS
+- ✅ `use-sound` instalado y configurado
+- ✅ `framer-motion` ya está instalado en el proyecto
+- ✅ Archivos de sonido en `public/sounds/`:
+  - `card-flip.mp3` - Voltear carta
+  - `card-place.mp3` - Colocar carta
+  - `deal.mp3` - Repartir
+  - `win.mp3` - Victoria
+  - `click.mp3` - Clic (opcional)
+- Los sonidos deben ser cortos (< 1s para acciones, < 2s para victoria)
+- Formato de sonidos: MP3 o WAV
 
-## Run Locally
-
-Start the local development server:
-
-```bash
-npm run dev
-```
-
-Open the local URL printed by Vite.
-
-## Build for Apache or Static Hosting
-
-Generate the production files:
-
-```bash
-npx.cmd vite build
-```
-
-The build output will be created in the `dist` folder and can be served directly by Apache or any static host.
-
-## Running Tests
-
-This project uses **Vitest** for testing. Tests cover game logic, sound system, and component rendering.
-
-### Run all tests
-
-```bash
-npm run test
-```
-
-### Run tests in watch mode (auto-run on changes)
-
-```bash
-npm run test:watch
-```
-
-### Run tests with UI
-
-```bash
-npm run test:ui
-```
-
-### Run tests with coverage report
-
-```bash
-npm run test:coverage
-```
-
-### Run a specific test file
-
-```bash
-npm run test __tests__/solitaire.test.jsx
-```
-
-### Run tests with verbose output
-
-```bash
-npm run test -- --reporter=verbose
-```
-
-### Test files structure
-
-```
-__tests__/
-├── setup.test.js          # Environment configuration tests
-├── solitaire.test.jsx     # Game logic tests (createDeck, shuffle, deal, etc.)
-└── sound.test.jsx         # Sound system tests
-```
-
-### What is tested
-
-| Test file | What it tests |
-|-----------|---------------|
-| `setup.test.js` | Vitest environment, jsdom, matchMedia, adsbygoogle mock |
-| `solitaire.test.jsx` | Deck creation, shuffling, dealing, card placement rules, win detection |
-| `sound.test.jsx` | Sound effects hook, mute/unmute functionality |
-
-### Adding new tests
-
-1. Create a new file in `__tests__/` with `.test.jsx` or `.test.js` extension
-2. Import the necessary modules
-3. Write your tests using `describe` and `it` blocks
-4. Run `npm run test` to verify
-
-## Project Notes
-
-The app is intentionally designed as a public solitaire experience with no login, registration, or user persistence flow.
-
-## Features
-
-- **Sound System**: Card flip, place, deal, and win sounds with mute/unmute toggle
-- **Visual Effects**: Smooth animations for card movements
-- **Responsive**: Works on desktop, tablet, and mobile devices
-- **No Installation Required**: Play directly in your browser
-
-## Tech Stack
-
-- **React** - UI Framework
-- **Vite** - Build tool and development server
-- **Tailwind CSS** - Styling
-- **Vitest** - Testing framework
-- **use-sound** - Audio playback
-- **Framer Motion** - Animations
-```
-
----
-
-## 📋 Cambios realizados
-
-| Sección | Lo que agregué |
-|---------|----------------|
-| **Running Tests** | Nueva sección completa con todos los comandos de test |
-| **Test files structure** | Estructura de archivos de tests |
-| **What is tested** | Tabla explicando qué prueba cada archivo |
-| **Adding new tests** | Guía rápida para agregar nuevos tests |
-| **Features** | Resumen de características del juego |
-| **Tech Stack** | Lista de tecnologías usadas |
-
----
-
-**Ahora el README documenta completamente cómo ejecutar los tests después de cada cambio nuevo.** 🚀
+## 📂 ARCHIVOS CREADOS/MODIFICADOS
+- `src/hooks/useSoundEffects.js` - Hook de sonidos (CREADO)
+- `src/components/solitaire/SolitaireGame.jsx` - Integración de sonidos (MODIFICADO)
+- `public/sounds/*.mp3` - Archivos de audio (AGREGADOS)
+- `vitest.config.js` - Configuración de tests (CREADO)
+- `vitest.setup.js` - Setup de tests (CREADO)
+- `__tests__/setup.test.js` - Tests de entorno (CREADO)
+- `__tests__/solitaire.test.jsx` - Tests de lógica (CREADO)
+- `__tests__/sound.test.jsx` - Tests de sonidos (CREADO)
+- `README.md` - Documentación actualizada (MODIFICADO)

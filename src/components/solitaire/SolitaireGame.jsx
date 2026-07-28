@@ -298,15 +298,21 @@ export default function SolitaireGame() {
           {/* ← BOTÓN DE MUTE/UNMUTE */}
           <button
             onClick={toggleMute}
-            className="px-3 py-1.5 rounded-md bg-white/15 hover:bg-white/25 text-white text-sm font-medium transition-colors flex items-center gap-1"
-            title={isMuted ? "Unmute" : "Mute"}
+            className={` rounded-2xl text-white font-bold transition-all duration-200 flex items-center gap-4 min-h-[64px]  text-xl shadow-xl ${
+              isMuted 
+                ? 'bg-red-600/60 hover:bg-red-600/80 border-2 border-red-400/60' 
+                : 'bg-emerald-600/60 hover:bg-emerald-600/80 border-2 border-emerald-400/60'
+            }`}
+            aria-label={isMuted ? "Activar sonido" : "Silenciar sonido"}
           >
-            {isMuted ? '🔇' : '🔊'}
+            <span className="text-5xl">{isMuted ? '🔇' : '🔊'}</span>
           </button>
+
           <button
             onClick={newGame}
-            className="px-3 py-1.5 rounded-md bg-white/15 hover:bg-white/25 text-white text-sm font-medium transition-colors"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-lg transition-all duration-200 flex items-center gap-2 min-h-[56px] min-w-[140px] shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
           >
+            <span className="text-2xl">🔄</span>
             New Game
           </button>
         </div>
