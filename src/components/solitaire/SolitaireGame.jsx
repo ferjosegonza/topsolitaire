@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 import {
   deal,
   canPlaceOnTableau,
@@ -45,6 +47,10 @@ export default function SolitaireGame() {
     playWinSound,
     playClickSound,
   } = useSoundEffects();
+
+  // Drag & Drop
+  const [draggingCard, setDraggingCard] = useState(null);
+  const [dragStartPos, setDragStartPos] = useState(null);
 
   // Timer
   useEffect(() => {
@@ -222,6 +228,109 @@ export default function SolitaireGame() {
     }
   }
 
+  // Drag & Drop handlers
+  const handleDragStart = useCallback((e, info, card, cardIndex, colIndex) => {
+    if (won) return;
+    
+    // Solo permitir arrastrar cartas boca arriba
+    if (!card.faceUp) return;
+    
+    // Verificar que la carta es la última boca arriba en la columna
+    const column = game.tableau[colIndex];
+    const lastCardIndex = column.length - 1;
+    const lastFaceUpIndex = column.map((c, i) => c.faceUp ? i : -1).filter(i => i >= 0).pop() ?? -1;
+    
+    // Si la carta no es la última boca arriba, no permitir arrastre
+    if (cardIndex !== lastFaceUpIndex && cardIndex < column.length - 1) {
+      // Permitir arrastrar solo si es la última carta boca arriba
+      const isLastFaceUp = column.slice(cardIndex).every(c => c.faceUp);
+      if (!isLastFaceUp) return;
+    }
+    
+    setDraggingCard({ card, cardIndex, colIndex, source: 'tableau' });
+    setDragStartPos({ x: e.clientX, y: e.clientY });
+  }, [game.tableau, won]);
+
+  const handleDragEnd = useCallback((e, info, card, cardIndex, colIndex) => {
+    if (!draggingCard) return;
+    
+    // Obtener el elemento donde se soltó
+    const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+    
+    // Buscar si se soltó sobre una columna o foundation
+    let targetCol = -1;
+    let targetFoundation = -1;
+    
+    // Verificar si se soltó sobre una columna del tableau
+    const tableauSlots = document.querySelectorAll('[data-tableau-slot]');
+    tableauSlots.forEach((slot, i) => {
+      const rect = slot.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right &&
+          e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        targetCol = i;
+      }
+    });
+    
+    // Verificar si se soltó sobre una foundation
+    const foundationSlots = document.querySelectorAll('[data-foundation-slot]');
+    foundationSlots.forEach((slot, i) => {
+      const rect = slot.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right &&
+          e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        targetFoundation = i;
+      }
+    });
+    
+    // Si se soltó sobre una columna válida
+    if (targetCol >= 0 && targetCol !== colIndex) {
+      // Intentar mover a tableau
+      const cards = getSelectedCards(
+        { source: 'tableau', col: colIndex, cardIndex },
+        game
+      );
+      if (cards.length > 0 && canPlaceOnTableau(cards[0], game.tableau[targetCol])) {
+        setGame((g) => {
+          const tableau = g.tableau.map((c) => [...c]);
+          const moving = tableau[colIndex].splice(cardIndex);
+          const col = tableau[colIndex];
+          if (col.length && !col[col.length - 1].faceUp) {
+            col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
+          }
+          tableau[targetCol].push(...moving);
+          return { ...g, tableau };
+        });
+        setMoves((m) => m + 1);
+        playPlaceSound();
+      }
+    }
+    
+    // Si se soltó sobre una foundation
+    if (targetFoundation >= 0) {
+      const cards = getSelectedCards(
+        { source: 'tableau', col: colIndex, cardIndex },
+        game
+      );
+      if (cards.length === 1 && canPlaceOnFoundation(cards[0], game.foundations[targetFoundation])) {
+        setGame((g) => {
+          const tableau = g.tableau.map((c) => [...c]);
+          const foundations = g.foundations.map((f) => [...f]);
+          const moving = tableau[colIndex].pop();
+          const col = tableau[colIndex];
+          if (col.length && !col[col.length - 1].faceUp) {
+            col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
+          }
+          foundations[targetFoundation].push(moving);
+          return { ...g, tableau, foundations };
+        });
+        setMoves((m) => m + 1);
+        playPlaceSound();
+      }
+    }
+    
+    setDraggingCard(null);
+    setDragStartPos(null);
+  }, [draggingCard, game, getSelectedCards, canPlaceOnTableau, canPlaceOnFoundation, playPlaceSound]);
+
   function handleTableauCardClick(col, cardIndex) {
     if (won) return;
     const card = game.tableau[col][cardIndex];
@@ -359,7 +468,10 @@ export default function SolitaireGame() {
                     onClick={() => handleFoundationClick(f)}
                   />
                 ) : (
-                  <EmptySlot onClick={() => handleFoundationClick(f)}>
+                  <EmptySlot 
+                    onClick={() => handleFoundationClick(f)} 
+                    data-foundation-slot={f}
+                  >
                     <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.6)' }}>A</span>
                   </EmptySlot>
                 )}
@@ -373,7 +485,11 @@ export default function SolitaireGame() {
           {game.tableau.map((column, col) => (
             <div key={col} className="flex flex-col items-center" style={{ width: 'var(--card-w)' }}>
               {column.length === 0 ? (
-                <EmptySlot onClick={() => handleTableauColumnClick(col)} />
+                <EmptySlot 
+                  onClick={() => handleTableauColumnClick(col)} 
+                  className="data-tableau-slot"
+                  data-tableau-slot={col}
+                />
               ) : (
                 column.map((card, i) => (
                   <SolitaireCard
@@ -386,6 +502,11 @@ export default function SolitaireGame() {
                       i === column.length - 1 && card.faceUp && autoMoveToFoundation({ type: 'tableau', col })
                     }
                     style={topCardStyle(column[i - 1]?.faceUp, i)}
+                    dragEnabled={card.faceUp && i === column.length - 1}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    index={i}
+                    columnIndex={col}
                   />
                 ))
               )}

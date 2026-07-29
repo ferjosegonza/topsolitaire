@@ -20,6 +20,10 @@
 - [x] Efecto de victoria
   - Sonido `win.mp3` al completar el juego
   - Detectado automáticamente por `isWon(game)`
+- [x] Drag & Drop de cartas
+  - Arrastrar cartas con el mouse ✅
+  - Feedback visual durante el arrastre ✅
+  - Soltar en destino válido ✅
 
 ## 🔄 EN PROGRESO
 - [ ] Sistema de efectos visuales
@@ -28,10 +32,6 @@
   - Efecto de aterrizaje visual
   - Efecto de reparto visual
   - Efecto de victoria visual (confeti, etc.)
-- [ ] Drag & Drop de cartas
-  - Arrastrar cartas con el mouse
-  - Feedback visual durante el arrastre
-  - Soltar en destino válido
 
 ## 📝 PENDIENTE
 - [ ] Auto-move al hacer clic (doble clic ya funciona)
@@ -47,18 +47,25 @@
   - Animaciones fluidas
   - Memoria y renders
 
-## 🧪 TESTS
-- [x] Configuración de tests (vitest + jsdom)
-- [x] Tests de lógica del juego (14 tests)
-  - createDeck, shuffle, deal
-  - canPlaceOnTableau, canPlaceOnFoundation
-  - isWon, isRed, constantes
-- [x] Tests de sonidos (useSoundEffects)
-  - Mute/Unmute toggle
-  - Estado inicial
-- [ ] Tests de Drag & Drop
-- [ ] Tests de efectos visuales
-- [ ] Tests de niveles de dificultad
+## 🧪 TESTS - ESTADO ACTUAL
+
+### Tests que existen y pasan ✅
+
+| Archivo | Tests | Estado |
+|---------|-------|--------|
+| `setup.test.js` | 3 | ✅ Pasando |
+| `solitaire.test.jsx` | 11 | ✅ Pasando |
+| `sound.test.jsx` | 1 | ✅ Pasando |
+| `drag-drop.test.jsx` | 11 | ✅ Pasando |
+| `ui.test.jsx` | 17 | ✅ Pasando |
+| **TOTAL** | **43** | ✅ **Todos pasando** |
+
+### Tests pendientes (requieren implementación primero)
+
+| Archivo | Tests pendientes | Dependencia |
+|---------|------------------|-------------|
+| `visual-effects.test.jsx` | Efectos visuales | Implementar efectos visuales primero |
+| `difficulty.test.jsx` | Niveles de dificultad | Implementar niveles de dificultad primero |
 
 ## 🐛 BUGS CONOCIDOS
 - [ ] Ninguno reportado
@@ -77,11 +84,14 @@
 
 ## 📂 ARCHIVOS CREADOS/MODIFICADOS
 - `src/hooks/useSoundEffects.js` - Hook de sonidos (CREADO)
-- `src/components/solitaire/SolitaireGame.jsx` - Integración de sonidos (MODIFICADO)
+- `src/components/solitaire/SolitaireGame.jsx` - Integración de sonidos y Drag & Drop (MODIFICADO)
+- `src/components/solitaire/SolitaireCard.jsx` - Drag & Drop (MODIFICADO)
 - `public/sounds/*.mp3` - Archivos de audio (AGREGADOS)
 - `vitest.config.js` - Configuración de tests (CREADO)
 - `vitest.setup.js` - Setup de tests (CREADO)
 - `__tests__/setup.test.js` - Tests de entorno (CREADO)
-- `__tests__/solitaire.test.jsx` - Tests de lógica (CREADO)
+- `__tests__/solitaire.test.jsx` - Tests de lógica (CREADO) - **11 tests**
 - `__tests__/sound.test.jsx` - Tests de sonidos (CREADO)
+- `__tests__/drag-drop.test.jsx` - Tests de Drag & Drop (CREADO)
+- `__tests__/ui.test.jsx` - Tests de UI (CREADO)
 - `README.md` - Documentación actualizada (MODIFICADO)
