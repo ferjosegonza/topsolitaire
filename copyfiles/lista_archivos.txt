@@ -75,6 +75,7 @@ D:\xampp\htdocs\topsolitaire\vite.config.js
 D:\xampp\htdocs\topsolitaire\src\pages\Contact.jsx
 D:\xampp\htdocs\topsolitaire\TODO.md
 D:\xampp\htdocs\topsolitaire\src\hooks\useSoundEffects.js
+D:\xampp\htdocs\topsolitaire\__tests__\auto-move.test.jsx
 D:\xampp\htdocs\topsolitaire\__tests__\drag-drop.test.jsx
 D:\xampp\htdocs\topsolitaire\__tests__\setup.test.js
 D:\xampp\htdocs\topsolitaire\__tests__\solitaire.test.jsx
