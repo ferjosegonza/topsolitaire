@@ -1,65 +1,35 @@
-import useSound from 'use-sound';
-import { useCallback, useState } from 'react';
-
-const SOUND_BASE_PATH = '/sounds/';
-
-export function useSoundEffects() {
-  const [isMuted, setIsMuted] = useState(false);
-
-  // Cargar todos los sonidos
-  const [playFlip] = useSound(`${SOUND_BASE_PATH}card-flip.mp3`, { 
-    volume: 0.3,
-  });
-  
-  const [playPlace] = useSound(`${SOUND_BASE_PATH}card-place.mp3`, { 
-    volume: 0.25,
-  });
-  
-  const [playDeal] = useSound(`${SOUND_BASE_PATH}deal.mp3`, { 
-    volume: 0.2,
-  });
-  
-  const [playWin] = useSound(`${SOUND_BASE_PATH}win.mp3`, { 
-    volume: 0.4,
-  });
-  
-  const [playClick] = useSound(`${SOUND_BASE_PATH}click.mp3`, { 
-    volume: 0.15,
-  });
-
-  // Función para alternar mute
-  const toggleMute = useCallback(() => {
-    setIsMuted(prev => !prev);
-  }, []);
-
-  // Funciones para reproducir sonidos (con verificación de mute)
-  const playFlipSound = useCallback(() => {
-    if (!isMuted) playFlip();
-  }, [isMuted, playFlip]);
-
-  const playPlaceSound = useCallback(() => {
-    if (!isMuted) playPlace();
-  }, [isMuted, playPlace]);
-
-  const playDealSound = useCallback(() => {
-    if (!isMuted) playDeal();
-  }, [isMuted, playDeal]);
-
-  const playWinSound = useCallback(() => {
-    if (!isMuted) playWin();
-  }, [isMuted, playWin]);
-
-  const playClickSound = useCallback(() => {
-    if (!isMuted) playClick();
-  }, [isMuted, playClick]);
-
-  return {
-    isMuted,
-    toggleMute,
-    playFlipSound,
-    playPlaceSound,
-    playDealSound,
-    playWinSound,
-    playClickSound,
-  };
-}
+tengo unas dudas:
+me dijiste que en SolitaireGame.jsx haga modificaciones:
+que la línea:
+<EmptySlot onClick={() => handleTableauColumnClick(col)} />
+la reemplace con:
+<EmptySlot 
+  onClick={() => handleTableauColumnClick(col)} 
+  data-tableau-slot={col}
+/>
+sin embargo ya me habías dicho que en esa línea reemplazara con:
+<EmptySlot 
+                  onClick={() => handleTableauColumnClick(col)} 
+                  className="data-tableau-slot"
+                  data-tableau-slot={col}
+                />
+entonces está bien como está o no? lo más correcto es lo último que dijiste o está bien así?
+por otro lado me dijiste que busque:
+<EmptySlot onClick={() => handleFoundationClick(f)}>
+  <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.6)' }}>A</span>
+</EmptySlot>
+y lo reemplace con:
+<EmptySlot 
+  onClick={() => handleFoundationClick(f)}
+  data-foundation-slot={f}
+>
+  <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.6)' }}>A</span>
+</EmptySlot>
+sin embargo ya me habías dicho que en esa línea reemplazara con:
+<EmptySlot 
+                    onClick={() => handleFoundationClick(f)} 
+                    data-foundation-slot={f}
+                  >
+                    <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.6)' }}>A</span>
+                  </EmptySlot>
+entonces está bien como está o no? lo más correcto es lo último que dijiste o está bien así?
