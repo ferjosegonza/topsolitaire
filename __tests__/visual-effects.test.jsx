@@ -314,14 +314,18 @@ describe('Accesibilidad de efectos visuales', () => {
     
     render(<SolitaireGame />);
     
+    // Esperar a que el overlay de victoria se renderice
     await waitFor(() => {
-      const overlay = document.querySelector('.backdrop-blur-sm');
-      expect(overlay).toBeDefined();
-      
-      // Verificar que el botón "Play Again" es accesible
-      const playAgainBtn = screen.getByText(/Play Again/i).closest('button');
-      expect(playAgainBtn).toBeDefined();
+      expect(screen.getByText(/You Won!/i)).toBeDefined();
     });
+    
+    // Verificar overlay y botón
+    const overlay = document.querySelector('.backdrop-blur-sm');
+    expect(overlay).toBeDefined();
+    
+    // Usar getByText directamente con el botón
+    const playAgainBtn = screen.getByText(/Play Again/i).closest('button');
+    expect(playAgainBtn).toBeDefined();
     
     mockIsWon.mockRestore();
   });

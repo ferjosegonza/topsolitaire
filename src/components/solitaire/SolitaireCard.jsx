@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { RANK_LABELS, SUIT_SYMBOLS, isRed } from '@/lib/solitaire';
 
-export default function SolitaireCard({ 
-  card, 
-  faceDown, 
-  selected, 
-  onClick, 
-  onDoubleClick, 
+export default function SolitaireCard({
+  card,
+  faceDown,
+  selected,
+  onClick,
+  onDoubleClick,
   style,
   dragEnabled = false,
   onDragStart,
@@ -18,8 +18,9 @@ export default function SolitaireCard({
   isDealing = false,
   isLanding = false,
   dealDelay = 0,
+  isFlipping = false, // ✅ Recibido desde props, NO usar useState
 }) {
-  const [isFlipping, setIsFlipping] = useState(false);
+  // ✅ ELIMINAR: const [isFlipping, setIsFlipping] = useState(false);
 
   // Si la carta está volteándose, mostrar animación
   if (isFlipping) {
@@ -30,7 +31,6 @@ export default function SolitaireCard({
         initial={{ rotateY: 0, scale: 1 }}
         animate={{ rotateY: 180, scale: 1 }}
         transition={{ duration: 0.4, ease: 'easeInOut' }}
-        onAnimationComplete={() => setIsFlipping(false)}
       />
     );
   }
@@ -46,9 +46,9 @@ export default function SolitaireCard({
         whileHover={{ scale: 1.03, y: -2 }}
         transition={{ duration: 0.15 }}
         initial={isDealing ? { opacity: 0, y: -30, rotate: 5 } : {}}
-        animate={isDealing ? { 
-          opacity: 1, 
-          y: 0, 
+        animate={isDealing ? {
+          opacity: 1,
+          y: 0,
           rotate: 0,
           transition: { delay: dealDelay, duration: 0.4, ease: 'easeOut' }
         } : {}}
@@ -60,7 +60,6 @@ export default function SolitaireCard({
   const rankLabel = RANK_LABELS[card.rank];
   const symbol = SUIT_SYMBOLS[card.suit];
 
-  // Configurar drag
   const dragProps = dragEnabled ? {
     drag: true,
     dragMomentum: false,
@@ -92,16 +91,15 @@ export default function SolitaireCard({
       layout
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       initial={isDealing ? { opacity: 0, y: -40, rotate: 8, scale: 0.9 } : {}}
-      animate={isDealing ? { 
-        opacity: 1, 
-        y: 0, 
-        rotate: 0, 
+      animate={isDealing ? {
+        opacity: 1,
+        y: 0,
+        rotate: 0,
         scale: 1,
         transition: { delay: dealDelay, duration: 0.45, ease: 'easeOut' }
       } : {}}
       {...dragProps}
     >
-      {/* Efecto de brillo para cartas que aterrizan */}
       {isLanding && (
         <div className="absolute inset-0 rounded-md overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[card-shine_0.8s_ease-in-out]" />
