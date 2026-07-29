@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
           <p>Our service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children.</p>
 
           <h2 className="text-lg font-semibold text-slate-900 mt-4">6. Changes to This Policy</h2>
-          <p>We may update this Privacy Policy from time to time. You shuold visit the website from time to time for any changes in the new Privacy Policy on this page.</p>
+          <p>We may update this Privacy Policy from time to time. You should visit the website from time to time for any changes in the new Privacy Policy on this page.</p>
 
           <h2 className="text-lg font-semibold text-slate-900 mt-4">7. Contact Us</h2>
           <p>If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:support@topsolitaire.online" className="text-slate-900 underline">support@topsolitaire.online</a></p>
