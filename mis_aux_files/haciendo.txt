@@ -18,5 +18,18 @@ Quiero que añadas estos comportamientos:
 
 
 FALTA HACER:
+- un error actual es que si se quita una carta de una columna, la carta que estaba debajo (y estaba boca abajo) debería darse vuelta automáticamente, antes creo que pasaba y ahora no, revisar y corregir.
+- comportamiento a corregir: cuando se arrastra una carta el usuario puede dejarla apoyada a la mitad de la carta de abajo lo cual dificulta la uniformidad estética del juego, en vez de eso el comportamiento esperado al arrastrar y soltar la carta debería ser que se acomode sobre la otra carta de la misma manera y que se acomoda cuando se hace clic sobre la carta y clic sobre la carta destino de la columna o sea con la misma forma de ubicación y distancia con respecto a la carta de arriba, se entiende? dime lo que entiendes.
+- otro comportamiento que quiero que exista es que si se hace clic en la carta (o si el usuario la toca en caso que sea un celular, dime si eso afecta en algo el código o no) quiero que la carta, si tiene algún lugar donde ir (por ejemplo es un 10 rojo y hay una J negra) se vaya se vaya a esa carta automáticamente viajando con un movimiento suave (si ya existe ese efecto visual de movimiento suave pero rápido, usalo), si hay más de una opción (por ejemplo un 10 rojo le hace clic pero hay dos J negra) usa tu criterio para elegir cuál debería ser, y explicamelo.
 - verificar si los tests testean todo lo que pueda ser testeable
 - verificar si se testea todo lo que se deba testear relacionado a los audios
+- un amigo me dijo que le parece haber encontrado los siguientes errores, dime si esta en lo cierto o se equivocó, si están relacionados a lo que te dije más arriba o no, y si se debe solucionar cómo solucionarlo:
+```
+SolitaireGame.jsx sí está en disco pero no llegó a mi contexto en texto (es grande, 704 líneas). Lo leo directamente.Ya vi el `SolitaireGame.jsx` completo (no había llegado a mi contexto por su tamaño, lo leí directo del archivo). Encontré **2 bugs reales en la implementación de efectos visuales** que hacen que parte de lo que ya programaste no se vea en pantalla, más el tema de los anuncios duplicados que ya habíamos detectado. Vamos en orden.
+
+## 🔴 Bug A — el efecto de "volteo" (flip) nunca se dispara
+
+En `SolitaireGame.jsx` el estado `flippingCard` se setea correctamente cuando volteás una carta del tableau o cuando sacás una del stock. El problema es que **nunca se lo pasás como prop a `SolitaireCard`** — ninguna de las 3 instancias (`stock`, `waste`, `tableau`) recibe `isFlipping`.
+
+Y en `SolitaireCard.jsx` el problema es doble: la animación de volteo depende de un estado local `isFlipping` (`useState`) que **nadie pone en `true` nunca** — el único lugar que lo seteaba (`onAnimationComplete`) solo lo pone en `false`. Es código muerto: esa rama del componente jamás se ejecuta.
+```

@@ -224,6 +224,7 @@ export default function SolitaireGame() {
         const col = tableau[selection.col];
         if (col.length && !col[col.length - 1].faceUp) {
           col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
+          playFlipSound();
         }
       } else if (selection.source === 'waste') {
         moving = [waste.pop()];
@@ -379,7 +380,6 @@ export default function SolitaireGame() {
     
     // Si se soltó sobre una columna válida
     if (targetCol >= 0 && targetCol !== colIndex) {
-      // Intentar mover a tableau
       const cards = getSelectedCards(
         { source: 'tableau', col: colIndex, cardIndex },
         game
@@ -392,19 +392,18 @@ export default function SolitaireGame() {
           if (col.length && !col[col.length - 1].faceUp) {
             col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
           }
+          // ✅ Las cartas se insertan al final de la columna (posición correcta)
           tableau[targetCol].push(...moving);
-          
-          // Efecto de aterrizaje
-          const movedCardId = moving[0]?.id;
-          if (movedCardId) {
-            setTimeout(() => setLandingCard(movedCardId), 50);
-            setTimeout(() => setLandingCard(null), 500);
-          }
-          
           return { ...g, tableau };
         });
         setMoves((m) => m + 1);
         playPlaceSound();
+        // Efecto de aterrizaje
+        const movedCardId = cards[0]?.id;
+        if (movedCardId) {
+          setTimeout(() => setLandingCard(movedCardId), 50);
+          setTimeout(() => setLandingCard(null), 500);
+        }
       }
     }
     
@@ -445,20 +444,68 @@ export default function SolitaireGame() {
     if (won) return;
     const card = game.tableau[col][cardIndex];
     if (!card.faceUp) {
-      // Flip the last face-down card of a column when tapped.
       if (cardIndex === game.tableau[col].length - 1) {
         setGame((g) => {
           const tableau = g.tableau.map((c) => [...c]);
           tableau[col][cardIndex] = { ...tableau[col][cardIndex], faceUp: true };
           return { ...g, tableau };
         });
-        // Efecto de volteo
         setFlippingCard(card.id);
         setTimeout(() => setFlippingCard(null), 400);
         playFlipSound();
       }
       return;
     }
+
+    // ✅ AUTO-MOVE: Intentar mover a foundation
+    for (let f = 0; f < 4; f++) {
+      if (canPlaceOnFoundation(card, game.foundations[f])) {
+        // Mover automáticamente a foundation
+        setGame((g) => {
+          const tableau = g.tableau.map((c) => [...c]);
+          const foundations = g.foundations.map((ff) => [...ff]);
+          const removed = tableau[col].pop();
+          if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+            tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+          }
+          foundations[f].push(removed);
+          return { ...g, tableau, foundations };
+        });
+        setMoves((m) => m + 1);
+        setSelection(null);
+        playPlaceSound();
+        // Efecto de aterrizaje
+        setTimeout(() => setLandingCard(card.id), 50);
+        setTimeout(() => setLandingCard(null), 500);
+        return;
+      }
+    }
+
+    // ✅ AUTO-MOVE: Intentar mover a tableau (si hay una columna válida)
+    // Buscar una columna destino válida
+    for (let destCol = 0; destCol < 7; destCol++) {
+      if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
+        // Mover automáticamente a tableau
+        setGame((g) => {
+          const tableau = g.tableau.map((c) => [...c]);
+          const removed = tableau[col].pop();
+          if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+            tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+          }
+          tableau[destCol].push(removed);
+          return { ...g, tableau };
+        });
+        setMoves((m) => m + 1);
+        setSelection(null);
+        playPlaceSound();
+        // Efecto de aterrizaje
+        setTimeout(() => setLandingCard(card.id), 50);
+        setTimeout(() => setLandingCard(null), 500);
+        return;
+      }
+    }
+
+    // Si no se pudo mover automáticamente, continuar con la selección normal
     if (selection) {
       if (selection.source === 'tableau' && selection.col === col) {
         setSelection({ source: 'tableau', col, cardIndex });
@@ -637,6 +684,7 @@ export default function SolitaireGame() {
                     key={card.id}
                     card={card}
                     faceDown={!card.faceUp}
+                    isFlipping={flippingCard === card.id}
                     selected={isSelected(col, i)}
                     onClick={() => handleTableauCardClick(col, i)}
                     onDoubleClick={() =>
