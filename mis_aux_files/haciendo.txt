@@ -15,3 +15,8 @@ Quiero que añadas estos comportamientos:
 3.9 dale 3 niveles de dificultad.
 4. quiero que todo lo que te pedí lo pongas en orden de prioridad según tu criterio y vayas haciendo de una cosa por vez y siempre actualizando un archivo TODO.md
 5. antes de efectuar todos estos cambios quiero que crees una batería de todo tipo de tests automatizados que yo pueda correr después de aplicar cada uno de los cambios que te pido así verifico que absolutamente todo siga funcionando correctamente en el sitio web, ya sea funcionamiento del juego, links, referencias, enlaces y todo lo que se te ocurra que debiera ser testeado para garantizar que todo siga funcionando correctamente en todo el sitio web.
+
+
+FALTA HACER:
+- verificar si los tests testean todo lo que pueda ser testeable
+- verificar si se testea todo lo que se deba testear relacionado a los audios

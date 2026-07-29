@@ -57,6 +57,12 @@
 | `drag-drop.test.jsx` | 11 | ✅ Pasando |
 | `ui.test.jsx` | 17 | ✅ Pasando |
 | **TOTAL** | **43** | ✅ **Todos pasando** |
+## 🧪 TESTS - ESTADO ACTUAL
+
+## a ver estos tests...
+| `auto-move.test.jsx` | 4 | Pasando ? |
+| `visual-effects.test.jsx` | 11 | Pasando ? |
+| **TOTAL** | **58** |  |
 
 ### Tests pendientes (requieren implementación primero)
 

@@ -1,30 +1,3 @@
-# TODO - Mejoras del Solitario
-
-## ✅ COMPLETADO
-- [x] Sistema de sonidos (useSound)
-- [x] Botón Mute/Unmute
-- [x] Efecto de voltear carta + sonido
-- [x] Efecto de aterrizaje + sonido
-- [x] Efecto de reparto al inicio
-- [x] Efecto de victoria
-- [x] Drag & Drop de cartas
-- [x] **Sistema de efectos visuales**
-  - [x] Efecto de voltear carta visual (3D flip)
-  - [x] Efecto de aterrizaje visual (bounce)
-  - [x] Efecto de reparto visual (cartas volando)
-  - [x] Efecto de victoria visual (confeti con canvas-confetti)
-
-## 🔄 EN PROGRESO
-- [ ] Auto-move al hacer clic (doble clic ya funciona)
-
-## 📝 PENDIENTE
-- [ ] 3 niveles de dificultad
-  - Fácil: más tiempo, sugerencias
-  - Normal: estándar
-  - Difícil: menos tiempo, penalizaciones
-- [ ] Verificar funcionamiento en móvil
-- [ ] Verificar rendimiento
-
 ## 🧪 TESTS - ESTADO ACTUAL
 
 ### Tests que existen y pasan ✅
@@ -36,33 +9,6 @@
 | `sound.test.jsx` | 1 | ✅ Pasando |
 | `drag-drop.test.jsx` | 11 | ✅ Pasando |
 | `ui.test.jsx` | 17 | ✅ Pasando |
-| **TOTAL** | **43** | ✅ **Todos pasando** |
-
-### Tests pendientes (requieren implementación primero)
-
-| Archivo | Tests pendientes | Dependencia |
-|---------|------------------|-------------|
-| `visual-effects.test.jsx` | Efectos visuales | ✅ Implementado - Pendiente tests |
-| `difficulty.test.jsx` | Niveles de dificultad | Implementar niveles de dificultad primero |
-
-## 🐛 BUGS CONOCIDOS
-- [ ] Ninguno reportado
-
-## 📝 NOTAS
-- ✅ `use-sound` instalado y configurado
-- ✅ `framer-motion` ya está instalado en el proyecto
-- ✅ `canvas-confetti` instalado y configurado para victoria
-- ✅ Archivos de sonido en `public/sounds/`:
-  - `card-flip.mp3` - Voltear carta
-  - `card-place.mp3` - Colocar carta
-  - `deal.mp3` - Repartir
-  - `win.mp3` - Victoria
-  - `click.mp3` - Clic (opcional)
-
-## 📂 ARCHIVOS CREADOS/MODIFICADOS
-- `src/hooks/useSoundEffects.js` - Hook de sonidos (CREADO)
-- `src/components/solitaire/SolitaireGame.jsx` - Efectos visuales (MODIFICADO)
-- `src/components/solitaire/SolitaireCard.jsx` - Efectos visuales (MODIFICADO)
-- `src/index.css` - Animaciones CSS (MODIFICADO)
-- `public/sounds/*.mp3` - Archivos de audio (AGREGADOS)
-- `__tests__/*.test.jsx` - Tests (CREADOS)
+| `auto-move.test.jsx` | 4 | ✅ Pasando |
+| `visual-effects.test.jsx` | 11 | ✅ Pasando |
+| **TOTAL** | **58** | ✅ **Todos pasando** |
