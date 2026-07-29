@@ -24,22 +24,27 @@
   - Arrastrar cartas con el mouse ✅
   - Feedback visual durante el arrastre ✅
   - Soltar en destino válido ✅
-  
-- [x] **Sistema de efectos visuales**
+- [x] Sistema de efectos visuales
   - [x] Efecto de voltear carta visual (3D flip)
   - [x] Efecto de aterrizaje visual (bounce)
   - [x] Efecto de reparto visual (cartas volando)
   - [x] Efecto de victoria visual (confeti con canvas-confetti)
+- [x] Auto-move al hacer clic
+  - Un clic mueve automáticamente a foundation si es posible
+  - Funciona desde tableau y waste
+- [x] Tests de Auto-move
+  - 6 tests pasando ✅
 
 ## 🔄 EN PROGRESO
-- [ ] Auto-move al hacer clic (doble clic ya funciona)
-
-## 📝 PENDIENTE
 - [ ] 3 niveles de dificultad
   - Fácil: más tiempo, sugerencias
   - Normal: estándar
   - Difícil: menos tiempo, penalizaciones
+
+## 📝 PENDIENTE
 - [ ] Verificar funcionamiento en móvil
+  - Touch events para drag & drop
+  - Responsive adjustments
 - [ ] Verificar rendimiento
   - Carga de sonidos
   - Animaciones fluidas
@@ -56,13 +61,14 @@
 | `sound.test.jsx` | 1 | ✅ Pasando |
 | `drag-drop.test.jsx` | 11 | ✅ Pasando |
 | `ui.test.jsx` | 17 | ✅ Pasando |
-| **TOTAL** | **43** | ✅ **Todos pasando** |
+| `auto-move.test.jsx` | 6 | ✅ Pasando |
+| `visual-effects.test.jsx` | 17 | ✅ Pasando |
+| **TOTAL** | **66** | ✅ **Todos pasando** |
 
 ### Tests pendientes (requieren implementación primero)
 
 | Archivo | Tests pendientes | Dependencia |
 |---------|------------------|-------------|
-| `visual-effects.test.jsx` | Efectos visuales | ✅ Implementado - Pendiente tests |
 | `difficulty.test.jsx` | Niveles de dificultad | Implementar niveles de dificultad primero |
 
 ## 🐛 BUGS CONOCIDOS
@@ -81,8 +87,15 @@
 
 ## 📂 ARCHIVOS CREADOS/MODIFICADOS
 - `src/hooks/useSoundEffects.js` - Hook de sonidos (CREADO)
-- `src/components/solitaire/SolitaireGame.jsx` - Efectos visuales (MODIFICADO)
+- `src/components/solitaire/SolitaireGame.jsx` - Efectos visuales y Auto-move (MODIFICADO)
 - `src/components/solitaire/SolitaireCard.jsx` - Efectos visuales (MODIFICADO)
 - `src/index.css` - Animaciones CSS (MODIFICADO)
 - `public/sounds/*.mp3` - Archivos de audio (AGREGADOS)
-- `__tests__/*.test.jsx` - Tests (CREADOS)
+- `__tests__/setup.test.js` - Tests de entorno (CREADO)
+- `__tests__/solitaire.test.jsx` - Tests de lógica (CREADO)
+- `__tests__/sound.test.jsx` - Tests de sonidos (CREADO)
+- `__tests__/drag-drop.test.jsx` - Tests de Drag & Drop (CREADO)
+- `__tests__/ui.test.jsx` - Tests de UI (CREADO)
+- `__tests__/auto-move.test.jsx` - Tests de Auto-move (CREADO)
+- `__tests__/visual-effects.test.jsx` - Tests de efectos visuales (CREADO)
+- `README.md` - Documentación actualizada (MODIFICADO)
