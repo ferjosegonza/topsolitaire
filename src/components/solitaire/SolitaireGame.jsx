@@ -38,7 +38,6 @@ export default function SolitaireGame() {
   const [won, setWon] = useState(false);
   const timerRef = useRef(null);
 
-  // Efectos visuales
   const [dealingCards, setDealingCards] = useState([]);
   const [landingCard, setLandingCard] = useState(null);
   const [flippingCard, setFlippingCard] = useState(null);
@@ -53,15 +52,12 @@ export default function SolitaireGame() {
     playClickSound,
   } = useSoundEffects();
 
-  // Drag & Drop
   const [draggingCard, setDraggingCard] = useState(null);
   const [dragStartPos, setDragStartPos] = useState(null);
 
-  // Efecto de victoria con confeti
   const triggerVictoryConfetti = useCallback(() => {
     const duration = 3 * 1000;
     const end = Date.now() + duration;
-
     const colors = ['#065f46', '#10b981', '#34d399', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6'];
 
     (function frame() {
@@ -85,7 +81,6 @@ export default function SolitaireGame() {
       }
     })();
 
-    // Explosión final
     setTimeout(() => {
       confetti({
         particleCount: 100,
@@ -107,7 +102,6 @@ export default function SolitaireGame() {
       });
     }, 500);
 
-    // Confeti en forma de corazones
     setTimeout(() => {
       confetti({
         particleCount: 30,
@@ -119,7 +113,6 @@ export default function SolitaireGame() {
     }, 800);
   }, []);
 
-  // Timer
   useEffect(() => {
     if (won) {
       clearInterval(timerRef.current);
@@ -129,7 +122,6 @@ export default function SolitaireGame() {
     return () => clearInterval(timerRef.current);
   }, [won]);
 
-  // Win detection
   useEffect(() => {
     if (isWon(game)) {
       setWon(true);
@@ -147,7 +139,6 @@ export default function SolitaireGame() {
     setWon(false);
     playDealSound();
 
-    // Efecto de reparto: marcar cartas que se están repartiendo
     const allCards = [];
     newGameState.tableau.forEach((col, colIndex) => {
       col.forEach((card, rowIndex) => {
@@ -161,7 +152,6 @@ export default function SolitaireGame() {
     });
     setDealingCards(allCards);
 
-    // Limpiar estado de reparto después de la animación
     setTimeout(() => {
       setDealingCards([]);
     }, allCards.length * 0.08 + 600);
@@ -190,7 +180,6 @@ export default function SolitaireGame() {
     setGame((g) => {
       if (g.stock.length === 0) {
         if (g.waste.length === 0) return g;
-        // Marcar que se está reiniciando el stock
         setFlippingCard('stock-reset');
         setTimeout(() => setFlippingCard(null), 400);
         const newStock = [...g.waste].reverse().map((c) => ({ ...c, faceUp: false }));
@@ -234,13 +223,12 @@ export default function SolitaireGame() {
         movedCardId = moving[0]?.id;
       }
       tableau[destCol].push(...moving);
-      
-      // Marcar carta que aterrizó para efecto visual
+
       if (movedCardId) {
         setTimeout(() => setLandingCard(movedCardId), 50);
         setTimeout(() => setLandingCard(null), 500);
       }
-      
+
       return { ...g, tableau, waste, foundations };
     });
     setSelection(null);
@@ -274,12 +262,12 @@ export default function SolitaireGame() {
         return g;
       }
       foundations[destF].push(...moving);
-      
+
       if (movedCardId) {
         setTimeout(() => setLandingCard(movedCardId), 50);
         setTimeout(() => setLandingCard(null), 500);
       }
-      
+
       return { ...g, tableau, waste, foundations };
     });
     setSelection(null);
@@ -287,7 +275,6 @@ export default function SolitaireGame() {
     playPlaceSound();
   }
 
-  // Auto-send a card to a foundation (double-click / double-tap).
   function autoMoveToFoundation(source) {
     if (won) return;
     const g = game;
@@ -325,7 +312,7 @@ export default function SolitaireGame() {
         setMoves((m) => m + 1);
         setSelection(null);
         playPlaceSound();
-        
+
         if (cardId) {
           setTimeout(() => setLandingCard(cardId), 50);
           setTimeout(() => setLandingCard(null), 500);
@@ -335,30 +322,35 @@ export default function SolitaireGame() {
     }
   }
 
-  // Drag & Drop handlers
   const handleDragStart = useCallback((e, info, card, cardIndex, colIndex) => {
     if (won) return;
     if (!card.faceUp) return;
-    
+
+    // ✅ Si viene del waste (colIndex === -1)
+    if (colIndex === -1) {
+      setDraggingCard({ card, cardIndex: 0, colIndex: -1, source: 'waste' });
+      setDragStartPos({ x: e.clientX, y: e.clientY });
+      return;
+    }
+
     const column = game.tableau[colIndex];
     const lastFaceUpIndex = column.map((c, i) => c.faceUp ? i : -1).filter(i => i >= 0).pop() ?? -1;
-    
+
     if (cardIndex !== lastFaceUpIndex && cardIndex < column.length - 1) {
       const isLastFaceUp = column.slice(cardIndex).every(c => c.faceUp);
       if (!isLastFaceUp) return;
     }
-    
+
     setDraggingCard({ card, cardIndex, colIndex, source: 'tableau' });
     setDragStartPos({ x: e.clientX, y: e.clientY });
   }, [game.tableau, won]);
 
   const handleDragEnd = useCallback((e, info, card, cardIndex, colIndex) => {
     if (!draggingCard) return;
-    
+
     let targetCol = -1;
     let targetFoundation = -1;
-    
-    // Verificar si se soltó sobre una columna del tableau
+
     const tableauSlots = document.querySelectorAll('[data-tableau-slot]');
     tableauSlots.forEach((slot, i) => {
       const rect = slot.getBoundingClientRect();
@@ -367,8 +359,7 @@ export default function SolitaireGame() {
         targetCol = i;
       }
     });
-    
-    // Verificar si se soltó sobre una foundation
+
     const foundationSlots = document.querySelectorAll('[data-foundation-slot]');
     foundationSlots.forEach((slot, i) => {
       const rect = slot.getBoundingClientRect();
@@ -377,8 +368,46 @@ export default function SolitaireGame() {
         targetFoundation = i;
       }
     });
-    
-    // Si se soltó sobre una columna válida
+
+    // ✅ Si viene del waste
+    if (colIndex === -1) {
+      if (targetCol >= 0) {
+        const cardToMove = game.waste[game.waste.length - 1];
+        if (cardToMove && canPlaceOnTableau(cardToMove, game.tableau[targetCol])) {
+          setGame((g) => {
+            const tableau = g.tableau.map((c) => [...c]);
+            const waste = [...g.waste];
+            const moved = waste.pop();
+            tableau[targetCol].push(moved);
+            return { ...g, tableau, waste };
+          });
+          setMoves((m) => m + 1);
+          playPlaceSound();
+          setTimeout(() => setLandingCard(card.id), 50);
+          setTimeout(() => setLandingCard(null), 500);
+        }
+      } else if (targetFoundation >= 0) {
+        const cardToMove = game.waste[game.waste.length - 1];
+        if (cardToMove && canPlaceOnFoundation(cardToMove, game.foundations[targetFoundation])) {
+          setGame((g) => {
+            const foundations = g.foundations.map((f) => [...f]);
+            const waste = [...g.waste];
+            const moved = waste.pop();
+            foundations[targetFoundation].push(moved);
+            return { ...g, waste, foundations };
+          });
+          setMoves((m) => m + 1);
+          playPlaceSound();
+          setTimeout(() => setLandingCard(card.id), 50);
+          setTimeout(() => setLandingCard(null), 500);
+        }
+      }
+      setDraggingCard(null);
+      setDragStartPos(null);
+      return;
+    }
+
+    // ✅ Si viene del tableau
     if (targetCol >= 0 && targetCol !== colIndex) {
       const cards = getSelectedCards(
         { source: 'tableau', col: colIndex, cardIndex },
@@ -392,23 +421,18 @@ export default function SolitaireGame() {
           if (col.length && !col[col.length - 1].faceUp) {
             col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
           }
-          // ✅ Las cartas se insertan al final de la columna (posición correcta)
           tableau[targetCol].push(...moving);
           return { ...g, tableau };
         });
         setMoves((m) => m + 1);
         playPlaceSound();
-        // Efecto de aterrizaje
         const movedCardId = cards[0]?.id;
         if (movedCardId) {
           setTimeout(() => setLandingCard(movedCardId), 50);
           setTimeout(() => setLandingCard(null), 500);
         }
       }
-    }
-    
-    // Si se soltó sobre una foundation
-    if (targetFoundation >= 0) {
+    } else if (targetFoundation >= 0) {
       const cards = getSelectedCards(
         { source: 'tableau', col: colIndex, cardIndex },
         game
@@ -423,19 +447,17 @@ export default function SolitaireGame() {
             col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
           }
           foundations[targetFoundation].push(moving);
-          
           if (moving) {
             setTimeout(() => setLandingCard(moving.id), 50);
             setTimeout(() => setLandingCard(null), 500);
           }
-          
           return { ...g, tableau, foundations };
         });
         setMoves((m) => m + 1);
         playPlaceSound();
       }
     }
-    
+
     setDraggingCard(null);
     setDragStartPos(null);
   }, [draggingCard, game, getSelectedCards, playPlaceSound]);
@@ -443,6 +465,7 @@ export default function SolitaireGame() {
   function handleTableauCardClick(col, cardIndex) {
     if (won) return;
     const card = game.tableau[col][cardIndex];
+
     if (!card.faceUp) {
       if (cardIndex === game.tableau[col].length - 1) {
         setGame((g) => {
@@ -457,55 +480,85 @@ export default function SolitaireGame() {
       return;
     }
 
-    // ✅ AUTO-MOVE: Intentar mover a foundation
-    for (let f = 0; f < 4; f++) {
-      if (canPlaceOnFoundation(card, game.foundations[f])) {
-        // Mover automáticamente a foundation
-        setGame((g) => {
-          const tableau = g.tableau.map((c) => [...c]);
-          const foundations = g.foundations.map((ff) => [...ff]);
-          const removed = tableau[col].pop();
-          if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
-            tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
-          }
-          foundations[f].push(removed);
-          return { ...g, tableau, foundations };
-        });
-        setMoves((m) => m + 1);
-        setSelection(null);
-        playPlaceSound();
-        // Efecto de aterrizaje
-        setTimeout(() => setLandingCard(card.id), 50);
-        setTimeout(() => setLandingCard(null), 500);
-        return;
+    // ✅ Si hay selección y es de otra columna, limpiar selección primero
+    if (selection && selection.col !== col) {
+      setSelection(null);
+      setSelection({ source: 'tableau', col, cardIndex });
+      return;
+    }
+
+    // ✅ Si la carta seleccionada es la misma, deseleccionar
+    if (selection && selection.col === col && selection.cardIndex === cardIndex) {
+      setSelection(null);
+      return;
+    }
+
+    // ✅ Verificar si se puede mover el grupo completo
+    let isValidGroup = true;
+    for (let i = cardIndex; i < game.tableau[col].length - 1; i++) {
+      const current = game.tableau[col][i];
+      const next = game.tableau[col][i + 1];
+      if (!next.faceUp ||
+          isRed(current.suit) === isRed(next.suit) ||
+          current.rank !== next.rank + 1) {
+        isValidGroup = false;
+        break;
       }
     }
 
-    // ✅ AUTO-MOVE: Intentar mover a tableau (si hay una columna válida)
-    // Buscar una columna destino válida
-    for (let destCol = 0; destCol < 7; destCol++) {
-      if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
-        // Mover automáticamente a tableau
-        setGame((g) => {
-          const tableau = g.tableau.map((c) => [...c]);
-          const removed = tableau[col].pop();
-          if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
-            tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+    // ✅ Si el grupo es válido, intentar auto-move del grupo completo
+    if (isValidGroup) {
+      // Intentar auto-move a foundation solo si es una sola carta
+      if (cardIndex === game.tableau[col].length - 1) {
+        for (let f = 0; f < 4; f++) {
+          if (canPlaceOnFoundation(card, game.foundations[f])) {
+            setGame((g) => {
+              const tableau = g.tableau.map((c) => [...c]);
+              const foundations = g.foundations.map((ff) => [...ff]);
+              const removed = tableau[col].pop();
+              if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+                tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+              }
+              foundations[f].push(removed);
+              return { ...g, tableau, foundations };
+            });
+            setMoves((m) => m + 1);
+            setSelection(null);
+            playPlaceSound();
+            setTimeout(() => setLandingCard(card.id), 50);
+            setTimeout(() => setLandingCard(null), 500);
+            return;
           }
-          tableau[destCol].push(removed);
-          return { ...g, tableau };
-        });
-        setMoves((m) => m + 1);
-        setSelection(null);
-        playPlaceSound();
-        // Efecto de aterrizaje
-        setTimeout(() => setLandingCard(card.id), 50);
-        setTimeout(() => setLandingCard(null), 500);
-        return;
+        }
       }
+
+      // Intentar auto-move del grupo a tableau
+      for (let destCol = 0; destCol < 7; destCol++) {
+        if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
+          setGame((g) => {
+            const tableau = g.tableau.map((c) => [...c]);
+            const moving = tableau[col].splice(cardIndex);
+            if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+              tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+            }
+            tableau[destCol].push(...moving);
+            return { ...g, tableau };
+          });
+          setMoves((m) => m + 1);
+          setSelection(null);
+          playPlaceSound();
+          setTimeout(() => setLandingCard(card.id), 50);
+          setTimeout(() => setLandingCard(null), 500);
+          return;
+        }
+      }
+
+      // Si no hay auto-move, seleccionar el grupo
+      setSelection({ source: 'tableau', col, cardIndex });
+      return;
     }
 
-    // Si no se pudo mover automáticamente, continuar con la selección normal
+    // Si no es un grupo válido, comportamiento normal
     if (selection) {
       if (selection.source === 'tableau' && selection.col === col) {
         setSelection({ source: 'tableau', col, cardIndex });
@@ -556,7 +609,6 @@ export default function SolitaireGame() {
     marginTop: i === 0 ? 0 : prevFaceUp ? 'calc(var(--card-w) * -1.0)' : 'calc(var(--card-w) * -1.2)',
   });
 
-  // Verificar si una carta está en estado de reparto
   const isDealingCard = (colIndex, rowIndex) => {
     return dealingCards.some(
       d => d.colIndex === colIndex && d.rowIndex === rowIndex
@@ -570,21 +622,24 @@ export default function SolitaireGame() {
     return found ? found.delay : 0;
   };
 
+  // Función isRed para usar en handleTableauCardClick
+  const isRed = (suit) => {
+    return suit === 'hearts' || suit === 'diamonds';
+  };
+
   return (
     <div style={CARD_VARS} className="w-full">
-      {/* Status bar */}
       <div className="flex items-center justify-between mb-3 text-emerald-50/90 text-sm">
         <div className="flex gap-4">
           <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
         </div>
         <div className="flex gap-2">
-          {/* Botón Mute/Unmute */}
           <button
             onClick={toggleMute}
             className={`rounded-2xl text-white font-bold transition-all duration-200 flex items-center gap-4 min-h-[64px] text-xl shadow-xl ${
-              isMuted 
-                ? 'bg-red-600/60 hover:bg-red-600/80 border-2 border-red-400/60' 
+              isMuted
+                ? 'bg-red-600/60 hover:bg-red-600/80 border-2 border-red-400/60'
                 : 'bg-emerald-600/60 hover:bg-emerald-600/80 border-2 border-emerald-400/60'
             }`}
             aria-label={isMuted ? "Activar sonido" : "Silenciar sonido"}
@@ -592,7 +647,6 @@ export default function SolitaireGame() {
             <span className="text-5xl">{isMuted ? '🔇' : '🔊'}</span>
           </button>
 
-          {/* Botón New Game */}
           <button
             onClick={newGame}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-lg transition-all duration-200 flex items-center gap-2 min-h-[56px] min-w-[140px] shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
@@ -603,15 +657,12 @@ export default function SolitaireGame() {
         </div>
       </div>
 
-      {/* Board */}
       <div className="relative rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-900 p-2 sm:p-4 shadow-xl">
-        {/* Top row: stock, waste, foundations */}
         <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-3">
-          {/* Stock */}
           <div>
             {game.stock.length > 0 ? (
-              <SolitaireCard 
-                faceDown 
+              <SolitaireCard
+                faceDown
                 onClick={handleStockClick}
                 isDealing={false}
               />
@@ -621,7 +672,6 @@ export default function SolitaireGame() {
               </EmptySlot>
             )}
           </div>
-          {/* Waste */}
           <div>
             {game.waste.length > 0 ? (
               <SolitaireCard
@@ -631,13 +681,17 @@ export default function SolitaireGame() {
                 onDoubleClick={() => autoMoveToFoundation({ type: 'waste' })}
                 isLanding={landingCard === game.waste[game.waste.length - 1]?.id}
                 isDealing={false}
+                dragEnabled={true}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+                index={0}
+                columnIndex={-1}
               />
             ) : (
               <EmptySlot />
             )}
           </div>
           <div />
-          {/* Foundations */}
           {[0, 1, 2, 3].map((f) => {
             const pile = game.foundations[f];
             const sel = !!selection && selection.source === 'foundation' && selection.fIndex === f;
@@ -653,8 +707,8 @@ export default function SolitaireGame() {
                     isDealing={false}
                   />
                 ) : (
-                  <EmptySlot 
-                    onClick={() => handleFoundationClick(f)} 
+                  <EmptySlot
+                    onClick={() => handleFoundationClick(f)}
                     data-foundation-slot={f}
                   >
                     <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.6)' }}>A</span>
@@ -665,13 +719,12 @@ export default function SolitaireGame() {
           })}
         </div>
 
-        {/* Tableau */}
         <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {game.tableau.map((column, col) => (
             <div key={col} className="flex flex-col items-center" style={{ width: 'var(--card-w)' }}>
               {column.length === 0 ? (
-                <EmptySlot 
-                  onClick={() => handleTableauColumnClick(col)} 
+                <EmptySlot
+                  onClick={() => handleTableauColumnClick(col)}
                   className="data-tableau-slot"
                   data-tableau-slot={col}
                 />
@@ -680,26 +733,26 @@ export default function SolitaireGame() {
                   const isDealing = isDealingCard(col, i);
                   const delay = getDealDelay(col, i);
                   return (
-                  <SolitaireCard
-                    key={card.id}
-                    card={card}
-                    faceDown={!card.faceUp}
-                    isFlipping={flippingCard === card.id}
-                    selected={isSelected(col, i)}
-                    onClick={() => handleTableauCardClick(col, i)}
-                    onDoubleClick={() =>
-                      i === column.length - 1 && card.faceUp && autoMoveToFoundation({ type: 'tableau', col })
-                    }
-                    style={topCardStyle(column[i - 1]?.faceUp, i)}
-                    dragEnabled={card.faceUp && i === column.length - 1}
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                    index={i}
-                    columnIndex={col}
+                    <SolitaireCard
+                      key={card.id}
+                      card={card}
+                      faceDown={!card.faceUp}
+                      isFlipping={flippingCard === card.id}
+                      selected={isSelected(col, i)}
+                      onClick={() => handleTableauCardClick(col, i)}
+                      onDoubleClick={() =>
+                        i === column.length - 1 && card.faceUp && autoMoveToFoundation({ type: 'tableau', col })
+                      }
+                      style={topCardStyle(column[i - 1]?.faceUp, i)}
+                      dragEnabled={card.faceUp}
+                      onDragStart={handleDragStart}
+                      onDragEnd={handleDragEnd}
+                      index={i}
+                      columnIndex={col}
                       isDealing={isDealing}
                       isLanding={landingCard === card.id && !isDealing}
                       dealDelay={delay}
-                  />
+                    />
                   );
                 })
               )}
@@ -707,9 +760,8 @@ export default function SolitaireGame() {
           ))}
         </div>
 
-        {/* Win overlay */}
         <AnimatePresence>
-        {won && (
+          {won && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -724,20 +776,19 @@ export default function SolitaireGame() {
               >
                 🎉 You Won!
               </motion.h2>
-            <p className="text-emerald-100 mb-1">Solved in {moves} moves</p>
-            <p className="text-emerald-100 mb-4">Time: {formatTime(seconds)}</p>
-            <button
-              onClick={newGame}
-              className="px-5 py-2.5 rounded-lg bg-white text-emerald-900 font-semibold hover:bg-emerald-50 transition-colors"
-            >
-              Play Again
-            </button>
+              <p className="text-emerald-100 mb-1">Solved in {moves} moves</p>
+              <p className="text-emerald-100 mb-4">Time: {formatTime(seconds)}</p>
+              <button
+                onClick={newGame}
+                className="px-5 py-2.5 rounded-lg bg-white text-emerald-900 font-semibold hover:bg-emerald-50 transition-colors"
+              >
+                Play Again
+              </button>
             </motion.div>
-        )}
+          )}
         </AnimatePresence>
       </div>
 
-      {/* How to play */}
       <details className="mt-4 text-sm text-slate-600">
         <summary className="cursor-pointer font-medium text-slate-700">How to play</summary>
         <ul className="mt-2 space-y-1 list-disc pl-5">
