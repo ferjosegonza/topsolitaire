@@ -19,6 +19,10 @@ const CARD_VARS = {
   '--card-font-lg': 'calc(var(--card-w) * 0.5)',
 };
 
+// Offset vertical entre cartas boca arriba en tableau
+const FACE_UP_OFFSET = 30; // en pixels, aproximadamente 30px
+const FACE_DOWN_OFFSET = 20; // en pixels, cartas boca abajo se superponen menos
+
 function EmptySlot({ onClick, children, className = '' }) {
   return (
     <div
@@ -192,6 +196,10 @@ export default function SolitaireGame() {
     });
   }
 
+  // ============================================================
+  // FUNCIONES DE MOVIMIENTO
+  // ============================================================
+
   function tryMoveToTableau(destCol) {
     const cards = getSelectedCards(selection, game);
     if (cards.length === 0 || !canPlaceOnTableau(cards[0], game.tableau[destCol])) {
@@ -272,23 +280,34 @@ export default function SolitaireGame() {
     playPlaceSound();
   }
 
-  function autoMoveToFoundation(source) {
-    if (won) return;
+  /**
+   * Auto-mueve una carta desde una fuente (waste o tableau última carta)
+   * con criterio inteligente:
+   * 1. Prioridad 1: Foundation (si la carta puede ir)
+   * 2. Prioridad 2: Tableau - elige la columna que tenga más cartas
+   *    (heurística: columnas más llenas = más útiles)
+   */
+  function autoMoveCard(source) {
+    if (won) return false;
     const g = game;
     let card;
     let cardId = null;
+    let sourceCol = -1;
+
     if (source.type === 'waste') {
-      if (!g.waste.length) return;
+      if (!g.waste.length) return false;
       card = g.waste[g.waste.length - 1];
       cardId = card.id;
     } else {
       const col = g.tableau[source.col];
-      if (!col.length) return;
+      if (!col.length) return false;
       card = col[col.length - 1];
       cardId = card.id;
-      if (!card.faceUp) return;
+      if (!card.faceUp) return false;
+      sourceCol = source.col;
     }
-    // Primero intentar ir a foundation (prioridad 1)
+
+    // Prioridad 1: Ir a foundation
     for (let f = 0; f < 4; f++) {
       if (canPlaceOnFoundation(card, g.foundations[f])) {
         setGame((prev) => {
@@ -315,38 +334,54 @@ export default function SolitaireGame() {
           setTimeout(() => setLandingCard(cardId), 50);
           setTimeout(() => setLandingCard(null), 500);
         }
-        return;
+        return true;
       }
     }
-    // Si no se pudo ir a foundation, intentar ir a tableau (prioridad 2)
-    for (let destCol = 0; destCol < 7; destCol++) {
-      if (destCol !== (source.col || -1) && canPlaceOnTableau(card, game.tableau[destCol])) {
-        setGame((prev) => {
-          const tableau = prev.tableau.map((c) => [...c]);
-          const waste = [...prev.waste];
-          if (source.type === 'waste') {
-            waste.pop();
-          } else {
-            const col2 = tableau[source.col];
-            col2.pop();
-            if (col2.length && !col2[col2.length - 1].faceUp) {
-              col2[col2.length - 1] = { ...col2[col2.length - 1], faceUp: true };
-            }
-          }
-          tableau[destCol].push(card);
-          return { ...prev, tableau, waste };
-        });
-        setMoves((m) => m + 1);
-        setSelection(null);
-        playPlaceSound();
 
-        if (cardId) {
-          setTimeout(() => setLandingCard(cardId), 50);
-          setTimeout(() => setLandingCard(null), 500);
+    // Prioridad 2: Tableau - elegir la mejor columna (la que tenga más cartas)
+    let bestCol = -1;
+    let bestColSize = -1;
+    for (let destCol = 0; destCol < 7; destCol++) {
+      if (destCol !== sourceCol && canPlaceOnTableau(card, g.tableau[destCol])) {
+        // Criterio: elegir la columna con más cartas
+        // (columnas más llenas = más útiles para construir)
+        const colSize = g.tableau[destCol].length;
+        if (colSize > bestColSize) {
+          bestColSize = colSize;
+          bestCol = destCol;
         }
-        return;
       }
     }
+
+    if (bestCol >= 0) {
+      const destCol = bestCol;
+      setGame((prev) => {
+        const tableau = prev.tableau.map((c) => [...c]);
+        const waste = [...prev.waste];
+        if (source.type === 'waste') {
+          waste.pop();
+        } else {
+          const col2 = tableau[source.col];
+          col2.pop();
+          if (col2.length && !col2[col2.length - 1].faceUp) {
+            col2[col2.length - 1] = { ...col2[col2.length - 1], faceUp: true };
+          }
+        }
+        tableau[destCol].push(card);
+        return { ...prev, tableau, waste };
+      });
+      setMoves((m) => m + 1);
+      setSelection(null);
+      playPlaceSound();
+
+      if (cardId) {
+        setTimeout(() => setLandingCard(cardId), 50);
+        setTimeout(() => setLandingCard(null), 500);
+      }
+      return true;
+    }
+
+    return false; // No se pudo mover
   }
 
   // ============================================================
@@ -363,6 +398,10 @@ export default function SolitaireGame() {
     return document.querySelector(`[data-card-id="${cardId}"]`);
   };
 
+  /**
+   * Inicia el arrastre. Si la carta está en tableau y hay cartas debajo
+   * (desde cardIndex hasta el final), el ghost visual muestra todas ellas.
+   */
   const startDrag = (e, card, source) => {
     if (won || !card.faceUp) return;
     if (e.button !== 0) return;
@@ -372,34 +411,81 @@ export default function SolitaireGame() {
     const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
     const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
 
-    const cardElement = getCardElement(card.id);
-    if (!cardElement) return;
+    // === GHOST: mostrar grupo completo si es tableau ===
+    let ghost;
+    if (source.source === 'tableau') {
+      // Crear ghost que incluye TODAS las cartas desde cardIndex hasta el final
+      const col = game.tableau[source.col];
+      const cardsToMove = col.slice(source.cardIndex);
 
-    const rect = cardElement.getBoundingClientRect();
+      // Usar la primera carta para posición base
+      const firstCardEl = getCardElement(cardsToMove[0].id);
+      if (!firstCardEl) return;
+      const firstRect = firstCardEl.getBoundingClientRect();
 
-    const ghost = cardElement.cloneNode(true);
-    ghost.style.position = 'fixed';
-    ghost.style.pointerEvents = 'none';
-    ghost.style.zIndex = '9999';
-    ghost.style.width = rect.width + 'px';
-    ghost.style.height = rect.height + 'px';
-    ghost.style.borderRadius = '8px';
-    ghost.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)';
-    ghost.style.transform = 'scale(1.05) rotate(2deg)';
-    ghost.style.transition = 'none';
-    ghost.style.left = (clientX - rect.width / 2) + 'px';
-    ghost.style.top = (clientY - rect.height / 2) + 'px';
+      // Contenedor ghost
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.pointerEvents = 'none';
+      container.style.zIndex = '9999';
+      container.style.width = firstRect.width + 'px';
+      container.style.borderRadius = '8px';
+      container.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)';
+      container.style.transform = 'scale(1.05) rotate(2deg)';
+      container.style.transition = 'none';
+      container.style.left = (clientX - firstRect.width / 2) + 'px';
+      container.style.top = (clientY - FACE_UP_OFFSET) + 'px'; // offset parcial
 
-    document.body.appendChild(ghost);
+      // Clonar cada carta del grupo y posicionarla
+      cardsToMove.forEach((c, idx) => {
+        const cardEl = getCardElement(c.id);
+        if (!cardEl) return;
+        const clone = cardEl.cloneNode(true);
+        clone.style.position = 'absolute';
+        clone.style.width = '100%';
+        clone.style.left = '0px';
+        clone.style.top = (idx * FACE_UP_OFFSET) + 'px'; // apilar ghost con el mismo offset
+        clone.style.borderRadius = '8px';
+        clone.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+        container.appendChild(clone);
+      });
+
+      document.body.appendChild(container);
+      ghost = container;
+    } else {
+      // Para waste/foundation: ghost de una sola carta
+      const cardElement = getCardElement(card.id);
+      if (!cardElement) return;
+      const rect = cardElement.getBoundingClientRect();
+
+      ghost = cardElement.cloneNode(true);
+      ghost.style.position = 'fixed';
+      ghost.style.pointerEvents = 'none';
+      ghost.style.zIndex = '9999';
+      ghost.style.width = rect.width + 'px';
+      ghost.style.height = rect.height + 'px';
+      ghost.style.borderRadius = '8px';
+      ghost.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4)';
+      ghost.style.transform = 'scale(1.05) rotate(2deg)';
+      ghost.style.transition = 'none';
+      ghost.style.left = (clientX - rect.width / 2) + 'px';
+      ghost.style.top = (clientY - rect.height / 2) + 'px';
+
+      document.body.appendChild(ghost);
+    }
+
     setDragGhost(ghost);
-
     setDragCard(card);
     setDragSource(source);
-    setDragOffset({ x: rect.width / 2, y: rect.height / 2 });
+    setDragOffset({ x: FACE_UP_OFFSET, y: 0 }); // offset fijo para el ghost
     setIsDragging(true);
 
-    cardElement.style.opacity = '0.3';
-    cardElement.style.transform = 'scale(0.95)';
+    // Opacar la carta original
+    const originalEl = getCardElement(card.id);
+    if (originalEl) {
+      originalEl.style.opacity = '0.3';
+      originalEl.style.transform = 'scale(0.95)';
+    }
   };
 
   const moveDrag = (e) => {
@@ -408,8 +494,8 @@ export default function SolitaireGame() {
     const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
     const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
 
-    dragGhost.style.left = (clientX - dragOffset.x) + 'px';
-    dragGhost.style.top = (clientY - dragOffset.y) + 'px';
+    dragGhost.style.left = (clientX - 40) + 'px'; // centrar aproximadamente
+    dragGhost.style.top = (clientY - FACE_UP_OFFSET) + 'px';
 
     const tableauSlots = document.querySelectorAll('[data-tableau-slot]');
     tableauSlots.forEach((slot) => {
@@ -478,9 +564,9 @@ export default function SolitaireGame() {
     let moved = false;
 
     if (targetCol >= 0) {
+      // ===== MOVER A TABLEAU =====
       let cardToMove = null;
       let sourceCol = -1;
-      let sourceCardIndex = -1;
 
       if (dragSource && dragSource.source === 'tableau') {
         const col = game.tableau[dragSource.col];
@@ -489,7 +575,6 @@ export default function SolitaireGame() {
           if (cardsToMove.length > 0 && canPlaceOnTableau(cardsToMove[0], game.tableau[targetCol])) {
             cardToMove = cardsToMove;
             sourceCol = dragSource.col;
-            sourceCardIndex = dragSource.cardIndex;
           }
         }
       } else if (dragSource && dragSource.source === 'waste') {
@@ -498,7 +583,6 @@ export default function SolitaireGame() {
           if (canPlaceOnTableau(wasteCard, game.tableau[targetCol])) {
             cardToMove = [wasteCard];
             sourceCol = -1;
-            sourceCardIndex = -1;
           }
         }
       }
@@ -509,7 +593,7 @@ export default function SolitaireGame() {
           const waste = [...g.waste];
 
           if (sourceCol >= 0) {
-            const moving = tableau[sourceCol].splice(sourceCardIndex);
+            const moving = tableau[sourceCol].splice(dragSource.cardIndex);
             const col = tableau[sourceCol];
             if (col.length && !col[col.length - 1].faceUp) {
               col[col.length - 1] = { ...col[col.length - 1], faceUp: true };
@@ -535,47 +619,57 @@ export default function SolitaireGame() {
         playPlaceSound();
         moved = true;
       }
-    }
+    } else if (targetFoundation >= 0) {
+      // ===== MOVER A FOUNDATION =====
+      let cardToMove = null;
 
-    if (!moved && targetFoundation >= 0 && dragSource && dragSource.source === 'waste') {
-      const cardToMove = game.waste[game.waste.length - 1];
-      if (cardToMove && canPlaceOnFoundation(cardToMove, game.foundations[targetFoundation])) {
-        setGame((g) => {
-          const foundations = g.foundations.map((f) => [...f]);
-          const waste = [...g.waste];
-          const moved = waste.pop();
-          foundations[targetFoundation].push(moved);
-          if (moved) {
-            setTimeout(() => setLandingCard(moved.id), 50);
-            setTimeout(() => setLandingCard(null), 500);
+      if (dragSource && dragSource.source === 'tableau') {
+        const col = game.tableau[dragSource.col];
+        if (col.length > 0) {
+          const lastCard = col[col.length - 1];
+          // Solo la última carta (superior) puede ir a foundation
+          if (dragSource.cardIndex === col.length - 1 && canPlaceOnFoundation(lastCard, game.foundations[targetFoundation])) {
+            cardToMove = lastCard;
           }
-          return { ...g, waste, foundations };
-        });
-        setMoves((m) => m + 1);
-        playPlaceSound();
-        moved = true;
+        }
+      } else if (dragSource && dragSource.source === 'waste') {
+        // ✅ FIX: Mover carta del waste a foundation
+        if (game.waste.length > 0) {
+          const wasteCard = game.waste[game.waste.length - 1];
+          if (canPlaceOnFoundation(wasteCard, game.foundations[targetFoundation])) {
+            cardToMove = wasteCard;
+          }
+        }
       }
-    }
 
-    if (!moved && targetFoundation >= 0 && dragSource && dragSource.source === 'tableau') {
-      const col = game.tableau[dragSource.col];
-      const cardToMove = col[dragSource.cardIndex];
-      if (cardToMove && dragSource.cardIndex === col.length - 1 &&
-          canPlaceOnFoundation(cardToMove, game.foundations[targetFoundation])) {
+      if (cardToMove) {
         setGame((g) => {
           const tableau = g.tableau.map((c) => [...c]);
           const foundations = g.foundations.map((f) => [...f]);
-          const moved = tableau[dragSource.col].pop();
-          const col2 = tableau[dragSource.col];
-          if (col2.length && !col2[col2.length - 1].faceUp) {
-            col2[col2.length - 1] = { ...col2[col2.length - 1], faceUp: true };
+          const waste = [...g.waste];
+
+          if (dragSource.source === 'tableau') {
+            const moved = tableau[dragSource.col].pop();
+            const col2 = tableau[dragSource.col];
+            if (col2.length && !col2[col2.length - 1].faceUp) {
+              col2[col2.length - 1] = { ...col2[col2.length - 1], faceUp: true };
+            }
+            foundations[targetFoundation].push(moved);
+            if (moved) {
+              setTimeout(() => setLandingCard(moved.id), 50);
+              setTimeout(() => setLandingCard(null), 500);
+            }
+          } else {
+            // waste
+            const moved = waste.pop();
+            foundations[targetFoundation].push(moved);
+            if (moved) {
+              setTimeout(() => setLandingCard(moved.id), 50);
+              setTimeout(() => setLandingCard(null), 500);
+            }
           }
-          foundations[targetFoundation].push(moved);
-          if (moved) {
-            setTimeout(() => setLandingCard(moved.id), 50);
-            setTimeout(() => setLandingCard(null), 500);
-          }
-          return { ...g, tableau, foundations };
+
+          return { ...g, tableau, waste, foundations };
         });
         setMoves((m) => m + 1);
         playPlaceSound();
@@ -583,6 +677,7 @@ export default function SolitaireGame() {
       }
     }
 
+    // Restaurar estilo original de la carta
     const cardElement = getCardElement(dragCard?.id);
     if (cardElement) {
       cardElement.style.opacity = '';
@@ -616,16 +711,17 @@ export default function SolitaireGame() {
         document.removeEventListener('touchend', endDrag);
       };
     }
-  }, [isDragging]);
+  }, [isDragging, dragSource, dragCard, game]);
 
   // ============================================================
-  // HANDLERS DE CLICK - SIN MOVIMIENTO DESAGRADABLE
+  // HANDLERS DE CLICK
   // ============================================================
 
   function handleTableauCardClick(col, cardIndex) {
     if (won) return;
     const card = game.tableau[col][cardIndex];
-
+    
+    // Si la carta está boca abajo y es la última, voltearla
     if (!card.faceUp) {
       if (cardIndex === game.tableau[col].length - 1) {
         setGame((g) => {
@@ -640,68 +736,60 @@ export default function SolitaireGame() {
       return;
     }
 
-    // Si hay selección y es de otra columna, limpiar selección primero
-    if (selection && selection.col !== col) {
-      setSelection(null);
-      setSelection({ source: 'tableau', col, cardIndex });
-      return;
+    // Si hay una selección de otra columna, mover
+    if (selection) {
+      if (selection.source === 'tableau' && selection.col !== col) {
+        tryMoveToTableau(col);
+        return;
+      }
+      if (selection.source === 'waste' || selection.source === 'foundation') {
+        tryMoveToTableau(col);
+        return;
+      }
+      // Si es la misma columna y misma carta, deseleccionar
+      if (selection.col === col && selection.cardIndex === cardIndex) {
+        setSelection(null);
+        return;
+      }
+      // Si es la misma columna diferente carta, cambiar selección
+      if (selection.col === col) {
+        setSelection({ source: 'tableau', col, cardIndex });
+        return;
+      }
     }
 
-    // Si la carta seleccionada es la misma, deseleccionar
-    if (selection && selection.col === col && selection.cardIndex === cardIndex) {
-      setSelection(null);
-      return;
-    }
-
-    // Verificar si se puede mover el grupo completo
+    // Verificar si la carta y las de abajo forman un grupo válido
     let isValidGroup = true;
     for (let i = cardIndex; i < game.tableau[col].length - 1; i++) {
       const current = game.tableau[col][i];
       const next = game.tableau[col][i + 1];
-      if (!next.faceUp ||
-          isRed(current.suit) === isRed(next.suit) ||
+      if (!next.faceUp || 
+          isRed(current.suit) === isRed(next.suit) || 
           current.rank !== next.rank + 1) {
         isValidGroup = false;
         break;
       }
     }
 
-    if (isValidGroup) {
-      // Intentar auto-move a foundation (prioridad 1)
-      if (cardIndex === game.tableau[col].length - 1) {
-        for (let f = 0; f < 4; f++) {
-          if (canPlaceOnFoundation(card, game.foundations[f])) {
-            setGame((g) => {
-              const tableau = g.tableau.map((c) => [...c]);
-              const foundations = g.foundations.map((ff) => [...ff]);
-              const removed = tableau[col].pop();
-              if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
-                tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
-              }
-              foundations[f].push(removed);
-              return { ...g, tableau, foundations };
-            });
-            setMoves((m) => m + 1);
-            setSelection(null);
-            playPlaceSound();
-            setTimeout(() => setLandingCard(card.id), 50);
-            setTimeout(() => setLandingCard(null), 500);
-            return;
-          }
-        }
-      }
+    if (!isValidGroup) {
+      setSelection(null);
+      return;
+    }
 
-      // Intentar auto-move del grupo a tableau (prioridad 2)
-      for (let destCol = 0; destCol < 7; destCol++) {
-        if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
+    // ===== AUTO-MOVE INTELIGENTE =====
+    // 1. Si es UNA sola carta que puede ir a foundation → auto-mover
+    if (cardIndex === game.tableau[col].length - 1) {
+      for (let f = 0; f < 4; f++) {
+        if (canPlaceOnFoundation(card, game.foundations[f])) {
           setGame((g) => {
             const tableau = g.tableau.map((c) => [...c]);
-            const moving = tableau[col].splice(cardIndex);
+            const foundations = g.foundations.map((ff) => [...ff]);
+            const removed = tableau[col].pop();
             if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
               tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
             }
-            tableau[destCol].push(...moving);
-            return { ...g, tableau };
+            foundations[f].push(removed);
+            return { ...g, tableau, foundations };
           });
           setMoves((m) => m + 1);
           setSelection(null);
@@ -711,22 +799,48 @@ export default function SolitaireGame() {
           return;
         }
       }
+    }
 
-      // Si no hay auto-move, seleccionar el grupo
+    // 2. Contar cuántos destinos tableau válidos hay
+    const validDestinations = [];
+    for (let destCol = 0; destCol < 7; destCol++) {
+      if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
+        validDestinations.push(destCol);
+      }
+    }
+
+    // 3. Si hay exactamente 1 destino → auto-mover
+    if (validDestinations.length === 1) {
+      const destCol = validDestinations[0];
+      setGame((g) => {
+        const tableau = g.tableau.map((c) => [...c]);
+        const moving = tableau[col].splice(cardIndex);
+        if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+          tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+        }
+        tableau[destCol].push(...moving);
+        return { ...g, tableau };
+      });
+      setMoves((m) => m + 1);
+      setSelection(null);
+      playPlaceSound();
+      setTimeout(() => setLandingCard(card.id), 50);
+      setTimeout(() => setLandingCard(null), 500);
+      return;
+    }
+
+    // 4. Si hay múltiples destinos → seleccionar el grupo y dejar que el usuario elija
+    if (validDestinations.length > 1) {
       setSelection({ source: 'tableau', col, cardIndex });
       return;
     }
 
-    // Si no es un grupo válido, comportamiento normal
-    if (selection) {
-      if (selection.source === 'tableau' && selection.col === col) {
-        setSelection({ source: 'tableau', col, cardIndex });
-        return;
-      }
-      tryMoveToTableau(col);
-      return;
+    // 5. Si no hay destinos → solo seleccionar (o deseleccionar si ya estaba)
+    if (selection && selection.col === col && selection.cardIndex === cardIndex) {
+      setSelection(null);
+    } else {
+      setSelection({ source: 'tableau', col, cardIndex });
     }
-    setSelection({ source: 'tableau', col, cardIndex });
   }
 
   function handleTableauColumnClick(col) {
@@ -755,11 +869,12 @@ export default function SolitaireGame() {
       setSelection(null);
       return;
     }
-    if (game.waste.length) setSelection({ source: 'waste' });
-    // Intentar auto-move de la carta del waste
+    // Intentar auto-move del waste
     if (game.waste.length > 0) {
-      const card = game.waste[game.waste.length - 1];
-      autoMoveToFoundation({ type: 'waste' });
+      const moved = autoMoveCard({ type: 'waste' });
+      if (!moved) {
+        setSelection({ source: 'waste' });
+      }
     }
   }
 
@@ -769,11 +884,7 @@ export default function SolitaireGame() {
     return `${m}:${sec.toString().padStart(2, '0')}`;
   }
 
-  const topCardStyle = (prevFaceUp, i) => ({
-    marginTop: i === 0 ? 0 : prevFaceUp ? 'calc(var(--card-w) * -1.0)' : 'calc(var(--card-w) * -1.2)',
-  });
-
-  const isDealingCard = (colIndex, rowIndex) => {
+const isDealingCard = (colIndex, rowIndex) => {
     return dealingCards.some(
       d => d.colIndex === colIndex && d.rowIndex === rowIndex
     );
@@ -836,24 +947,27 @@ export default function SolitaireGame() {
               </EmptySlot>
             )}
           </div>
-          <div>
+          <div
+            onMouseDown={(e) => {
+              if (game.waste.length > 0) {
+                const card = game.waste[game.waste.length - 1];
+                startDrag(e, card, { source: 'waste' });
+              }
+            }}
+            onTouchStart={(e) => {
+              if (game.waste.length > 0) {
+                const card = game.waste[game.waste.length - 1];
+                startDrag(e, card, { source: 'waste' });
+              }
+            }}
+          >
             {game.waste.length > 0 ? (
-              <div
-                data-card-id={game.waste[game.waste.length - 1].id}
-                onMouseDown={(e) => {
-                  const card = game.waste[game.waste.length - 1];
-                  startDrag(e, card, { source: 'waste' });
-                }}
-                onTouchStart={(e) => {
-                  const card = game.waste[game.waste.length - 1];
-                  startDrag(e, card, { source: 'waste' });
-                }}
-              >
+              <div data-card-id={game.waste[game.waste.length - 1].id}>
                 <SolitaireCard
                   card={game.waste[game.waste.length - 1]}
                   selected={!!selection && selection.source === 'waste'}
                   onClick={handleWasteClick}
-                  onDoubleClick={() => autoMoveToFoundation({ type: 'waste' })}
+                  onDoubleClick={() => autoMoveCard({ type: 'waste' })}
                   isLanding={landingCard === game.waste[game.waste.length - 1]?.id}
                   isDealing={false}
                 />
@@ -900,66 +1014,91 @@ export default function SolitaireGame() {
                   data-tableau-slot={col}
                 />
               ) : (
-                column.map((card, i) => {
-                  const isDealing = isDealingCard(col, i);
-                  const delay = getDealDelay(col, i);
-                  return (
-                    <div
-                      key={card.id}
-                      data-card-id={card.id}
-                      onMouseDown={(e) => {
-                        if (card.faceUp) {
-                          startDrag(e, card, { source: 'tableau', col, cardIndex: i });
-                        }
-                      }}
-                      onTouchStart={(e) => {
-                        if (card.faceUp) {
-                          startDrag(e, card, { source: 'tableau', col, cardIndex: i });
-                        }
-                      }}
-                      style={{ cursor: card.faceUp ? 'grab' : 'default' }}
-                    >
-                      <SolitaireCard
-                        card={card}
-                        faceDown={!card.faceUp}
-                        isFlipping={flippingCard === card.id}
-                        selected={isSelected(col, i)}
-                        onClick={() => handleTableauCardClick(col, i)}
-                        onDoubleClick={() => {
-                          if (i === column.length - 1 && card.faceUp) {
-                            // Intentar auto-move (prioridad: foundation → tableau)
-                            const cardToMove = card;
-                            // Verificar foundation
-                            for (let f = 0; f < 4; f++) {
-                              if (canPlaceOnFoundation(cardToMove, game.foundations[f])) {
-                                setGame((g) => {
-                                  const tableau = g.tableau.map((c) => [...c]);
-                                  const foundations = g.foundations.map((ff) => [...ff]);
-                                  const removed = tableau[col].pop();
-                                  if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
-                                    tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
-                                  }
-                                  foundations[f].push(removed);
-                                  return { ...g, tableau, foundations };
-                                });
-                                setMoves((m) => m + 1);
-                                setSelection(null);
-                                playPlaceSound();
-                                setTimeout(() => setLandingCard(cardToMove.id), 50);
-                                setTimeout(() => setLandingCard(null), 500);
-                                return;
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: `${Math.max(90, column.length * FACE_UP_OFFSET + 20)}px`,
+                  }}
+                >
+                  {column.map((card, i) => {
+                    const isDealing = isDealingCard(col, i);
+                    const delay = getDealDelay(col, i);
+                    
+                    
+                    return (
+                      <div
+                        key={card.id}
+                        data-card-id={card.id}
+                        style={{
+                          position: 'absolute',
+                          width: '100%',
+                          left: 0,
+                          top: `${i === 0 ? 0 : (i * (card.faceUp ? FACE_UP_OFFSET : FACE_DOWN_OFFSET))}px`,
+                          zIndex: i + 1,
+                          cursor: card.faceUp ? 'grab' : 'default',
+                        }}
+                        onMouseDown={(e) => {
+                          if (card.faceUp && !isDealing) {
+                            startDrag(e, card, { source: 'tableau', col, cardIndex: i });
+                          }
+                        }}
+                        onTouchStart={(e) => {
+                          if (card.faceUp && !isDealing) {
+                            startDrag(e, card, { source: 'tableau', col, cardIndex: i });
+                          }
+                        }}
+                      >
+                        <SolitaireCard
+                          card={card}
+                          faceDown={!card.faceUp}
+                          isFlipping={flippingCard === card.id}
+                          selected={isSelected(col, i)}
+                          onClick={() => handleTableauCardClick(col, i)}
+                          onDoubleClick={() => {
+                            if (i === column.length - 1 && card.faceUp) {
+                              const cardToMove = card;
+                              // Foundation primero
+                              for (let f = 0; f < 4; f++) {
+                                if (canPlaceOnFoundation(cardToMove, game.foundations[f])) {
+                                  setGame((g) => {
+                                    const tableau = g.tableau.map((c) => [...c]);
+                                    const foundations = g.foundations.map((ff) => [...ff]);
+                                    const removed = tableau[col].pop();
+                                    if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+                                      tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+                                    }
+                                    foundations[f].push(removed);
+                                    return { ...g, tableau, foundations };
+                                  });
+                                  setMoves((m) => m + 1);
+                                  setSelection(null);
+                                  playPlaceSound();
+                                  setTimeout(() => setLandingCard(cardToMove.id), 50);
+                                  setTimeout(() => setLandingCard(null), 500);
+                                  return;
+                                }
                               }
-                            }
-                            // Si no hay foundation, buscar tableau
-                            for (let destCol = 0; destCol < 7; destCol++) {
-                              if (destCol !== col && canPlaceOnTableau(cardToMove, game.tableau[destCol])) {
+                              // Luego tableau - elegir la mejor columna
+                              let bestCol = -1;
+                              let bestColSize = -1;
+                              for (let destCol = 0; destCol < 7; destCol++) {
+                                if (destCol !== col && canPlaceOnTableau(cardToMove, game.tableau[destCol])) {
+                                  const colSize = game.tableau[destCol].length;
+                                  if (colSize > bestColSize) {
+                                    bestColSize = colSize;
+                                    bestCol = destCol;
+                                  }
+                                }
+                              }
+                              if (bestCol >= 0) {
                                 setGame((g) => {
                                   const tableau = g.tableau.map((c) => [...c]);
                                   const removed = tableau[col].pop();
                                   if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
                                     tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
                                   }
-                                  tableau[destCol].push(removed);
+                                  tableau[bestCol].push(removed);
                                   return { ...g, tableau };
                                 });
                                 setMoves((m) => m + 1);
@@ -967,21 +1106,19 @@ export default function SolitaireGame() {
                                 playPlaceSound();
                                 setTimeout(() => setLandingCard(cardToMove.id), 50);
                                 setTimeout(() => setLandingCard(null), 500);
-                                return;
                               }
                             }
-                          }
-                        }}
-                        style={topCardStyle(column[i - 1]?.faceUp, i)}
-                        index={i}
-                        columnIndex={col}
-                        isDealing={isDealing}
-                        isLanding={landingCard === card.id && !isDealing}
-                        dealDelay={delay}
-                      />
-                    </div>
-                  );
-                })
+                          }}
+                          index={i}
+                          columnIndex={col}
+                          isDealing={isDealing}
+                          isLanding={landingCard === card.id && !isDealing}
+                          dealDelay={delay}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               )}
             </div>
           ))}
@@ -1029,3 +1166,4 @@ export default function SolitaireGame() {
     </div>
   );
 }
+

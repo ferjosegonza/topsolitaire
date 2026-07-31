@@ -8,20 +8,16 @@ export default function SolitaireCard({
   selected,
   onClick,
   onDoubleClick,
+  onMouseDown,
+  onTouchStart,
   style,
-  dragEnabled = false,
-  onDragStart,
-  onDragEnd,
-  onDrag,
   index,
   columnIndex,
   isDealing = false,
   isLanding = false,
   dealDelay = 0,
-  isFlipping = false, // ✅ Recibido desde props, NO usar useState
+  isFlipping = false,
 }) {
-  // ✅ ELIMINAR: const [isFlipping, setIsFlipping] = useState(false);
-
   // Si la carta está volteándose, mostrar animación
   if (isFlipping) {
     return (
@@ -40,6 +36,8 @@ export default function SolitaireCard({
       <motion.div
         onClick={onClick}
         onDoubleClick={onDoubleClick}
+        onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
         style={style}
         className="solitaire-card solitaire-card-back relative cursor-pointer card-shine"
         aria-hidden="true"
@@ -60,28 +58,12 @@ export default function SolitaireCard({
   const rankLabel = RANK_LABELS[card.rank];
   const symbol = SUIT_SYMBOLS[card.suit];
 
-  const dragProps = dragEnabled ? {
-    drag: true,
-    dragMomentum: false,
-    dragElastic: 0.1,
-    onDragStart: (e, info) => onDragStart?.(e, info, card, index, columnIndex),
-    onDragEnd: (e, info) => onDragEnd?.(e, info, card, index, columnIndex),
-    onDrag: onDrag,
-    whileDrag: {
-      scale: 1.05,
-      zIndex: 100,
-      boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
-      rotate: 2,
-    },
-    dragTransition: {
-      power: 0.1,
-    },
-  } : {};
-
   return (
     <motion.div
       onClick={onClick}
       onDoubleClick={onDoubleClick}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
       style={style}
       className={`solitaire-card relative bg-white rounded-md shadow-md cursor-pointer select-none ${
         selected ? 'ring-2 ring-sky-300 ring-offset-1 ring-offset-emerald-900' : ''
@@ -98,7 +80,6 @@ export default function SolitaireCard({
         scale: 1,
         transition: { delay: dealDelay, duration: 0.45, ease: 'easeOut' }
       } : {}}
-      {...dragProps}
     >
       {isLanding && (
         <div className="absolute inset-0 rounded-md overflow-hidden pointer-events-none">
@@ -116,3 +97,4 @@ export default function SolitaireCard({
     </motion.div>
   );
 }
+

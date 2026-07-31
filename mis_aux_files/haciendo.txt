@@ -18,11 +18,8 @@ Quiero que añadas estos comportamientos:
 
 
 FALTA HACER:
-- un error actual es que si se quita una carta de una columna, la carta que estaba debajo (y estaba boca abajo) debería darse vuelta automáticamente, antes creo que pasaba y ahora no, revisar y corregir.
-- otro comportamiento que quiero que exista es que si se hace clic en la carta (o si el usuario la toca en caso que sea un celular, dime si eso afecta en algo el código o no) quiero que la carta, si tiene algún lugar donde ir (por ejemplo es un 10 rojo y hay una J negra) se vaya se vaya a esa carta automáticamente viajando con un movimiento suave (si ya existe ese efecto visual de movimiento suave pero rápido, usalo), si hay más de una opción (por ejemplo un 10 rojo le hace clic pero hay dos J negra) usa tu criterio para elegir cuál debería ser, y explicamelo.
-- verificar si los tests testean todo lo que pueda ser testeable
-- verificar si se testea todo lo que se deba testear relacionado a los audios
-
-- cuando arrastro una carta ésta no se deposita correctamente sobre la otra
-- cuando hago clic sobre la carta ésta se mueve de una manera desagradable, sólo quiero que se muestre seleccionada con el borde mas azulcito como ahora, pero sin ese movimiento.
-- si le hago doble clic debería ir sobre la carta que le corresponde (si tuviera dónde ir) por ejemplo si hago clic en un 7 rojo y hay un 6 del mismo palo sobre alguna de las fundaciones se entiende que vaya prioritariamente ahí o en su defecto a alguna columna si hay un 8 negro se entiende?
+- otro comportamiento que quiero que exista es que si se hace clic en la carta (o si el usuario la toca en caso que sea un celular, dime si eso afecta en algo el código o no) quiero que la carta, si tiene algún lugar donde ir (por ejemplo es un 10 rojo y hay una J negra) se vaya a esa carta automáticamente viajando con un movimiento suave (si ya existe ese efecto visual de movimiento suave pero rápido, usalo), si hay más de una opción (por ejemplo un 10 rojo le hace clic pero hay dos J negra) usa tu criterio para elegir cuál debería ser, y explicame el criterio que quieras usar.
+- verificar si los tests testean todo lo que pueda ser testeable.
+- error a corregir: en el caso de que por ejemplo haya una columna con un 8 negro, arriba un 7 rojo y arriba un 6 negro, y los quiero mover a otra columna donde hay un 9 rojo, sólo puedo seleccionar la carta por encima de todo y no puedo seleccionar las tres cartas y debería poder ¿por qué es eso y cómo lo corrijo?
+- otro error: no sé qué pasa pero mientras jugaba una carta quedó seleccionada y si intentaba seguir jugando iba quedando otra carta selecccionada y luego otra y en un momento ya tuve tres cartas seleccionadas ¿qué pasa?
+- otro error: puedo arrastrar una carta que esté en una columna pero sólo la carta que está encima de todo en cada columna y debería poder arrastrar desde cualquier carta que esté boca arriba y arrastrarlas juntas, tampoco puedo arrastrar la carta que esté en el descargue, es decir cuando hago clic en el mazo y la carta pasa al descarte (o waste o talón) en la zona superior esa carta no puedo arrastrar esa carta boca arriba como sí puedo arrastrar una carta que esté en una columna.

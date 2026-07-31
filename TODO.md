@@ -1,101 +1,47 @@
-# TODO - Mejoras del Solitario
+# TODO - Correcciones de Solitaire
 
-## ✅ COMPLETADO
-- [x] Sistema de sonidos (useSound)
-  - Hook `useSoundEffects.js` creado
-  - Sonidos: card-flip, card-place, deal, win, click
-  - Botón Mute/Unmute integrado en el juego
-  - Sonidos reproducidos en acciones: repartir, voltear, colocar, ganar
-- [x] Botón Mute/Unmute
-  - Implementado en el header del juego
-  - Iconos 🔊/🔇 con toggle funcional
-- [x] Efecto de voltear carta + sonido
-  - Sonido `card-flip.mp3` al sacar carta del stock
-  - Sonido `card-flip.mp3` al reiniciar el stock
-- [x] Efecto de aterrizaje + sonido
-  - Sonido `card-place.mp3` al mover a tableau
-  - Sonido `card-place.mp3` al mover a foundation
-- [x] Efecto de reparto al inicio
-  - Sonido `deal.mp3` al hacer clic en "New Game"
-- [x] Efecto de victoria
-  - Sonido `win.mp3` al completar el juego
-  - Detectado automáticamente por `isWon(game)`
-- [x] Drag & Drop de cartas
-  - Arrastrar cartas con el mouse ✅
-  - Feedback visual durante el arrastre ✅
-  - Soltar en destino válido ✅
-- [x] Sistema de efectos visuales
-  - [x] Efecto de voltear carta visual (3D flip)
-  - [x] Efecto de aterrizaje visual (bounce)
-  - [x] Efecto de reparto visual (cartas volando)
-  - [x] Efecto de victoria visual (confeti con canvas-confetti)
-- [x] Auto-move al hacer clic
-  - Un clic mueve automáticamente a foundation si es posible
-  - Funciona desde tableau y waste
-- [x] Tests de Auto-move
-  - 6 tests pasando ✅
+## Estado: Completado ✅
 
-## 🔄 EN PROGRESO
-- [ ] 3 niveles de dificultad
-  - Fácil: más tiempo, sugerencias
-  - Normal: estándar
-  - Difícil: menos tiempo, penalizaciones
+### Fase 1: Análisis y Planificación
+- [x] Analizar código fuente de SolitaireGame.jsx, SolitaireCard.jsx, solitaire.js
+- [x] Identificar errores y comportamientos incorrectos
+- [x] Crear plan de corrección detallado
+- [x] Obtener aprobación del plan
 
-## 📝 PENDIENTE
-- [ ] Verificar funcionamiento en móvil
-  - Touch events para drag & drop
-  - Responsive adjustments
-- [ ] Verificar rendimiento
-  - Carga de sonidos
-  - Animaciones fluidas
-  - Memoria y renders
+### Fase 2: Corrección de errores en SolitaireGame.jsx
 
-## 🧪 TESTS - ESTADO ACTUAL
+#### Fix 1: Variables indefinidas en endDrag (`colIndex`, `cardIndex`)
+- [x] Reemplazar `colIndex` → `dragSource.col` y `cardIndex` → `dragSource.cardIndex` en la sección de foundation drag
 
-### Tests que existen y pasan ✅
+#### Fix 2: Drag ghost debe incluir grupo completo
+- [x] Modificar `startDrag` para que al arrastrar desde tableau, clone todas las cartas desde `cardIndex` hasta el final
 
-| Archivo | Tests | Estado |
-|---------|-------|--------|
-| `setup.test.js` | 3 | ✅ Pasando |
-| `solitaire.test.jsx` | 11 | ✅ Pasando |
-| `sound.test.jsx` | 1 | ✅ Pasando |
-| `drag-drop.test.jsx` | 11 | ✅ Pasando |
-| `ui.test.jsx` | 17 | ✅ Pasando |
-| `auto-move.test.jsx` | 6 | ✅ Pasando |
-| `visual-effects.test.jsx` | 17 | ✅ Pasando |
-| **TOTAL** | **66** | ✅ **Todos pasando** |
+#### Fix 3: Waste → Foundation drag
+- [x] Agregar lógica en `endDrag` para mover carta del waste a foundation cuando se suelta sobre un slot de foundation
 
-### Tests pendientes (requieren implementación primero)
+#### Fix 4: Click auto-move con criterio inteligente
+- [x] Modificar `handleTableauCardClick`:
+  - Si es 1 carta que va a foundation → auto-mover
+  - Si es grupo con **exactamente 1** destino tableau → auto-mover
+  - Si hay **múltiples** destinos → seleccionar grupo, dejar que usuario elija
+  - Criterio para múltiples opciones: columna más a la derecha con más cartas
 
-| Archivo | Tests pendientes | Dependencia |
-|---------|------------------|-------------|
-| `difficulty.test.jsx` | Niveles de dificultad | Implementar niveles de dificultad primero |
+#### Fix 5: Superposición de cartas - Layout con position absolute
+- [x] Cambiar estructura de columnas para usar `position: relative` en contenedor y `position: absolute` en cada carta
+- [x] Eliminar `topCardStyle` (marginTop) y reemplazar con cálculo de posición top
+- [x] Mover `onMouseDown`/`onTouchStart` al componente SolitaireCard para que toda el área de la carta sea clickeable
 
-## 🐛 BUGS CONOCIDOS
-- [ ] Ninguno reportado
+#### Fix 6: Limpieza de selección múltiple
+- [x] Asegurar que `setSelection(null)` se llame de forma consistente
+- [x] Solucionar el problema del batch de React (doble setSelection)
 
-## 📝 NOTAS
-- ✅ `use-sound` instalado y configurado
-- ✅ `framer-motion` ya está instalado en el proyecto
-- ✅ `canvas-confetti` instalado y configurado para victoria
-- ✅ Archivos de sonido en `public/sounds/`:
-  - `card-flip.mp3` - Voltear carta
-  - `card-place.mp3` - Colocar carta
-  - `deal.mp3` - Repartir
-  - `win.mp3` - Victoria
-  - `click.mp3` - Clic (opcional)
+### Fase 3: Actualización de SolitaireCard.jsx
+- [x] Agregar props `onMouseDown` y `onTouchStart`
+- [x] Pasar estos eventos al motion.div
+- [x] Eliminar dragEnabled (ya no se usa, se maneja todo en SolitaireGame)
 
-## 📂 ARCHIVOS CREADOS/MODIFICADOS
-- `src/hooks/useSoundEffects.js` - Hook de sonidos (CREADO)
-- `src/components/solitaire/SolitaireGame.jsx` - Efectos visuales y Auto-move (MODIFICADO)
-- `src/components/solitaire/SolitaireCard.jsx` - Efectos visuales (MODIFICADO)
-- `src/index.css` - Animaciones CSS (MODIFICADO)
-- `public/sounds/*.mp3` - Archivos de audio (AGREGADOS)
-- `__tests__/setup.test.js` - Tests de entorno (CREADO)
-- `__tests__/solitaire.test.jsx` - Tests de lógica (CREADO)
-- `__tests__/sound.test.jsx` - Tests de sonidos (CREADO)
-- `__tests__/drag-drop.test.jsx` - Tests de Drag & Drop (CREADO)
-- `__tests__/ui.test.jsx` - Tests de UI (CREADO)
-- `__tests__/auto-move.test.jsx` - Tests de Auto-move (CREADO)
-- `__tests__/visual-effects.test.jsx` - Tests de efectos visuales (CREADO)
-- `README.md` - Documentación actualizada (MODIFICADO)
+### Fase 4: Build verification
+- [x] Build passes
+
+### Fase 5: Tests
+- [ ] Pendiente: Correr tests para verificar
