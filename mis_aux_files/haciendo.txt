@@ -18,11 +18,6 @@ Quiero que añadas estos comportamientos:
 
 
 FALTA HACER:
-- un error actual es que si se quita una carta de una columna, la carta que estaba debajo (y estaba boca abajo) debería darse vuelta automáticamente, antes creo que pasaba y ahora no, revisar y corregir.
-- otro comportamiento que quiero que exista es que si se hace clic en la carta (o si el usuario la toca en caso que sea un celular, dime si eso afecta en algo el código o no) quiero que la carta, si tiene algún lugar donde ir (por ejemplo es un 10 rojo y hay una J negra) se vaya se vaya a esa carta automáticamente viajando con un movimiento suave (si ya existe ese efecto visual de movimiento suave pero rápido, usalo), si hay más de una opción (por ejemplo un 10 rojo le hace clic pero hay dos J negra) usa tu criterio para elegir cuál debería ser, y explicamelo.
+- te había pedido generar este comportamiento: "quiero que si se hace clic en la carta quiero que la carta si tiene algún lugar donde ir (por ejemplo es un 10 rojo y hay una J negra en una de las columnas) se vaya a esa carta automáticamente viajando con un movimiento suave (si ya existe ese efecto visual de movimiento suave pero rápido), si hay más de una opción (por ejemplo un 10 rojo le hace clic pero hay dos J negra) usa tu criterio para elegir cuál debería ser, y explicamelo" veo que el juego ya lo hace ¿qué criterio se aplica actualmente si hay más de una opción? si le hago clic debería ir sobre la carta que le corresponde (si tuviera dónde ir) por ejemplo si hago clic en un 7 rojo y hay un 6 del mismo palo sobre alguna de las fundaciones se entiende que vaya prioritariamente ahí o en su defecto a alguna columna si hay un 8 negro se entiende?
 - verificar si los tests testean todo lo que pueda ser testeable
-- verificar si se testea todo lo que se deba testear relacionado a los audios
-
-- cuando arrastro una carta ésta no se deposita correctamente sobre la otra
-- cuando hago clic sobre la carta ésta se mueve de una manera desagradable, sólo quiero que se muestre seleccionada con el borde mas azulcito como ahora, pero sin ese movimiento.
-- si le hago doble clic debería ir sobre la carta que le corresponde (si tuviera dónde ir) por ejemplo si hago clic en un 7 rojo y hay un 6 del mismo palo sobre alguna de las fundaciones se entiende que vaya prioritariamente ahí o en su defecto a alguna columna si hay un 8 negro se entiende?
+- si hago clic sobre una carta y ésta tiene un lugar a donde ir, se va automáticamente, pero si intento llevarla haciendo clic y no soltando para  arrastrarla ésta no se deposita correctamente sobre la otra y vuelve a su lugar de origen, debería también tener esa opción. Dime qué entiendes de esto antes de hacerlo.

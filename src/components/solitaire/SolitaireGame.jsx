@@ -353,17 +353,22 @@ export default function SolitaireGame() {
   // MANEJO DE ARRASTRE
   // ============================================================
 
-  const [isDragging, setIsDragging] = useState(false);
+const [isDragging, setIsDragging] = useState(false);
   const [dragCard, setDragCard] = useState(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [dragSource, setDragSource] = useState(null);
   const [dragGhost, setDragGhost] = useState(null);
 
+  // Refs para evitar el conflicto click vs drag
+  const dragStartPos = useRef({ x: 0, y: 0 });
+  const wasDragged = useRef(false);
+  const DRAG_THRESHOLD = 5; // px mínimos para considerar que hubo arrastre
+
   const getCardElement = (cardId) => {
     return document.querySelector(`[data-card-id="${cardId}"]`);
   };
 
-  const startDrag = (e, card, source) => {
+const startDrag = (e, card, source) => {
     if (won || !card.faceUp) return;
     if (e.button !== 0) return;
 
@@ -371,6 +376,10 @@ export default function SolitaireGame() {
 
     const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
     const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
+
+    // Registrar posición inicial para detectar arrastre real
+    dragStartPos.current = { x: clientX, y: clientY };
+    wasDragged.current = false;
 
     const cardElement = getCardElement(card.id);
     if (!cardElement) return;
@@ -407,6 +416,13 @@ export default function SolitaireGame() {
 
     const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
     const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
+
+    // Detectar si el mouse se movió lo suficiente como para considerar un arrastre real
+    const dx = clientX - dragStartPos.current.x;
+    const dy = clientY - dragStartPos.current.y;
+    if (Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD) {
+      wasDragged.current = true;
+    }
 
     dragGhost.style.left = (clientX - dragOffset.x) + 'px';
     dragGhost.style.top = (clientY - dragOffset.y) + 'px';
@@ -624,6 +640,13 @@ export default function SolitaireGame() {
 
   function handleTableauCardClick(col, cardIndex) {
     if (won) return;
+
+    // Si hubo arrastre, ignorar el click para evitar conflicto click vs drag
+    if (wasDragged.current) {
+      wasDragged.current = false;
+      return;
+    }
+
     const card = game.tableau[col][cardIndex];
 
     if (!card.faceUp) {
@@ -691,25 +714,35 @@ export default function SolitaireGame() {
         }
       }
 
-      // Intentar auto-move del grupo a tableau (prioridad 2)
+// Intentar auto-move del grupo a tableau (prioridad 2)
+      // Elegir la columna con más cartas (columna más construida) para mejor estrategia
+      let bestCol = -1;
+      let bestColSize = -1;
       for (let destCol = 0; destCol < 7; destCol++) {
         if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
-          setGame((g) => {
-            const tableau = g.tableau.map((c) => [...c]);
-            const moving = tableau[col].splice(cardIndex);
-            if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
-              tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
-            }
-            tableau[destCol].push(...moving);
-            return { ...g, tableau };
-          });
-          setMoves((m) => m + 1);
-          setSelection(null);
-          playPlaceSound();
-          setTimeout(() => setLandingCard(card.id), 50);
-          setTimeout(() => setLandingCard(null), 500);
-          return;
+          const colSize = game.tableau[destCol].length;
+          if (colSize > bestColSize) {
+            bestColSize = colSize;
+            bestCol = destCol;
+          }
         }
+      }
+      if (bestCol >= 0) {
+        setGame((g) => {
+          const tableau = g.tableau.map((c) => [...c]);
+          const moving = tableau[col].splice(cardIndex);
+          if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+            tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+          }
+          tableau[bestCol].push(...moving);
+          return { ...g, tableau };
+        });
+        setMoves((m) => m + 1);
+        setSelection(null);
+        playPlaceSound();
+        setTimeout(() => setLandingCard(card.id), 50);
+        setTimeout(() => setLandingCard(null), 500);
+        return;
       }
 
       // Si no hay auto-move, seleccionar el grupo
@@ -745,8 +778,15 @@ export default function SolitaireGame() {
     }
   }
 
-  function handleWasteClick() {
+function handleWasteClick() {
     if (won) return;
+
+    // Si hubo arrastre, ignorar el click para evitar conflicto click vs drag
+    if (wasDragged.current) {
+      wasDragged.current = false;
+      return;
+    }
+
     if (selection && selection.source === 'waste') {
       setSelection(null);
       return;
