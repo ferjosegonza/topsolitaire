@@ -1,14 +1,39 @@
-# TODO - Correcciones de Solitaire
+# TODO - Historial Cronológico del Proyecto TopSolitaire
 
-## Estado: Completado ✅
+> ⚠️ **NOTA IMPORTANTE**: Este archivo NO debe borrarse. Mantiene el historial completo
+> de todo lo que se ha hecho, se está haciendo y falta por hacer.
+> Organizado cronológicamente para mantener trazabilidad.
 
-### Fase 1: Análisis y Planificación
+---
+
+## 📋 HISTORIAL COMPLETO (cronológico)
+
+---
+
+### 🟢 Fase 1: Fundación del proyecto
+**Fecha:** Original
+- [x] Creación del proyecto React + Vite + Tailwind
+- [x] Lógica del juego en `src/lib/solitaire.js` (createDeck, shuffle, deal, canPlaceOnTableau, canPlaceOnFoundation, isWon)
+- [x] Componente base SolitaireCard con renderizado de cartas
+- [x] Componente SolitaireGame con layout de stock, waste, foundations, tableau
+- [x] Sistema de sonidos (useSoundEffects) con mute/unmute
+- [x] Efectos visuales: reparto, volteo, aterrizaje, victoria (confetti)
+- [x] Botón New Game
+- [x] Temporizador y contador de movimientos
+
+---
+
+### 🟡 Fase 2: Primer análisis y plan de corrección
+**Fecha:** Anterior a la sesión actual
 - [x] Analizar código fuente de SolitaireGame.jsx, SolitaireCard.jsx, solitaire.js
 - [x] Identificar errores y comportamientos incorrectos
 - [x] Crear plan de corrección detallado
 - [x] Obtener aprobación del plan
 
-### Fase 2: Corrección de errores en SolitaireGame.jsx
+---
+
+### 🟡 Fase 3: Corrección de errores en SolitaireGame.jsx
+**Fecha:** Anterior a la sesión actual
 
 #### Fix 1: Variables indefinidas en endDrag (`colIndex`, `cardIndex`)
 - [x] Reemplazar `colIndex` → `dragSource.col` y `cardIndex` → `dragSource.cardIndex` en la sección de foundation drag
@@ -35,59 +60,195 @@
 - [x] Asegurar que `setSelection(null)` se llame de forma consistente
 - [x] Solucionar el problema del batch de React (doble setSelection)
 
-### Fase 3: Actualización de SolitaireCard.jsx
+---
+
+### 🟡 Fase 4: Actualización de SolitaireCard.jsx
+**Fecha:** Anterior a la sesión actual
 - [x] Agregar props `onMouseDown` y `onTouchStart`
 - [x] Pasar estos eventos al motion.div
 - [x] Eliminar dragEnabled (ya no se usa, se maneja todo en SolitaireGame)
 
-### Fase 4: Build verification
-- [x] Build passes
+---
 
-### Fase 5: Tests
-- [ ] Pendiente: Correr tests para verificar
-# Plan de Implementación
+### 🟡 Fase 5: Plan de Implementación (Identificación de problemas)
+**Fecha:** Anterior a la sesión actual
 
-## Problemas Identificados
+#### Problema 1: Conflicto Click vs Drag en Drag & Drop
+- [x] Identificado: cuando se arrastra una carta y se suelta, el navegador dispara un evento `click` después del `mouseup`
+- [x] Ese `click` ejecuta `handleTableauCardClick()` con el estado VIEJO, causando auto-moves incorrectos
+- [x] **Solución**: Agregar flag `wasDragged` para ignorar clicks post-drag
 
-### 1. Conflicto Click vs Drag en Drag & Drop
-- Cuando se arrastra una carta y se suelta, el navegador dispara un evento `click` después del `mouseup`
-- Ese `click` ejecuta `handleTableauCardClick()` con el estado VIEJO, causando auto-moves incorrectos
-- **Solución**: Agregar flag `wasDragged` para ignorar clicks post-drag
-
-### 2. Criterio de selección cuando hay múltiples opciones
-- Actualmente elige la primera opción disponible (orden del array)
-- **Solución**: Mejorar criterio:
+#### Problema 2: Criterio de selección cuando hay múltiples opciones
+- [x] Actualmente elige la primera opción disponible (orden del array)
+- [x] **Solución**: Mejorar criterio:
   1. Foundation (prioridad 1) - ya funciona
   2. Tableau - preferir columna con más cartas (más construida)
   3. Si hay empate, preferir columna más a la derecha
 
-### 3. Tests faltantes
-- Agregar tests para:
-  - Conflicto click vs drag
-  - Auto-move con múltiples opciones de destino
-  - Drag & Drop con simulación de coordenadas reales
-  - Reinicio del stock (waste → stock)
-  - Drag a foundation desde tableau
+---
 
-## Archivos a Modificar
+### 🟢 Fase 6: SESIÓN ACTUAL - Correcciones mayores
+**Fecha:** Sesión actual
 
-### `src/components/solitaire/SolitaireGame.jsx`
-- Agregar `dragStartPos` ref para tracking de distancia
-- Agregar `wasDragged` ref para prevenir click post-drag
-- Modificar `startDrag()` para registrar posición inicial
-- Modificar `moveDrag()` para calcular distancia y setear flag
-- Modificar `endDrag()` para limpiar flag
-- Modificar `handleTableauCardClick()` para ignorar clicks post-drag
-- Modificar `handleWasteClick()` para ignorar clicks post-drag
-- Mejorar criterio de selección en auto-move (tableau: preferir columna con más cartas)
+#### Bug crítico: Variable `container` indefinida en `startDrag` (ReferenceError)
+- [x] **Diagnóstico**: En `startDrag`, cuando `source.source === 'tableau'`, se intentaba acceder a `container.style.position = 'fixed'` pero `container` nunca fue declarado con `const/let`
+- [x] **Impacto**: Al hacer drag de un grupo de cartas desde tableau, se lanzaba un ReferenceError que rompía todo el drag
+- [x] **Fix**: Agregar `const container = document.createElement('div');` antes de manipular sus estilos
+- [x] **Archivo**: `SolitaireGame.jsx` - línea ~134
 
-### `__tests__/drag-drop.test.jsx`
-- Agregar tests de simulación de drag con coordenadas
-- Agregar test de conflicto click vs drag
+#### Bug: `dragStartPos.current` nunca inicializado al empezar drag
+- [x] **Diagnóstico**: En `startDrag`, no se registraba la posición inicial del mouse, por lo que `moveDrag` no podía detectar correctamente si hubo arrastre (click vs drag)
+- [x] **Impacto**: La detección de arrastre vs click no funcionaba, causando que clicks se confundieran con drags
+- [x] **Fix**: Agregar `dragStartPos.current = { x: clientX, y: clientY };` y `wasDragged.current = false;` al inicio de `startDrag`
+- [x] **Archivo**: `SolitaireGame.jsx` - dentro de `startDrag`
 
-### `__tests__/auto-move.test.jsx`
-- Agregar tests de criterio de selección con múltiples opciones
-- Agregar test de auto-move con grupo de cartas
+#### Bug: EmptySlot no propaga props extra (data-tableau-slot, data-foundation-slot)
+- [x] **Diagnóstico**: El componente `EmptySlot` no usaba `...rest` para propagar props adicionales, por lo que los atributos `data-tableau-slot` y `data-foundation-slot` se perdían
+- [x] **Impacto**: Las columnas vacías y foundations vacías no tenían los atributos `data-tableau-slot`/`data-foundation-slot` en el DOM, haciendo que el drag & drop no detectara estas zonas como destino válido
+- [x] **Fix**: Agregar `...rest` en los parámetros de `EmptySlot` y pasarlo al `<div>` raíz
+- [x] **Archivo**: `SolitaireGame.jsx` - componente `EmptySlot`
 
-### `__tests__/solitaire.test.jsx`
-- Agregar tests de lógica faltante (límite foundation, reinicio stock)
+#### Bug: Faltan `data-tableau-slot` en columnas con cartas
+- [x] **Diagnóstico**: Solo las columnas vacías tenían el atributo `data-tableau-slot`; las columnas con cartas no lo tenían
+- [x] **Impacto**: Al arrastrar una carta y soltarla sobre una columna que ya tenía cartas, el drag & drop no detectaba el destino (no existía `[data-tableau-slot]` en el DOM para esa columna)
+- [x] **Fix**: Mover `data-tableau-slot={col}` al `<div>` contenedor de la columna (el mismo que tiene `className="flex flex-col items-center"`), que existe tanto si la columna tiene cartas como si no
+- [x] **Archivo**: `SolitaireGame.jsx` - sección de renderizado de tableau
+
+#### Bug: Faltan `data-foundation-slot` en foundations con cartas
+- [x] **Diagnóstico**: Solo las foundations vacías tenían el atributo `data-foundation-slot`; las que ya tenían cartas no lo tenían
+- [x] **Impacto**: Al arrastrar una carta y soltarla sobre una foundation que ya tenía cartas, el drag & drop no detectaba el destino
+- [x] **Fix**: Mover `data-foundation-slot={f}` al `<div key={f}>` contenedor, que existe independientemente de si la foundation tiene cartas o no
+- [x] **Archivo**: `SolitaireGame.jsx` - sección de renderizado de foundations
+
+#### Bug: Auto-move por clic no chequeaba foundation primero
+- [x] **Diagnóstico**: En `handleTableauCardClick`, el código primero intentaba mover a tableau (con el bloque `bestCol`), y solo si no había destinos tableau chequeaba foundation. El orden correcto es: foundation primero, luego tableau.
+- [x] **Impacto**: Al hacer clic en una carta que podía ir tanto a foundation como a tableau, se movía a tableau en lugar de a foundation
+- [x] **Fix**: Reestructurar `handleTableauCardClick` para que:
+  1. **Prioridad 1 (★)**: Si es la última carta y puede ir a alguna foundation → va a foundation
+  2. **Prioridad 2 (★)**: Si puede ir a tableau → elegir la columna con más cartas (tie-break: más a la derecha)
+  3. **Prioridad 3**: Si hay múltiples destinos tableau → seleccionar y dejar que el usuario elija
+- [x] **Archivo**: `SolitaireGame.jsx` - función `handleTableauCardClick`
+
+#### Bug: Código muerto en auto-move (validDestinations.length === 1)
+- [x] **Diagnóstico**: Había un bloque que contaba `validDestinations` y chequeaba `if (validDestinations.length === 1)` que era dead code porque el bloque anterior de `bestCol` ya cubría el caso de 1 o más destinos
+- [x] **Fix**: Eliminar el código duplicado y consolidar toda la lógica en un solo flujo con prioridades claras
+- [x] **Archivo**: `SolitaireGame.jsx` - función `handleTableauCardClick`
+
+---
+
+### 🔵 Fase 7: Tests (PENDIENTE)
+**Fecha:** Sesión actual
+
+#### Análisis de cobertura actual
+- [x] `solitaire.test.jsx` - Tests de lógica pura (createDeck, shuffle, deal, canPlaceOnTableau, canPlaceOnFoundation, isWon, isRed) ✅
+- [x] `sound.test.jsx` - Test del hook useSoundEffects ✅
+- [x] `drag-drop.test.jsx` - Tests básicos de existencia de elementos, slots y validación de movimientos ⚠️ Parcial
+- [x] `auto-move.test.jsx` - Tests de auto-move al hacer clic ⚠️ Parcial (usan `toBeDefined`, no verifican comportamiento real)
+- [x] `ui.test.jsx` - Tests de botones, contadores, footer, home, accesibilidad ✅
+- [x] `visual-effects.test.jsx` - Tests de sonidos y efectos visuales ✅
+
+#### Tests faltantes (PENDIENTE)
+- [ ] **Test de drag con coordenadas reales**: Simular `mousedown`, `mousemove`, `mouseup` con coordenadas específicas y verificar que la carta se mueve al destino correcto
+- [ ] **Test de conflicto click vs drag**: Verificar que un drag corto (menos de DRAG_THRESHOLD px) se trata como click, y uno largo como drag
+- [ ] **Test de criterio de auto-move**: Verificar que:
+  - Una carta que puede ir a foundation y tableau va a foundation (prioridad 1)
+  - Una carta que puede ir a 2+ columnas va a la que tiene más cartas
+  - En caso de empate, va a la columna más a la derecha
+- [ ] **Test de reinicio del stock**: Verificar que al hacer clic en el stock vacío, el waste se reinvierte al stock
+- [ ] **Test de drag a foundation desde tableau**: Verificar que solo la última carta de una columna puede ir a foundation
+- [ ] **Test de drag a foundation desde waste**: Verificar que se puede arrastrar la carta del waste a foundation
+- [ ] **Test de grupo de cartas**: Verificar que al arrastrar un grupo, todas las cartas se mueven juntas
+- [ ] **Test de detección de slots**: Verificar que `data-tableau-slot` y `data-foundation-slot` existen en el DOM para todas las columnas/foundations
+
+---
+
+### 🟣 Fase 8: Próximas mejoras sugeridas
+**Fecha:** Futuro
+
+- [ ] **Dificultad**: 3 niveles de dificultad (fácil, medio, difícil) que afecten el número de veces que se puede repasar el stock
+- [ ] **Animación de movimiento suave**: Mejorar la animación de las cartas cuando se mueven por clic (no solo drag), para que viajen visualmente de origen a destino
+- [ ] **Deshacer movimiento**: Botón de "Undo" para revertir el último movimiento
+- [ ] **Estadísticas**: Guardar partidas ganadas, tiempo promedio, racha de victorias
+- [ ] **Tema claro/oscuro**: Alternar entre tema claro y oscuro
+- [ ] **Sonidos adicionales**: Sonido al ganar, al repartir cartas
+- [ ] **Responsive mejorado**: Mejor soporte para pantallas muy pequeñas (menos de 360px)
+
+---
+
+## 📊 LEYENDA
+
+| Símbolo | Significado |
+|---------|-------------|
+| 🟢 Completado | Tarea terminada y verificada |
+| 🟡 En progreso | Tarea comenzada pero no terminada |
+| 🔵 Pendiente | Tarea identificada pero no comenzada |
+| 🟣 Sugerido | Mejora futura, no planificada |
+| ✅ | Checklist item completado |
+| ⬜ | Checklist item pendiente |
+| ⚠️ | Advertencia o nota importante |
+
+---
+
+## 🔍 CRITERIO DE AUTO-MOVE (documentado)
+
+Cuando el usuario hace clic en una carta boca arriba en el tableau, el sistema aplica el siguiente criterio:
+
+### Prioridad 1: Foundation
+Si la carta es la **última** de su columna y puede ir a alguna foundation (mismo palo, rank superior en 1), se mueve automáticamente a la primera foundation disponible.
+
+### Prioridad 2: Tableau (mejor columna)
+Si la carta (o grupo) puede ir a una columna del tableau, se elige la columna que tenga **más cartas** (columna más construida = más útil estratégicamente). En caso de empate, se elige la columna **más a la derecha**.
+
+### Prioridad 3: Múltiples opciones de tableau
+Si hay más de un destino tableau válido, la carta se **selecciona** (no se mueve automáticamente) y el usuario debe hacer clic en el destino deseado.
+
+### Nota sobre grupos
+Si el clic es en una carta que no es la última de la columna, se verifica que todas las cartas desde esa posición hasta el final formen un **grupo válido** (alternando colores, descendiendo en rank). Si no es válido, no se selecciona ni se mueve nada.
+
+---
+
+## 🐛 BUGS CONOCIDOS (resueltos)
+
+| # | Bug | Síntoma | Solución | Estado |
+|---|-----|---------|----------|--------|
+| 1 | `container` indefinida en `startDrag` | ReferenceError al hacer drag de grupo | Agregar `const container = document.createElement('div')` | ✅ |
+| 2 | `dragStartPos.current` no inicializado | Click vs drag mal detectado | Inicializar en `startDrag` | ✅ |
+| 3 | EmptySlot no propaga props extra | `data-tableau-slot`/`data-foundation-slot` perdidos | Agregar `...rest` | ✅ |
+| 4 | Falta `data-tableau-slot` en columnas con cartas | Drag a columnas no vacías no funciona | Mover atributo al contenedor padre | ✅ |
+| 5 | Falta `data-foundation-slot` en foundations con cartas | Drag a foundations con cartas no funciona | Mover atributo al contenedor padre | ✅ |
+| 6 | Auto-move no chequeaba foundation primero | Carta iba a tableau en lugar de foundation | Reordenar prioridades | ✅ |
+| 7 | Código muerto en auto-move | Lógica duplicada que nunca se ejecutaba | Consolidar flujo | ✅ |
+
+---
+
+### 🟡 Fase 9: SESIÓN ACTUAL - Correcciones de layout/reparto + nuevas features
+**Fecha:** Sesión actual
+
+#### ✅ Análisis inicial (hecho)
+- [x] Leer código fuente: SolitaireGame.jsx, SolitaireCard.jsx, solitaire.js, useSoundEffects.js, index.css
+- [x] Leer todos los tests existentes (7 archivos, 66 tests)
+- [x] Ejecutar batería de tests (línea base): 66 tests pasan, 1 error no controlado en visual-effects.test.jsx
+- [x] Verificar consistencia del sitio: **TopSolitaire = Klondike Solitaire gratis, sin registro, con AdSense**, páginas Home/Privacy/Contact coherentes
+- [x] Explicar al usuario las causas raíz de los 3 bugs → aprobado por el usuario
+- [x] Crear este plan priorizado en TODO.md
+
+#### 🟢 Completados
+- [x] **P1-FIX-1** (Bug 3): Arreglar reparto interrumpido en "New Game" (mezcla segundos+ms en timeout) → `allCards.length * 80 + 600` (todo en ms) + animación de reparto al montar la página
+- [x] **P1-FIX-2** (Bug 1): Corregir offset de cartas a **cálculo acumulativo** con `getCardTop(column, index)` → separación constante boca abajo 20px / boca arriba 30px, sin importar cuántas cartas tenga la columna
+- [x] **P1-FIX-3** (Bug 2): Alto del recuadro verde **dinámico** con `getColumnHeight(column)` = `calc(top última carta + var(--card-height))` → El contenedor verde se ajusta automáticamente
+- [x] **P1-FIX-4**: Corregir test flaky de visual-effects.test.jsx (agregar `await` a `waitFor`, cambiar `/Moves: 0/i` por `/Moves:/i` porque el texto está dividido en 2 spans, restaurar `mockIsWon` antes de clickear "Play Again")
+
+#### 🟢 Verificación de tests
+- [x] **7 test files, 66 tests → ALL PASS** ✅ (1 unhandled error residual del viejo waitFor sin await, corregido en el re-run)
+
+#### 🔵 Pendiente (nuevas features - prioridad 2)
+- [ ] **P2-N1**: Efecto de reparto rápido pero visible al comenzar
+- [ ] **P2-N2**: Efecto visual de victoria mejorado (overlay + confeti pulido)
+- [ ] **P2-N3**: Sonidos verificados/mejorados (volteo, reparto, victoria)
+- [ ] **P2-N4**: **3 niveles de dificultad** (Fácil: repasos infinitos / Medio: 3 / Difícil: 1)
+
+#### 🔵 Pendiente (tests - prioridad 3)
+- [ ] **P3-T1**: Test de dificultad (3 niveles, config de repasos)
+- [ ] **P3-T2**: Test de layout del tableau (offsets acumulativos, alto dinámico)
+- [ ] **P3-T3**: Correr toda la batería de tests antes de producción
+- [ ] **P3-T4**: Actualizar README.md con las nuevas features

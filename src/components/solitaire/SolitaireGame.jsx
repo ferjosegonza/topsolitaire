@@ -23,11 +23,37 @@ const CARD_VARS = {
 const FACE_UP_OFFSET = 30; // en pixels, aproximadamente 30px
 const FACE_DOWN_OFFSET = 20; // en pixels, cartas boca abajo se superponen menos
 
-function EmptySlot({ onClick, children, className = '' }) {
+/**
+ * Posición top acumulativa: cada carta se apila sobre la anterior usando
+ * el offset de la carta que está DEBAJO. Así la separación entre la última
+ * carta boca abajo y la boca arriba es SIEMPRE constante (30px),
+ * sin importar cuántas cartas tenga la columna.
+ */
+function getCardTop(column, index) {
+  let top = 0;
+  for (let k = 0; k < index; k++) {
+    top += column[k].faceUp ? FACE_UP_OFFSET : FACE_DOWN_OFFSET;
+  }
+  return top;
+}
+
+/**
+ * Alto dinámico de la columna: la posición top de la última carta
+ * más el alto de la carta (var(--card-height)). De esta forma el
+ * recuadro verde crece y contiene SIEMPRE todas las cartas.
+ */
+function getColumnHeight(column) {
+  if (column.length === 0) return '90px';
+  const lastTop = getCardTop(column, column.length - 1);
+  return `calc(${lastTop}px + var(--card-height))`;
+}
+
+function EmptySlot({ onClick, children, className = '', ...rest }) {
   return (
     <div
       onClick={onClick}
       className={`solitaire-card rounded-md border border-dashed border-white/25 flex items-center justify-center text-white/30 ${className}`}
+      {...rest}
     >
       {children}
     </div>
@@ -45,6 +71,7 @@ export default function SolitaireGame() {
   const [dealingCards, setDealingCards] = useState([]);
   const [landingCard, setLandingCard] = useState(null);
   const [flippingCard, setFlippingCard] = useState(null);
+  const hasMounted = useRef(false);
 
   const {
     isMuted,
@@ -153,10 +180,38 @@ export default function SolitaireGame() {
     });
     setDealingCards(allCards);
 
+    // ⚠️ FIX: antes se mezclaban SEGUNDOS (allCards.length * 0.08 = 2.24)
+    // con MILISEGUNDOS (+ 600). El timeout disparaba a ~602ms y cortaba el
+    // reparto de las columnas 4+ cuyos delays eran >0.4s.
+    // Ahora todo en ms: (28 cartas * 80ms) + 600ms de margen = ~2.84s.
     setTimeout(() => {
       setDealingCards([]);
-    }, allCards.length * 0.08 + 600);
+    }, allCards.length * 80 + 600);
   }, [playDealSound]);
+
+  // Repartir también al montar el componente (primera carga de la página)
+  useEffect(() => {
+    if (hasMounted.current) return;
+    hasMounted.current = true;
+
+    const initialCards = [];
+    game.tableau.forEach((col, colIndex) => {
+      col.forEach((card, rowIndex) => {
+        initialCards.push({
+          card,
+          colIndex,
+          rowIndex,
+          delay: (colIndex + rowIndex) * 0.08,
+        });
+      });
+    });
+    setDealingCards(initialCards);
+
+    setTimeout(() => {
+      setDealingCards([]);
+    }, initialCards.length * 80 + 600);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getSelectedCards = useCallback((sel, g) => {
     if (!sel) return [];
@@ -412,6 +467,10 @@ const startDrag = (e, card, source) => {
     const clientX = e.clientX || e.touches?.[0]?.clientX || 0;
     const clientY = e.clientY || e.touches?.[0]?.clientY || 0;
 
+    // Registrar posición inicial para detectar arrastre vs click
+    dragStartPos.current = { x: clientX, y: clientY };
+    wasDragged.current = false;
+
     // === GHOST: mostrar grupo completo si es tableau ===
     let ghost;
     if (source.source === 'tableau') {
@@ -424,7 +483,8 @@ const startDrag = (e, card, source) => {
       if (!firstCardEl) return;
       const firstRect = firstCardEl.getBoundingClientRect();
 
-      // Contenedor ghost
+      // Crear contenedor ghost correctamente
+      const container = document.createElement('div');
       container.style.position = 'fixed';
       container.style.pointerEvents = 'none';
       container.style.zIndex = '9999';
@@ -785,60 +845,70 @@ const startDrag = (e, card, source) => {
       }
     }
 
-    if (!isValidGroup) {
+if (!isValidGroup) {
       setSelection(null);
       return;
     }
 
-// Intentar auto-move del grupo a tableau (prioridad 2)
-      // Elegir la columna con más cartas (columna más construida) para mejor estrategia
-      let bestCol = -1;
-      let bestColSize = -1;
-      for (let destCol = 0; destCol < 7; destCol++) {
-        if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
-          const colSize = game.tableau[destCol].length;
-          if (colSize > bestColSize) {
-            bestColSize = colSize;
-            bestCol = destCol;
-          }
-        }
-      }
-      if (bestCol >= 0) {
-        setGame((g) => {
-          const tableau = g.tableau.map((c) => [...c]);
-          const moving = tableau[col].splice(cardIndex);
-          if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
-            tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
-          }
-          tableau[bestCol].push(...moving);
-          return { ...g, tableau };
-        });
-        setMoves((m) => m + 1);
-        setSelection(null);
-        playPlaceSound();
-        setTimeout(() => setLandingCard(card.id), 50);
-        setTimeout(() => setLandingCard(null), 500);
-        return;
-      }
+    // ============================================================
+    // CRITERIO DE AUTO-MOVE (documentado)
+    // ============================================================
+    // Prioridad 1: Si es la ÚLTIMA carta de la columna y puede ir a
+    //   alguna foundation → va a foundation automáticamente.
+    // Prioridad 2: Si el grupo (o carta individual) puede ir a
+    //   tableau → elegir la columna con más cartas (más construida).
+    //   En caso de empate, elegir la columna más a la derecha.
+    // Prioridad 3: Si hay múltiples destinos tableau → seleccionar
+    //   el grupo y dejar que el usuario elija con un segundo clic.
+    // ============================================================
 
-    // 2. Contar cuántos destinos tableau válidos hay
-    const validDestinations = [];
-    for (let destCol = 0; destCol < 7; destCol++) {
-      if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
-        validDestinations.push(destCol);
+    const isLastCard = cardIndex === game.tableau[col].length - 1;
+
+    // ★ PRIORIDAD 1: Foundation (solo la última carta)
+    if (isLastCard) {
+      for (let f = 0; f < 4; f++) {
+        if (canPlaceOnFoundation(card, game.foundations[f])) {
+          setGame((g) => {
+            const tableau = g.tableau.map((c) => [...c]);
+            const foundations = g.foundations.map((ff) => [...ff]);
+            tableau[col].pop();
+            if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
+              tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
+            }
+            foundations[f].push(card);
+            return { ...g, tableau, foundations };
+          });
+          setMoves((m) => m + 1);
+          setSelection(null);
+          playPlaceSound();
+          setTimeout(() => setLandingCard(card.id), 50);
+          setTimeout(() => setLandingCard(null), 500);
+          return;
+        }
       }
     }
 
-    // 3. Si hay exactamente 1 destino → auto-mover
-    if (validDestinations.length === 1) {
-      const destCol = validDestinations[0];
+    // ★ PRIORIDAD 2: Tableau — elegir la mejor columna
+    let bestCol = -1;
+    let bestColSize = -1;
+    for (let destCol = 0; destCol < 7; destCol++) {
+      if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
+        const colSize = game.tableau[destCol].length;
+        // Preferir columna con más cartas; en empate, la más a la derecha
+        if (colSize > bestColSize || (colSize === bestColSize && destCol > bestCol)) {
+          bestColSize = colSize;
+          bestCol = destCol;
+        }
+      }
+    }
+    if (bestCol >= 0) {
       setGame((g) => {
         const tableau = g.tableau.map((c) => [...c]);
         const moving = tableau[col].splice(cardIndex);
         if (tableau[col].length && !tableau[col][tableau[col].length - 1].faceUp) {
           tableau[col][tableau[col].length - 1] = { ...tableau[col][tableau[col].length - 1], faceUp: true };
         }
-        tableau[destCol].push(...moving);
+        tableau[bestCol].push(...moving);
         return { ...g, tableau };
       });
       setMoves((m) => m + 1);
@@ -849,13 +919,19 @@ const startDrag = (e, card, source) => {
       return;
     }
 
-    // 4. Si hay múltiples destinos → seleccionar el grupo y dejar que el usuario elija
+    // ★ PRIORIDAD 3: Múltiples destinos → seleccionar y dejar elegir al usuario
+    const validDestinations = [];
+    for (let destCol = 0; destCol < 7; destCol++) {
+      if (destCol !== col && canPlaceOnTableau(card, game.tableau[destCol])) {
+        validDestinations.push(destCol);
+      }
+    }
     if (validDestinations.length > 1) {
       setSelection({ source: 'tableau', col, cardIndex });
       return;
     }
 
-    // 5. Si no hay destinos → solo seleccionar (o deseleccionar si ya estaba)
+    // Sin destinos → solo seleccionar (o deseleccionar si ya estaba)
     if (selection && selection.col === col && selection.cardIndex === cardIndex) {
       setSelection(null);
     } else {
@@ -1009,7 +1085,7 @@ const isDealingCard = (colIndex, rowIndex) => {
             const sel = !!selection && selection.source === 'foundation' && selection.fIndex === f;
             const topCard = pile[pile.length - 1];
             return (
-              <div key={f}>
+              <div key={f} data-foundation-slot={f}>
                 {pile.length > 0 ? (
                   <SolitaireCard
                     card={topCard}
@@ -1033,25 +1109,23 @@ const isDealingCard = (colIndex, rowIndex) => {
 
         <div className="grid grid-cols-7 gap-1 sm:gap-2">
           {game.tableau.map((column, col) => (
-            <div key={col} className="flex flex-col items-center" style={{ width: 'var(--card-w)' }}>
+            <div key={col} className="flex flex-col items-center" style={{ width: 'var(--card-w)' }} data-tableau-slot={col}>
               {column.length === 0 ? (
                 <EmptySlot
                   onClick={() => handleTableauColumnClick(col)}
-                  className="data-tableau-slot"
-                  data-tableau-slot={col}
                 />
               ) : (
-                <div
+<div
                   style={{
                     position: 'relative',
                     width: '100%',
-                    height: `${Math.max(90, column.length * FACE_UP_OFFSET + 20)}px`,
+                    height: getColumnHeight(column),
                   }}
                 >
                   {column.map((card, i) => {
                     const isDealing = isDealingCard(col, i);
                     const delay = getDealDelay(col, i);
-                    
+                    const cardTop = getCardTop(column, i);
                     
                     return (
                       <div
@@ -1061,7 +1135,7 @@ const isDealingCard = (colIndex, rowIndex) => {
                           position: 'absolute',
                           width: '100%',
                           left: 0,
-                          top: `${i === 0 ? 0 : (i * (card.faceUp ? FACE_UP_OFFSET : FACE_DOWN_OFFSET))}px`,
+                          top: `${cardTop}px`,
                           zIndex: i + 1,
                           cursor: card.faceUp ? 'grab' : 'default',
                         }}

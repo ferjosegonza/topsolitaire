@@ -1,23 +1,24 @@
 # P/ modificar en el juego:
 
 Quiero que añadas estos comportamientos:
-1. en el juego actualmente el usuario tiene que hacer clic en una carta y luego clic en la otra carta donde quiere llevar la carta en la que hizo clic inicialmente, pero quiero que el usuario también pueda "arrastrar" una carta haciendo clic sin soltar el clic y soltando recién sobre la carta o el lugar donde la quiere dejar y se vea visualmente agradable ese "arrastre".
-2. si el contenido de los archivos es consistente con el resto del proyecto quiero que analices lo de qué se trata el sitio web y que el contenido de todos los archivos se corresponda con el mismo.
-3. Quiero que realices los siguientes efectos visuales:
-3.1 Cuando se da vuelta una carta (ya sea en el mazo o la q esta boca abajo debajo en una de las columnas) que se vea un efecto bonito y un sonido.
-3.2 Cuando una carta aterriza en el destino.
-3.3 Cuando empieza a barajarse el juego (como un effcto de repartir, quiero que se haga a una velocidad rápida pero aún visible).
-3.4 Cuando se gana o resuelve el juego, que haya algún efecto visual bonito.
-3.5 Cuando se toca la carta, que se vaya automaticamente donde puede irse, si tiene dos opciones de carta donde pudiera irse la carta clicada, aplica tu mejor criterio.
-3.6 Reproducir breves y simpáticos sonidos de dar vuelta la carta, de repartir cuando comienza y de festejar cuando termina
-3.7 Que haya un boton bien visible para mute/unmute
-3.8 Agregar un botón para volver a dar o barajar nuevamente (por ejemplo si el usuario quiere empezar de nuevo).
-3.9 dale 3 niveles de dificultad.
-4. quiero que todo lo que te pedí lo pongas en orden de prioridad según tu criterio y vayas haciendo de una cosa por vez y siempre actualizando un archivo TODO.md
-5. antes de efectuar todos estos cambios quiero que crees una batería de todo tipo de tests automatizados que yo pueda correr después de aplicar cada uno de los cambios que te pido así verifico que absolutamente todo siga funcionando correctamente en el sitio web, ya sea funcionamiento del juego, links, referencias, enlaces y todo lo que se te ocurra que debiera ser testeado para garantizar que todo siga funcionando correctamente en todo el sitio web.
+- si el contenido de los archivos es consistente con el resto del proyecto quiero que analices lo de qué se trata el sitio web y que el contenido de todos los archivos se corresponda con el mismo.
+- quiero que todo lo que te pedí lo pongas en orden de prioridad según tu criterio y vayas haciendo de una cosa por vez y siempre actualizando un archivo TODO.md no quiero que borres el contenido de TODO.md sino que lo vayas actualizando con el criterio de volcar a lo hecho, lo en progreso y lo pendiente, para no perder nada.
+- quiero que verifiques que los tests existentes testear todo lo que puede ser testeable del proyecto para que se pueda correr toda la batería de tests antes de subir a producción después de aplicar cada uno de los cambios que te pido así verifico que absolutamente todo siga funcionando correctamente en el sitio web, ya sea funcionamiento del juego, links, referencias, enlaces y todo lo que se te ocurra que debiera ser testeado para garantizar que todo siga funcionando correctamente en todo el sitio web.
+- Quiero que realices los siguientes efectos visuales:
+-- Cuando empieza a barajarse el juego (como un effcto de repartir, quiero que se haga a una velocidad rápida pero aún visible).
+-- Cuando se gana o resuelve el juego, que haya algún efecto visual bonito.
+-- Reproducir breves y simpáticos sonidos:
+--- de dar vuelta la carta,
+--- de repartir cuando comienza y 
+--- de festejar cuando termina
+-- dale 3 niveles de dificultad.
 
+Corregir esto:
 
-FALTA HACER:
-- te había pedido generar este comportamiento: "quiero que si se hace clic en la carta quiero que la carta si tiene algún lugar donde ir (por ejemplo es un 10 rojo y hay una J negra en una de las columnas) se vaya a esa carta automáticamente viajando con un movimiento suave (si ya existe ese efecto visual de movimiento suave pero rápido), si hay más de una opción (por ejemplo un 10 rojo le hace clic pero hay dos J negra) usa tu criterio para elegir cuál debería ser, y explicamelo" veo que el juego ya lo hace ¿qué criterio se aplica actualmente si hay más de una opción? si le hago clic debería ir sobre la carta que le corresponde (si tuviera dónde ir) por ejemplo si hago clic en un 7 rojo y hay un 6 del mismo palo sobre alguna de las fundaciones se entiende que vaya prioritariamente ahí o en su defecto a alguna columna si hay un 8 negro se entiende?
-- verificar si los tests testean todo lo que pueda ser testeable
-- si hago clic sobre una carta y ésta tiene un lugar a donde ir, se va automáticamente, pero si intento llevarla haciendo clic y no soltando para  arrastrarla ésta no se deposita correctamente sobre la otra y vuelve a su lugar de origen, debería también tener esa opción. Dime qué entiendes de esto antes de hacerlo.
+1. En cada columna hay varias cartas boca abajo y una boca arriba, que está arriba de todas las demás. Las cartas boca abajo visualmente tienen la misma separación una de otra, excepto la que está boca arriba, que se encuentra visualmente un poco más abajo, es decir un poco más alejada de la última carta boca abajo que está debajo de ella, te aclaro algo que quizá te ayude a entender en qué parte del código está el error: vi que al comenzar el juego las columnas de izquierda a derecha tienen cada vez más cartas y cuantas más cartas tiene la columna, más abajo y alejada está la carta boca arriba de la última carta boca abajo ¿se entiende? dime lo que entiendes antes de proceder a solucionarlo.
+
+2. el recuadro verde que contiene todas las partes del juego (el que contiene todo: Tableau, Foundation, Mazo o Stock, Waste, etc) aparentemente me parece (no sé, dime tú) que tiene un alto máximo porque no se ajusta automáticamente al alto de las columnas más altas. Entiendo que debería contener todo el juego dinámicamente aún si este se agranda. Entiendo que este aparente error visual puede estar relacionado al problema anterior ya que veo que cuando una columna agranda su cantidad de cartas, el espacio verde que rodea todo el juego aumenta su altura también y de forma dinámica así que quizá (dime tú si es así) si se soluciona el problema anterior de la distancia entre la carta boca arriba de cada columna y su carta boca abajo para que sea la misma distancia que entre cada carta boca abajo, también podría solucionarse el tamaño dinámico del recuadro mayor verde para que contenga a todas las cartas del juego, dime qué entendiste de todo esto antes de ponerte a trabajar en solucionar, para que yo te confirme que entendiste bien lo que quiero que hagas.
+
+3. Si hago clic en "New Game" intenta repartir pero se interrumpe cuando está repartiendo, más específicamente cuando está intentando repartir la cuarta columna.
+
+Nota Final: pon prioridad en lo que hay que corregir, luego en los nuevos comportamientos.
