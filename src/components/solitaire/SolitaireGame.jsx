@@ -1012,6 +1012,24 @@ const isDealingCard = (colIndex, rowIndex) => {
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
         </div>
         <div className="flex gap-2">
+          {/* ============================================================ */}
+          {/* ☕ BOTÓN CAFECITO - Invitar un café (donación)              */}
+          {/* ============================================================ */}
+          <a
+            href="https://cafecito.app/ferjuegos"
+            target="_blank"
+            rel="noopener"
+            className="rounded-2xl transition-all duration-200 flex items-center justify-center gap-4 min-h-[64px] shadow-xl hover:scale-[1.02] bg-[#80A9BA] hover:bg-[#80A9BA] border-2 border-[#80A9BA] px-4"
+            aria-label="Invitame un café en cafecito.app"
+          >
+            <img
+              src="https://cdn.cafecito.app/imgs/buttons/button_4.png"
+              srcSet="https://cdn.cafecito.app/imgs/buttons/button_4.png 1x, https://cdn.cafecito.app/imgs/buttons/button_4_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_4_3.75x.png 3.75x"
+              alt="Invitame un café en cafecito.app"
+              className="h-[44px] w-auto"
+            />
+          </a>
+
           <button
             onClick={toggleMute}
             className={`rounded-2xl text-white font-bold transition-all duration-200 flex items-center gap-4 min-h-[64px] text-xl shadow-xl ${

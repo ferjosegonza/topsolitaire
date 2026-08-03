@@ -104,6 +104,12 @@ The app is intentionally designed as a public solitaire experience with no login
 - **Responsive**: Works on desktop, tablet, and mobile devices
 - **No Installation Required**: Play directly in your browser
 
+## Support
+
+If you enjoy the game, you can invite me a coffee (donation) here:
+
+[![Invitame un café en cafecito.app](https://cdn.cafecito.app/imgs/buttons/button_4.svg)](https://cafecito.app/ferjuegos)
+
 ## Tech Stack
 
 - **React** - UI Framework

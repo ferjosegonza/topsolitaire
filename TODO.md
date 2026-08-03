@@ -290,3 +290,17 @@ Si el clic es en una carta que no es la última de la columna, se verifica que t
 - [ ] **P3-T2**: Test de layout del tableau (offsets acumulativos, alto dinámico)
 - [ ] **P3-T3**: Correr batería completa pre-producción
 - [ ] **P3-T4**: Actualizar README.md con las nuevas features
+
+---
+
+### 🟠 Fase 11: Botón de cafecito (donación)
+**Fecha:** Sesión actual
+
+#### ✅ Completado
+- [x] **Cafecito-1**: Agregar botón de cafecito a la izquierda del botón de sonido en `src/components/solitaire/SolitaireGame.jsx`
+  - Enlace a `https://cafecito.app/ferjuegos` (abre en pestaña nueva)
+  - Misma altura (`min-h-[64px]`) y estilo redondeado que el botón de sonido
+  - Usa la imagen oficial `button_4.png` con `srcset` (1x, 2x, 3.75x)
+  - No afecta el comportamiento del botón de sonido ni de "New Game"
+- [x] **Cafecito-2**: Agregar snippet Markdown del botón de cafecito al `README.md` (sección "Support")
+- [x] **Cafecito-3**: Verificar compilación con `npm run build` (build exitoso, sin errores)
