@@ -10,5 +10,6 @@ Quiero que realices lo siguiente teniendo en cuenta algunas aclaraciones que te 
 -- Reproducir breves y simpáticos sonidos:
 --- de festejar cuando termina (dime si esto ya existe, y de existir, cómo lo testo ya que me cuesta ganar el juego).
 
-Nota Final: pon prioridad en lo que hay que corregir, luego en los nuevos comportamientos.
-
+Nota Final, siempre ten en cuenta que:
+- Ya te pasó esto: "PowerShell bloquea la ejecución de scripts. Uso el binario de vitest directamente con node.", luego: "El comando terminó sin salida capturada. Voy a ejecutar el test escribiendo la salida a un archivo para leerla.".
+- Pon prioridad en lo que hay que corregir, luego en los nuevos comportamientos.
