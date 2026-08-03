@@ -1,0 +1,15 @@
+# P/ modificar en el juego:
+
+Quiero que realices lo siguiente teniendo en cuenta algunas aclaraciones que te doy y añadas algunos comportamientos:
+- revisa si todo el contenido de los archivos es consistente con el resto del proyecto, analiza de qué se trata el sitio web y que el contenido de todos los archivos se corresponda con el mismo y que no haya cabos sueltos, por ejemplo si hay archivos relacionados a un proceso de login y ves que no se utiliza gestión de usuarios en ninguna parte del sitio web, planteame como tarea a realizar quitar los archivos relacionados a gestión de login, si te lo apruebo, sería una tarea más a realizar por ti.
+- quiero que todo lo que te pido lo pongas en orden de prioridad según tu criterio y vayas haciendo de una cosa por vez y siempre actualizando un archivo TODO.md, no quiero que borres el contenido de TODO.md sino que lo vayas actualizando con el criterio de volcar a lo hecho, lo en progreso y lo pendiente, para no perder nada.
+- quiero que verifiques que los tests existentes abarquen todo lo que puede ser testeable del proyecto para que se pueda correr toda la batería de tests antes de subir a producción y confirmar que los cambios que se pretenden subir no rompa nada del código existente así verifico que absolutamente todo siga funcionando correctamente en el sitio web, ya sea funcionamiento del juego, links, referencias, enlaces y todo lo que se te ocurra que debiera ser testeado para garantizar que todo siga funcionando correctamente en todo el sitio web.
+- dale 3 niveles de dificultad.
+- Quiero que realices los siguientes efectos visuales:
+-- Cuando se gana o resuelve el juego, que haya algún efecto visual bonito (dime si esto ya existe, y de existir, cómo lo testo ya que me cuesta ganar el juego).
+-- Reproducir breves y simpáticos sonidos:
+--- de festejar cuando termina (dime si esto ya existe, y de existir, cómo lo testo ya que me cuesta ganar el juego).
+
+Nota Final, siempre ten en cuenta que:
+- Ya te pasó esto: "PowerShell bloquea la ejecución de scripts. Uso el binario de vitest directamente con node.", luego: "El comando terminó sin salida capturada. Voy a ejecutar el test escribiendo la salida a un archivo para leerla.".
+- Pon prioridad en lo que hay que corregir, luego en los nuevos comportamientos.

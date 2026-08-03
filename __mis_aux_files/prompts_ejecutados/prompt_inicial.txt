@@ -11,3 +11,5 @@ Build me a single-page, responsive website in English with the following require
 
 The final product should be a single .html file or minimal files that I can upload to any hosting and immediately apply for Google AdSense.
 
+
+

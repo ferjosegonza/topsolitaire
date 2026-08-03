@@ -1,0 +1,10 @@
+Actúa como un desarrollador Frontend experto con enfoque en UX (Experiencia de Usuario). Quiero integrar dos plataformas de donaciones en mi sitio web actual: "Cafecito" (para mi público de Argentina) y "Buy Me a Coffee" (para mi público de EE.UU. y Europa). 
+
+Necesito que diseñes un componente HTML y CSS moderno, limpio y completamente responsivo (que se adapte a celulares y computadoras) para mostrar ambas opciones de forma clara.
+
+Requisitos del diseño y código:
+1. Estructura visual: Debe ser una sección o un contenedor flotante con un título claro (ej: "Apoya mi contenido / Support my work"). Debe incluir dos botones principales bien diferenciados.
+2. Botón 1 (Cafecito): Debe decir "Invitame un Cafecito (Argentina)" o un texto similar en español. Debe incluir visualmente el color característico de Cafecito (celeste/azul claro) o un ícono representativo.
+3. Botón 2 (Buy Me a Coffee): Debe decir "Buy Me a Coffee (International)" o un texto similar en inglés. Debe usar su color característico (amarillo/dorado) o un ícono representativo.
+4. Experiencia de Usuario (UX): El diseño debe dejar muy en claro a los usuarios de Argentina que deben usar Cafecito (para evitar impuestos al dólar) y a los extranjeros que deben usar Buy Me a Coffee. Podés usar subtítulos breves debajo de cada botón para aclararlo.
+5. Formato de entrega: Entrégame el código HTML estructurado y el CSS correspondiente de forma separada o dentro de una etiqueta <style>, listo para copiar, pegar y reemplazar con mis enlaces finales. Usa variables CSS para los colores principales si es posible para que pueda adaptarlo a la paleta de mi sitio.
