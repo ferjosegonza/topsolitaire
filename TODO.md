@@ -252,3 +252,41 @@ Si el clic es en una carta que no es la última de la columna, se verifica que t
 - [ ] **P3-T2**: Test de layout del tableau (offsets acumulativos, alto dinámico)
 - [ ] **P3-T3**: Correr toda la batería de tests antes de producción
 - [ ] **P3-T4**: Actualizar README.md con las nuevas features
+
+---
+
+### 🟠 Fase 10: Endurecer tests + limpieza de auth + features
+**Fecha:** Sesión actual
+
+#### ✅ Plan aprobado por el usuario (orden de trabajo)
+- [x] Confirmado: el sitio es TopSolitaire (Klondike gratis, **sin login/registro**, con AdSense)
+- [x] Confirmado: efecto visual de victoria **YA EXISTE** (confetti `canvas-confetti` + overlay "You Won!")
+- [x] Confirmado: sonido de festejo **YA EXISTE** (`public/sounds/win.mp3` + `playWinSound()`)
+- [x] Confirmado orden: (1) endurecer tests, (2) eliminar auth, (3) correr tests, (4) features
+
+#### 🟡 En progreso (P1-B — endurecer tests)
+- [x] **P1-B1**: Reescribir `__tests__/auto-move.test.jsx` con **estado determinista** (mock de `deal`) y verificación real del criterio de auto-move
+- [x] **P1-B2**: Reescribir `__tests__/drag-drop.test.jsx` con conteo real de slots y **drag con coordenadas** (mousedown/mousemove/mouseup)
+- [x] **P1-B3**: Crear `__tests__/app-routing.test.jsx` que verifique App y rutas (Home, Privacy, Contact, fallback) — **garantía de que eliminar auth no rompe el sitio**
+- [ ] **P1-B-Verify**: Correr batería completa de tests (7+3=10 archivos) y verificar que TODO pase
+
+#### 🔵 Pendiente (P1-A — limpieza de auth, después de P1-B)
+- [ ] **P1-A**: Eliminar sistema de autenticación/login NO utilizado:
+  - `src/pages/Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
+  - `src/components/AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
+  - `src/lib/AuthContext.jsx`, `src/lib/app-params.js`, `src/lib/PageNotFound.jsx`
+  - `src/api/topsolitaireClient.js`
+  - `topsolitaire-config/entities/User.jsonc`
+- [ ] **P1-A2**: Correr TODA la batería de tests tras eliminar auth → verificar 0 rupturas (los tests de `app-routing` lo confirman)
+
+#### 🔵 Pendiente (P2 — features)
+- [ ] **P2-A**: 3 niveles de dificultad (Fácil: repasos ∞ / Medio: 3 / Difícil: 1) con selector UI + `localStorage`
+- [ ] **P2-B**: Pulir efecto visual de victoria (confeti más vistoso + overlay animado)
+- [ ] **P2-C**: Verificar/mejorar sonido de festejo (`win.mp3`)
+- [ ] **P2-D** (opcional, aprobado): Atajo oculto para previsualizar la victoria sin ganar la partida
+
+#### 🔵 Pendiente (P3 — tests de features y pre-producción)
+- [ ] **P3-T1**: Test de dificultad (3 niveles, config de repasos)
+- [ ] **P3-T2**: Test de layout del tableau (offsets acumulativos, alto dinámico)
+- [ ] **P3-T3**: Correr batería completa pre-producción
+- [ ] **P3-T4**: Actualizar README.md con las nuevas features
