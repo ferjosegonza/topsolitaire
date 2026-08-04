@@ -115,45 +115,6 @@
   );
 }
 
-/* Contenedor de anuncios */
-.ad-top {
-  margin: 8px auto 12px auto;
-  min-height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 100%;
-}
-
-.ad-bottom {
-  margin: 12px auto 8px auto;
-  min-height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 100%;
-}
-
-.ad-side {
-  display: none; /* Oculto por defecto */
-}
-
-/* Mostrar lateral solo en pantallas grandes */
-@media (min-width: 1200px) {
-  .ad-side {
-    display: flex !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .ad-top, .ad-bottom {
-    min-height: 60px;
-  }
-}
-
-
 /* ============================================================ */
 /* EFECTOS VISUALES - ANIMACIONES */
 /* ============================================================ */

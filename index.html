@@ -112,7 +112,7 @@
         min-height: 90px;
       }
 
-      /* Anuncio lateral (solo escritorio) */
+/* Anuncio lateral (solo escritorio) */
       .ad-side {
         position: fixed;
         right: 8px;
@@ -129,10 +129,8 @@
         .ad-side {
           display: flex;
         }
-        /* Ajustar el juego para que no se superponga */
-        #root {
-          margin-right: 180px;
-        }
+        /* El juego ya no se desplaza: el lateral es fijo y no superpone
+           el contenido principal (el tablero tiene su propio ancho). */
       }
 
       @media (max-width: 768px) {
@@ -142,6 +140,18 @@
         .ad-container {
           margin: 6px auto;
         }
+      }
+
+      /* Hacer que los contenedores colapsen elegantes cuando no hay anuncio
+         (AdSense aún no llena el espacio): el <ins> vacío se oculta. */
+      .ad-container:has(ins.adsbygoogle:empty) {
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .ad-container:has(ins.adsbygoogle:empty)::before {
+        content: '';
+        display: none;
       }
     </style>
   </head>

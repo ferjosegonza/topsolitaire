@@ -1,6 +1,4 @@
 import React from 'react';
-//import AdSlot from '@/components/AdSlot';
-import AdBanner from '@/components/AdBanner';
 import Footer from '@/components/Footer';
 import SolitaireGame from '@/components/solitaire/SolitaireGame';
 
@@ -8,11 +6,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
 
-      <AdBanner
-        slot="2778338000"
-        format="auto"
-        className="w-full ad-top"
-      />
+      {/* ============================================================ */}
+      {/* ANUNCIOS: se renderizan en index.html (estáticos) para evitar */}
+      {/* duplicación de slots de AdSense. */}
+      {/* ============================================================ */}
 
       <main className="flex-1 w-full">
         <div className="mx-auto max-w-[1100px] px-3 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
@@ -27,29 +24,10 @@ export default function Home() {
             </header>
             <SolitaireGame />
           </section>
-
-          <aside className="hidden lg:block w-[300px] shrink-0">
-            <div className="sticky top-4">
-
-              <AdBanner
-                slot="1348751976"
-                format="auto"
-                className="w-full"
-                style={{ minHeight: '600px' }}
-              />
-            </div>
-          </aside>
         </div>
       </main>
 
       <Footer />
-
-
-      <AdBanner
-        slot="5866581486"
-        format="auto"
-        className="w-full ad-bottom"
-      />
     </div>
   );
 }

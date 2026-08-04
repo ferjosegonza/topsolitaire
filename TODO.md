@@ -304,3 +304,81 @@ Si el clic es en una carta que no es la última de la columna, se verifica que t
   - No afecta el comportamiento del botón de sonido ni de "New Game"
 - [x] **Cafecito-2**: Agregar snippet Markdown del botón de cafecito al `README.md` (sección "Support")
 - [x] **Cafecito-3**: Verificar compilación con `npm run build` (build exitoso, sin errores)
+
+---
+
+### 🟡 Fase 12: Rediseño UX/UI integrado + Modo Lluvioso 🎨
+**Fecha:** Sesión actual
+**Contexto:** Auditoría integral de UX/UI, diseño emocional, responsive, accesibilidad, rendimiento y publicidad. Se trabaja en **objetivos (branches) independientes**. Compromiso: **no romper la lógica del juego ni el código de AdSense**.
+
+#### 🟢 COMPLETADO — O7: Publicidad responsive (corrección de críticos)
+> **Prioridad:** se atacaron los críticos de AdSense/CLS primero. Enfoque aprobado: mantener los anuncios estáticos de `index.html` y eliminar los `AdBanner` duplicados de React.
+- [x] **O7-C1 (duplicado)**: Eliminados anuncios duplicados del mismo slot (`2778338000`, `1348751976`). Se quitaron los `AdBanner` de React en `App.jsx` (top/bottom/side) y `Home.jsx` (ad-top + aside). Un único punto de render por slot en `index.html`.
+- [x] **O7-C2 (lateral fijo)**: Se quitó `#root { margin-right:180px }` que desplazaba el tablero en ≥1200px. El `ad-side` queda fijo sin empujar el contenido.
+- [x] **O7-C3 (min-height fijo)**: Contenedores de anuncios colapsan elegantemente cuando el `<ins>` está vacío (`.ad-container:has(ins.adsbygoogle:empty)` → min-height:0, margin:0) para evitar huecos cuando AdSense está en evaluación.
+- [x] **O7-C4**: Verificado build (`npm run build`) → compila sin errores. El script de AdSense de `index.html` no se modificó.
+- [x] **O7-V**: Verificado: tests de `app-routing` y `ui` pasan (23/23). Se corrigió un fallo PREEXISTENTE en `app-routing.test.jsx` (buscaba `/no registration or login/` pero el texto real era "without registration or login").**Nota**: los tests de `drag-drop` y `auto-move` que fallan son **preexistentes** (documentados "⚠️ Parcial" en Fase 7) y NO están relacionados con O7.
+
+#### 🔵 PENDIENTE — O1: Contexto de tema + Toggle Modo Lluvioso
+- [ ] **O1-C1**: Crear `src/lib/ThemeContext.jsx` (React Context): `theme` (`'original' | 'rainy'`), `toggleTheme`, persistencia en `localStorage`, **activo por defecto = rainy**.
+- [ ] **O1-C2**: Crear `src/components/ui/ThemeToggle.jsx` (toggle elegante, sin recargar página).
+- [ ] **O1-C3**: Integrar en `App.jsx` y `main.jsx` (envolver con provider).
+- [ ] **O1-V**: Test de que el toggle cambia el estado y persiste en localStorage.
+
+#### 🔵 PENDIENTE — O2: Paleta de colores + variables CSS de ambos temas
+- [ ] **O2-C1**: Definir en `src/index.css` variables de ambos temas (fondo, superficies, acentos, texto, tablero, dorso de carta) con los HEX de la paleta propuesta.
+- [ ] **O2-C2**: Aplicar `[data-theme]` / clase en `body` para el cambio de tema.
+- [ ] **O2-V**: Transición suave de colores (`transition: background-color .5s`).
+
+#### 🔵 PENDIENTE — O3: Fondo animado (lluvia, niebla, nubes) — CSS puro
+- [ ] **O3-C1**: Crear `src/components/RainyBackground.jsx` (lluvia con rayas SVG + keyframes, niebla con radial-gradient, nubes).
+- [ ] **O3-C2**: Integrar en `App.jsx` (fondo fijo, `pointer-events:none`).
+- [ ] **O3-C3**: Respetar `prefers-reduced-motion`.
+
+#### 🔵 PENDIENTE — O4: Tipografías (Nunito)
+- [ ] **O4-C1**: Cargar Nunito en `index.html` (preconnect + display=swap, un solo archivo).
+- [ ] **O4-C2**: Actualizar `--font-heading`/`--font-body` en `index.css` y `tailwind.config.js`.
+
+#### 🔵 PENDIENTE — O5: Rediseño visual (tablero, cartas, botones, slots, íconos)
+- [ ] **O5-C1**: Rediseñar tablero (bordes, sombras, radio) y dorso de carta (textura cálida + lluvia).
+- [ ] **O5-C2**: Jerarquía visual del header (título + subtítulo con identidad).
+- [ ] **O5-C3**: Reemplazar emojis por íconos SVG (`lucide-react`, ya instalado).
+- [ ] **O5-C4**: Estilos consistentes del `details` "How to play".
+- [ ] **O5-V**: Verificar que la lógica del juego no cambia (tests siguen pasando).
+
+#### 🔵 PENDIENTE — O6: Botón Cafecito responsive
+- [ ] **O6-C1**: Convertir en **FAB flotante en móvil** (no tapa el juego) e **inline en desktop**.
+- [ ] **O6-C2**: Ajustar tamaño/posición según ancho disponible; nunca tapar contenido.
+- [ ] **O6-V**: Verificar en viewports móviles (360px, 390px, 768px) y desktop.
+
+#### 🔵 PENDIENTE — O8: Accesibilidad
+- [ ] **O8-C1**: `onKeyDown` (Enter/Espacio) en cartas para navegación por teclado.
+- [ ] **O8-C2**: Corregir contraste de texto (`text-slate-500` → WCAG AA) y slots vacíos.
+- [ ] **O8-C3**: `aria-label` en cartas/botones faltantes.
+- [ ] **O8-C4**: `prefers-reduced-motion` global.
+
+#### 🔵 PENDIENTE — O9: Sonido ambiental de lluvia (opcional, ligado al modo)
+- [ ] **O9-C1**: Hook `useRainSound` (Howler/useSound) con loop bajo, ligado al Modo Lluvioso.
+- [ ] **O9-C2**: Integrar sin romper `useSoundEffects` actual.
+
+#### 🔵 PENDIENTE — O10: Responsive final + Core Web Vitals + limpieza
+- [ ] **O10-C1**: Revisión integral de resolución (360px → ultrawide): distribución, cartas, fuentes, botones, márgenes, publicidad.
+- [ ] **O10-C2**: Verificar LCP/CLS/INP (evitar librerías pesadas, animaciones costosas).
+- [ ] **O10-C3**: Correr toda la batería de tests + build final.
+
+---
+
+## 📋 FASE 12 — Resumen de objetivos (para branches de GitHub Desktop)
+
+| Objetivo | Estado | Descripción |
+|---|---|---|
+| **O7** | 🟢 Completado | Publicidad responsive (deduplicar slots, lateral, min-height) |
+| **O1** | 🔵 Pendiente | Contexto de tema + Toggle Modo Lluvioso |
+| **O2** | 🔵 Pendiente | Paleta de colores + variables de ambos temas |
+| **O3** | 🔵 Pendiente | Fondo animado lluvia/niebla/nubes (CSS puro) |
+| **O4** | 🔵 Pendiente | Tipografías (Nunito) |
+| **O5** | 🔵 Pendiente | Rediseño visual (tablero, cartas, botones, íconos) |
+| **O6** | 🔵 Pendiente | Botón Cafecito responsive (FAB en móvil) |
+| **O8** | 🔵 Pendiente | Accesibilidad (teclado, contraste, aria, reduced-motion) |
+| **O9** | 🔵 Pendiente | Sonido ambiental de lluvia |
+| **O10** | 🔵 Pendiente | Responsive final + CWV + limpieza |
