@@ -91,6 +91,83 @@
   }
 }
 
+/* ============================================================ */
+/* TEMAS - Dark Mode vs Light Mode                              */
+/* ============================================================ */
+
+/* 🌧️ MODO LLUVIOSO (por defecto): calma, niebla, grises azulados, madera cálida */
+:root,
+[data-theme="rainy"] {
+  --bg-app: #1e293b;            /* slate-800: fondo general azulado */
+  --bg-surface: #334155;        /* slate-700: superficies */
+  --bg-surface-2: #475569;      /* slate-600: hover/active */
+  --bg-board: #1e3a5f;          /* azul marino profundo: tablero */
+  --bg-board-2: #2d5a8f;        /* azul medio: gradiente tablero */
+  --text-primary: #f1f5f9;      /* slate-100: legible */
+  --text-secondary: #94a3b8;    /* slate-400: legible */
+  --accent: #7dd3fc;            /* sky-300: acento frío */
+  --accent-hover: #bae6fd;      /* sky-200 */
+  --accent-muted: rgba(125, 211, 252, 0.15);
+  --card-back: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+  --card-back-border: rgba(255, 255, 255, 0.18);
+  --card-back-texture: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] {
+  --bg-app: #0f172a;            /* slate-900: fondo general */
+  --bg-surface: #1e293b;        /* slate-800: superficies */
+  --bg-surface-2: #334155;      /* slate-700: hover/active */
+  --bg-board: #064e3b;          /* emerald-900: tablero */
+  --bg-board-2: #065f46;        /* emerald-800: gradiente tablero */
+  --text-primary: #f1f5f9;      /* slate-100: legible */
+  --text-secondary: #94a3b8;    /* slate-400: legible */
+  --accent: #10b981;            /* emerald-500 */
+  --accent-hover: #34d399;      /* emerald-400 */
+  --accent-muted: rgba(16, 185, 129, 0.2);
+  --card-back: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+  --card-back-border: rgba(255, 255, 255, 0.18);
+  --card-back-texture: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --bg-app: #f8fafc;            /* slate-50: fondo general */
+  --bg-surface: #ffffff;        /* slate-0: superficies */
+  --bg-surface-2: #f1f5f9;      /* slate-100: hover/active */
+  --bg-board: #059669;          /* emerald-600: tablero */
+  --bg-board-2: #10b981;        /* emerald-500: gradiente tablero */
+  --text-primary: #0f172a;      /* slate-900: principal */
+  --text-secondary: #475569;    /* slate-600: legible */
+  --accent: #059669;            /* emerald-600 */
+  --accent-hover: #10b981;      /* emerald-500 */
+  --accent-muted: rgba(5, 150, 105, 0.12);
+  --card-back: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+  --card-back-border: rgba(255, 255, 255, 0.18);
+  --card-back-texture: rgba(255, 255, 255, 0.08);
+}
+
+/* Sombras de tarjetas adaptadas al tema */
+[data-theme="rainy"] .solitaire-card:not(.solitaire-card-back),
+[data-theme="dark"] .solitaire-card:not(.solitaire-card-back) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+[data-theme="light"] .solitaire-card:not(.solitaire-card-back) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Transición suave entre temas */
+body,
+body * {
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
+}
+
+/* Respetar prefers-reduced-motion: desactivar transiciones de tema */
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body * {
+    transition: none !important;
+  }
+}
+
 /* Klondike Solitaire cards */
 .solitaire-card {
   width: var(--card-w, 60px);
@@ -99,8 +176,8 @@
 }
 
 .solitaire-card-back {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: var(--card-back);
+  border: 1px solid var(--card-back-border);
 }
 
 .solitaire-card-back::after {
@@ -110,7 +187,7 @@
   border-radius: 4px;
   background-image: repeating-linear-gradient(
     45deg,
-    rgba(255, 255, 255, 0.08) 0 5px,
+    var(--card-back-texture) 0 5px,
     transparent 5px 10px
   );
 }
@@ -212,4 +289,144 @@
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
   animation: card-shine 0.8s ease-in-out;
+}
+
+/* ============================================================ */
+/* 🌧️ MODO LLUVIOSO - FONDO ANIMADO (lluvia, niebla, nubes)     */
+/* CSS puro, ligero. Solo se monta cuando el tema es "rainy"     */
+/* (ver RainyBackground.jsx). Fixed + pointer-events:none para   */
+/* NO afectar CLS, LCP ni la interacción con el juego.           */
+/* ============================================================ */
+
+.rainy-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ------- LLUVIA: rayas delgadas cayendo en diagonal ------- */
+.rainy-drop {
+  position: absolute;
+  top: -10vh;
+  width: 1px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(174, 194, 224, 0.4));
+  animation-name: rainy-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes rainy-fall {
+  0% {
+    transform: translateY(-5vh) translateX(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(115vh) translateX(-4vw);
+    opacity: 0;
+  }
+}
+
+/* ------- NIEBLA: capas radiales que derivan lentamente ------- */
+.rainy-fog {
+  position: absolute;
+  left: -15%;
+  width: 130%;
+  height: 38%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(148, 163, 184, 0.16) 0%,
+    rgba(148, 163, 184, 0.07) 40%,
+    transparent 70%
+  );
+  animation: rainy-fog-drift 30s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.rainy-fog--bottom {
+  bottom: -5%;
+}
+
+.rainy-fog--top {
+  top: -5%;
+  height: 28%;
+  animation-delay: -15s;
+}
+
+@keyframes rainy-fog-drift {
+  0% {
+    transform: translateX(-4%);
+  }
+  100% {
+    transform: translateX(4%);
+  }
+}
+
+/* ------- NUBES: figuras CSS redondeadas cruzando la pantalla ------- */
+.rainy-cloud {
+  position: absolute;
+  width: 180px;
+  height: 52px;
+  background: radial-gradient(
+    ellipse at 30% 60%,
+    rgba(148, 163, 184, 0.22) 0%,
+    rgba(148, 163, 184, 0.10) 45%,
+    transparent 70%
+  );
+  border-radius: 999px;
+  filter: blur(4px);
+  animation-name: rainy-cloud-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.rainy-cloud::before,
+.rainy-cloud::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.rainy-cloud::before {
+  width: 66px;
+  height: 66px;
+  left: 28px;
+  top: -34px;
+}
+
+.rainy-cloud::after {
+  width: 52px;
+  height: 52px;
+  right: 30px;
+  top: -22px;
+}
+
+@keyframes rainy-cloud-drift {
+  from {
+    transform: translateX(-15vw);
+  }
+  to {
+    transform: translateX(115vw);
+  }
+}
+
+/* Respetar prefers-reduced-motion: se desactiva TODO el fondo animado */
+@media (prefers-reduced-motion: reduce) {
+  .rainy-layer,
+  .rainy-drop,
+  .rainy-cloud,
+  .rainy-fog {
+    display: none !important;
+  }
 }

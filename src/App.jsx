@@ -3,6 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
+import RainyBackground from './components/RainyBackground';
 import Home from './pages/Home';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Contact from './pages/Contact';
@@ -12,6 +13,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>
+        {/* 🌧️ Fondo animado del Modo Lluvioso (solo visible en theme=rainy) */}
+        <RainyBackground />
         <ScrollToTop />
         
         {/* ============================================================ */}

@@ -10,6 +10,7 @@ import {
   SUIT_SYMBOLS,
 } from '@/lib/solitaire';
 import SolitaireCard from './SolitaireCard';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 const CARD_VARS = {
@@ -1006,7 +1007,7 @@ const isDealingCard = (colIndex, rowIndex) => {
 
   return (
     <div style={CARD_VARS} className="w-full">
-      <div className="flex items-center justify-between mb-3 text-emerald-50/90 text-sm">
+      <div className="flex items-center justify-between mb-3 text-sm" style={{ color: 'var(--text-primary)' }}>
         <div className="flex gap-4">
           <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
@@ -1030,6 +1031,8 @@ const isDealingCard = (colIndex, rowIndex) => {
             />
           </a>
 
+          <ThemeToggle />
+
           <button
             onClick={toggleMute}
             className={`rounded-2xl text-white font-bold transition-all duration-200 flex items-center gap-4 min-h-[64px] text-xl shadow-xl ${
@@ -1052,7 +1055,12 @@ const isDealingCard = (colIndex, rowIndex) => {
         </div>
       </div>
 
-      <div className="relative rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-900 p-2 sm:p-4 shadow-xl">
+<div
+        className="relative rounded-2xl p-2 sm:p-4 shadow-xl"
+        style={{
+          background: 'linear-gradient(135deg, var(--bg-board-2) 0%, var(--bg-board) 100%)',
+        }}
+      >
         <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-3">
           <div>
             {game.stock.length > 0 ? (

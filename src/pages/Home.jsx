@@ -4,7 +4,7 @@ import SolitaireGame from '@/components/solitaire/SolitaireGame';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-app)' }}>
 
       {/* ============================================================ */}
       {/* ANUNCIOS: se renderizan en index.html (estáticos) para evitar */}
@@ -15,10 +15,10 @@ export default function Home() {
         <div className="mx-auto max-w-[1100px] px-3 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
           <section className="flex-1 min-w-0">
             <header className="mb-4 text-center sm:text-left">
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>
                 Play Solitaire Online Free
               </h1>
-              <p className="mt-1 text-sm sm:text-base text-slate-500">
+              <p className="mt-1 text-sm sm:text-base" style={{ color: 'var(--text-secondary)' }}>
                 Classic Klondike Solitaire — no signup, no download, play instantly in your browser.
               </p>
             </header>

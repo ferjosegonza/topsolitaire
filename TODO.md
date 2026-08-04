@@ -1,177 +1,118 @@
-# TODO - Historial Cronológico del Proyecto TopSolitaire
+# TODO — TopSolitaire
 
-> ⚠️ **NOTA IMPORTANTE**: Este archivo NO debe borrarse. Mantiene el historial completo
-> de todo lo que se ha hecho, se está haciendo y falta por hacer.
-> Organizado cronológicamente para mantener trazabilidad.
+> 📜 **Historial cronológico completo** → `__mis_aux_files/TODO_HISTORICO.md`
 
 ---
 
-## 📋 HISTORIAL COMPLETO (cronológico)
+## 🟢 COMPLETADO (resumen)
+
+### Juego funcional
+- Klondike Solitaire completo en React + Vite + Tailwind
+- Componentes: `SolitaireGame`, `SolitaireCard`, lógica en `solitaire.js`
+- Drag & drop con ghost visual, click auto-move con criterio inteligente
+- Sonidos (use-sound) con mute/unmute
+- Efectos visuales: reparto, volteo, aterrizaje, confeti de victoria
+- Temporizador y contador de movimientos
+- Botón Cafecito (donación) integrado en la fila de botones
+
+### Publicidad (O7) — ✅ COMPLETADO
+- Anuncios AdSense estáticos en `index.html` (top, side, bottom)
+- Eliminados `AdBanner` duplicados de React en `App.jsx` y `Home.jsx`
+- Contenedores colapsables con `:has()` para evitar CLS
+- Lateral fijo sin desplazar el tablero
+- Build verificado sin errores
+
+### Temas 3 modos (O1 + O2) — ✅ COMPLETADO
+- `ThemeContext.jsx` con 3 modos: **rainy** (default), dark, light
+- `ThemeToggle.jsx` que cicla rainy → dark → light → rainy
+- Persistencia en `localStorage` (`topsolitaire-theme`)
+- Variables CSS en `index.css` para cada tema (`[data-theme="rainy"]`, `[data-theme="dark"]`, `[data-theme="light"]`)
+- Transición suave de colores (0.5s), respeta `prefers-reduced-motion`
+- Tests de tema (`theme.test.jsx`) que verifican ciclo, persistencia y `aria-checked`
+
+### Tests
+- **10 archivos de test**: solitaire (lógica), sound, drag-drop, auto-move, ui, visual-effects, app-routing, theme (nuevo)
+- Tests de routing (`app-routing`) confirman que el sitio funciona sin auth
+- Tests de tema que verifican ciclo 3 modos y persistencia
+
+### Sonidos
+- `card-flip.mp3`, `card-place.mp3`, `deal.mp3`, `win.mp3`, `click.mp3`
 
 ---
 
-### 🟢 Fase 1: Fundación del proyecto
-**Fecha:** Original
-- [x] Creación del proyecto React + Vite + Tailwind
-- [x] Lógica del juego en `src/lib/solitaire.js` (createDeck, shuffle, deal, canPlaceOnTableau, canPlaceOnFoundation, isWon)
-- [x] Componente base SolitaireCard con renderizado de cartas
-- [x] Componente SolitaireGame con layout de stock, waste, foundations, tableau
-- [x] Sistema de sonidos (useSoundEffects) con mute/unmute
-- [x] Efectos visuales: reparto, volteo, aterrizaje, victoria (confetti)
-- [x] Botón New Game
-- [x] Temporizador y contador de movimientos
+## 🔵 EN PROGRESO
+
+> *(vacío — todos los objetivos activos están en Pendiente)*
 
 ---
 
-### 🟡 Fase 2: Primer análisis y plan de corrección
-**Fecha:** Anterior a la sesión actual
-- [x] Analizar código fuente de SolitaireGame.jsx, SolitaireCard.jsx, solitaire.js
-- [x] Identificar errores y comportamientos incorrectos
-- [x] Crear plan de corrección detallado
-- [x] Obtener aprobación del plan
+## 🔵 PENDIENTE
 
----
+### P1-A: Eliminar archivos de auth no utilizados
+- [ ] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
+- [ ] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
+- [ ] Eliminar lib: `AuthContext.jsx`, `app-params.js`, `PageNotFound.jsx`
+- [ ] Eliminar api: `topsolitaireClient.js`
+- [ ] Eliminar config: `User.jsonc`
+- [ ] Verificar: tests de `app-routing` pasan sin auth (ya probado)
 
-### 🟡 Fase 3: Corrección de errores en SolitaireGame.jsx
-**Fecha:** Anterior a la sesión actual
+### Fase 12: Rediseño UX/UI + Modo Lluvioso
 
-#### Fix 1: Variables indefinidas en endDrag (`colIndex`, `cardIndex`)
-- [x] Reemplazar `colIndex` → `dragSource.col` y `cardIndex` → `dragSource.cardIndex` en la sección de foundation drag
+| Obj | Prioridad | Descripción | Estado |
+|-----|-----------|-------------|--------|
+| O3 | Alta | Fondo animado del Modo Lluvioso (CSS puro, ligero) | 🟢 Completado |
+| O4 | Alta | Tipografías Nunito (preconnect + variables) | 🔵 Pendiente |
+| O5 | Alta | Rediseño visual (tablero, cartas, botones, íconos SVG) | 🔵 Pendiente |
+| O6 | Alta | Botón Cafecito responsive (FAB en móvil, inline desktop) | 🔵 Pendiente |
+| O8 | Media | Accesibilidad (teclado, contraste, aria, reduced-motion) | 🔵 Pendiente |
+| O9 | Baja | Sonido ambiental de lluvia (ligero, ligado al Modo Lluvioso) | 🔵 Pendiente |
+| O10 | Alta | Responsive final + Core Web Vitals + build | 🔵 Pendiente |
 
-#### Fix 2: Drag ghost debe incluir grupo completo
-- [x] Modificar `startDrag` para que al arrastrar desde tableau, clone todas las cartas desde `cardIndex` hasta el final
+### O3: Fondo animado (lluvia, niebla, nubes) — CSS puro, ligero
+- [x] **O3-C1**: Crear `src/components/RainyBackground.jsx` con animaciones CSS:
+  - Lluvia: rayas (`span`) animadas con `@keyframes rainy-fall`
+  - Niebla: radial-gradient animado con `@keyframes rainy-fog-drift`
+  - Nubes: CSS shapes (`::before/::after`) con `@keyframes rainy-cloud-drift`
+- [x] **O3-C2**: Integrar en `App.jsx` (capa `position: fixed`, `pointer-events: none`, `z-index: 30`, `aria-hidden`)
+- [x] **O3-C3**: Solo visible en modo rainy (oculto en dark/light — `theme !== 'rainy' → null`)
+- [x] **O3-C4**: Respetar `prefers-reduced-motion` (`display:none` en el media query)
+- [x] **O3-V**: Verificado: tests `rainy-background.test.jsx` (3) + `theme.test.jsx` (7) = 10/10 PASS; build `vite build` exitoso (2023 modules)
 
-#### Fix 3: Waste → Foundation drag
-- [x] Agregar lógica en `endDrag` para mover carta del waste a foundation cuando se suelta sobre un slot de foundation
+### O4: Tipografías Nunito
+- [ ] **O4-C1**: Agregar preconnect + Google Fonts Nunito en `index.html`
+- [ ] **O4-C2**: Actualizar `--font-heading` y `--font-body` en `src/index.css`
+- [ ] **O4-C3**: Actualizar `fontFamily` en `tailwind.config.js`
 
-#### Fix 4: Click auto-move con criterio inteligente
-- [x] Modificar `handleTableauCardClick`:
-  - Si es 1 carta que va a foundation → auto-mover
-  - Si es grupo con **exactamente 1** destino tableau → auto-mover
-  - Si hay **múltiples** destinos → seleccionar grupo, dejar que usuario elija
-  - Criterio para múltiples opciones: columna más a la derecha con más cartas
+### O5: Rediseño visual
+- [ ] **O5-C1**: Rediseñar tablero (bordes, sombras suaves, border-radius)
+- [ ] **O5-C2**: Dorso de carta con textura cálida (rainy) y textura original (dark/light)
+- [ ] **O5-C3**: Jerarquía visual del header (título + subtítulo)
+- [ ] **O5-C4**: Reemplazar emojis (`🔊`, `🔇`, `🔄`, `🎉`, `↻`, `☕`) por íconos SVG de `lucide-react`
+- [ ] **O5-C5**: Estilos consistentes del `details` "How to play"
+- [ ] **O5-V**: Tests no se rompen, build exitoso
 
-#### Fix 5: Superposición de cartas - Layout con position absolute
-- [x] Cambiar estructura de columnas para usar `position: relative` en contenedor y `position: absolute` en cada carta
-- [x] Eliminar `topCardStyle` (marginTop) y reemplazar con cálculo de posición top
-- [x] Mover `onMouseDown`/`onTouchStart` al componente SolitaireCard para que toda el área de la carta sea clickeable
+### O6: Botón Cafecito responsive
+- [ ] **O6-C1**: FAB flotante en móviles (<768px) — estilo botón redondo, posición bottom-right
+- [ ] **O6-C2**: Inline en desktop (≥768px) — mismo estilo actual
+- [ ] **O6-C3**: Nunca tapa el tablero ni botones de juego
+- [ ] **O6-V**: Verificar en viewports 360px, 390px, 768px, 1200px, 1920px
 
-#### Fix 6: Limpieza de selección múltiple
-- [x] Asegurar que `setSelection(null)` se llame de forma consistente
-- [x] Solucionar el problema del batch de React (doble setSelection)
+### O8: Accesibilidad
+- [ ] **O8-C1**: `onKeyDown` (Enter/Espacio) en cartas para navegación por teclado
+- [ ] **O8-C2**: Corregir contraste de texto (`text-slate-500` → WCAG AA), verificar slots vacíos
+- [ ] **O8-C3**: `aria-label` en cartas/botones faltantes
+- [ ] **O8-C4**: `prefers-reduced-motion` global (ya implementado parcialmente en index.css)
 
----
+### O9: Sonido ambiental de lluvia (ligero)
+- [ ] **O9-C1**: Hook `useRainSound` (Howler/useSound) con loop, activo solo en modo rainy
+- [ ] **O9-C2**: Bajo volumen, sin romper `useSoundEffects` existente
+- [ ] **O9-C3**: Sonido gratuito corto (loopable) tipo "lluvia suave"
 
-### 🟡 Fase 4: Actualización de SolitaireCard.jsx
-**Fecha:** Anterior a la sesión actual
-- [x] Agregar props `onMouseDown` y `onTouchStart`
-- [x] Pasar estos eventos al motion.div
-- [x] Eliminar dragEnabled (ya no se usa, se maneja todo en SolitaireGame)
-
----
-
-### 🟡 Fase 5: Plan de Implementación (Identificación de problemas)
-**Fecha:** Anterior a la sesión actual
-
-#### Problema 1: Conflicto Click vs Drag en Drag & Drop
-- [x] Identificado: cuando se arrastra una carta y se suelta, el navegador dispara un evento `click` después del `mouseup`
-- [x] Ese `click` ejecuta `handleTableauCardClick()` con el estado VIEJO, causando auto-moves incorrectos
-- [x] **Solución**: Agregar flag `wasDragged` para ignorar clicks post-drag
-
-#### Problema 2: Criterio de selección cuando hay múltiples opciones
-- [x] Actualmente elige la primera opción disponible (orden del array)
-- [x] **Solución**: Mejorar criterio:
-  1. Foundation (prioridad 1) - ya funciona
-  2. Tableau - preferir columna con más cartas (más construida)
-  3. Si hay empate, preferir columna más a la derecha
-
----
-
-### 🟢 Fase 6: SESIÓN ACTUAL - Correcciones mayores
-**Fecha:** Sesión actual
-
-#### Bug crítico: Variable `container` indefinida en `startDrag` (ReferenceError)
-- [x] **Diagnóstico**: En `startDrag`, cuando `source.source === 'tableau'`, se intentaba acceder a `container.style.position = 'fixed'` pero `container` nunca fue declarado con `const/let`
-- [x] **Impacto**: Al hacer drag de un grupo de cartas desde tableau, se lanzaba un ReferenceError que rompía todo el drag
-- [x] **Fix**: Agregar `const container = document.createElement('div');` antes de manipular sus estilos
-- [x] **Archivo**: `SolitaireGame.jsx` - línea ~134
-
-#### Bug: `dragStartPos.current` nunca inicializado al empezar drag
-- [x] **Diagnóstico**: En `startDrag`, no se registraba la posición inicial del mouse, por lo que `moveDrag` no podía detectar correctamente si hubo arrastre (click vs drag)
-- [x] **Impacto**: La detección de arrastre vs click no funcionaba, causando que clicks se confundieran con drags
-- [x] **Fix**: Agregar `dragStartPos.current = { x: clientX, y: clientY };` y `wasDragged.current = false;` al inicio de `startDrag`
-- [x] **Archivo**: `SolitaireGame.jsx` - dentro de `startDrag`
-
-#### Bug: EmptySlot no propaga props extra (data-tableau-slot, data-foundation-slot)
-- [x] **Diagnóstico**: El componente `EmptySlot` no usaba `...rest` para propagar props adicionales, por lo que los atributos `data-tableau-slot` y `data-foundation-slot` se perdían
-- [x] **Impacto**: Las columnas vacías y foundations vacías no tenían los atributos `data-tableau-slot`/`data-foundation-slot` en el DOM, haciendo que el drag & drop no detectara estas zonas como destino válido
-- [x] **Fix**: Agregar `...rest` en los parámetros de `EmptySlot` y pasarlo al `<div>` raíz
-- [x] **Archivo**: `SolitaireGame.jsx` - componente `EmptySlot`
-
-#### Bug: Faltan `data-tableau-slot` en columnas con cartas
-- [x] **Diagnóstico**: Solo las columnas vacías tenían el atributo `data-tableau-slot`; las columnas con cartas no lo tenían
-- [x] **Impacto**: Al arrastrar una carta y soltarla sobre una columna que ya tenía cartas, el drag & drop no detectaba el destino (no existía `[data-tableau-slot]` en el DOM para esa columna)
-- [x] **Fix**: Mover `data-tableau-slot={col}` al `<div>` contenedor de la columna (el mismo que tiene `className="flex flex-col items-center"`), que existe tanto si la columna tiene cartas como si no
-- [x] **Archivo**: `SolitaireGame.jsx` - sección de renderizado de tableau
-
-#### Bug: Faltan `data-foundation-slot` en foundations con cartas
-- [x] **Diagnóstico**: Solo las foundations vacías tenían el atributo `data-foundation-slot`; las que ya tenían cartas no lo tenían
-- [x] **Impacto**: Al arrastrar una carta y soltarla sobre una foundation que ya tenía cartas, el drag & drop no detectaba el destino
-- [x] **Fix**: Mover `data-foundation-slot={f}` al `<div key={f}>` contenedor, que existe independientemente de si la foundation tiene cartas o no
-- [x] **Archivo**: `SolitaireGame.jsx` - sección de renderizado de foundations
-
-#### Bug: Auto-move por clic no chequeaba foundation primero
-- [x] **Diagnóstico**: En `handleTableauCardClick`, el código primero intentaba mover a tableau (con el bloque `bestCol`), y solo si no había destinos tableau chequeaba foundation. El orden correcto es: foundation primero, luego tableau.
-- [x] **Impacto**: Al hacer clic en una carta que podía ir tanto a foundation como a tableau, se movía a tableau en lugar de a foundation
-- [x] **Fix**: Reestructurar `handleTableauCardClick` para que:
-  1. **Prioridad 1 (★)**: Si es la última carta y puede ir a alguna foundation → va a foundation
-  2. **Prioridad 2 (★)**: Si puede ir a tableau → elegir la columna con más cartas (tie-break: más a la derecha)
-  3. **Prioridad 3**: Si hay múltiples destinos tableau → seleccionar y dejar que el usuario elija
-- [x] **Archivo**: `SolitaireGame.jsx` - función `handleTableauCardClick`
-
-#### Bug: Código muerto en auto-move (validDestinations.length === 1)
-- [x] **Diagnóstico**: Había un bloque que contaba `validDestinations` y chequeaba `if (validDestinations.length === 1)` que era dead code porque el bloque anterior de `bestCol` ya cubría el caso de 1 o más destinos
-- [x] **Fix**: Eliminar el código duplicado y consolidar toda la lógica en un solo flujo con prioridades claras
-- [x] **Archivo**: `SolitaireGame.jsx` - función `handleTableauCardClick`
-
----
-
-### 🔵 Fase 7: Tests (PENDIENTE)
-**Fecha:** Sesión actual
-
-#### Análisis de cobertura actual
-- [x] `solitaire.test.jsx` - Tests de lógica pura (createDeck, shuffle, deal, canPlaceOnTableau, canPlaceOnFoundation, isWon, isRed) ✅
-- [x] `sound.test.jsx` - Test del hook useSoundEffects ✅
-- [x] `drag-drop.test.jsx` - Tests básicos de existencia de elementos, slots y validación de movimientos ⚠️ Parcial
-- [x] `auto-move.test.jsx` - Tests de auto-move al hacer clic ⚠️ Parcial (usan `toBeDefined`, no verifican comportamiento real)
-- [x] `ui.test.jsx` - Tests de botones, contadores, footer, home, accesibilidad ✅
-- [x] `visual-effects.test.jsx` - Tests de sonidos y efectos visuales ✅
-
-#### Tests faltantes (PENDIENTE)
-- [ ] **Test de drag con coordenadas reales**: Simular `mousedown`, `mousemove`, `mouseup` con coordenadas específicas y verificar que la carta se mueve al destino correcto
-- [ ] **Test de conflicto click vs drag**: Verificar que un drag corto (menos de DRAG_THRESHOLD px) se trata como click, y uno largo como drag
-- [ ] **Test de criterio de auto-move**: Verificar que:
-  - Una carta que puede ir a foundation y tableau va a foundation (prioridad 1)
-  - Una carta que puede ir a 2+ columnas va a la que tiene más cartas
-  - En caso de empate, va a la columna más a la derecha
-- [ ] **Test de reinicio del stock**: Verificar que al hacer clic en el stock vacío, el waste se reinvierte al stock
-- [ ] **Test de drag a foundation desde tableau**: Verificar que solo la última carta de una columna puede ir a foundation
-- [ ] **Test de drag a foundation desde waste**: Verificar que se puede arrastrar la carta del waste a foundation
-- [ ] **Test de grupo de cartas**: Verificar que al arrastrar un grupo, todas las cartas se mueven juntas
-- [ ] **Test de detección de slots**: Verificar que `data-tableau-slot` y `data-foundation-slot` existen en el DOM para todas las columnas/foundations
-
----
-
-### 🟣 Fase 8: Próximas mejoras sugeridas
-**Fecha:** Futuro
-
-- [ ] **Dificultad**: 3 niveles de dificultad (fácil, medio, difícil) que afecten el número de veces que se puede repasar el stock
-- [ ] **Animación de movimiento suave**: Mejorar la animación de las cartas cuando se mueven por clic (no solo drag), para que viajen visualmente de origen a destino
-- [ ] **Deshacer movimiento**: Botón de "Undo" para revertir el último movimiento
-- [ ] **Estadísticas**: Guardar partidas ganadas, tiempo promedio, racha de victorias
-- [ ] **Tema claro/oscuro**: Alternar entre tema claro y oscuro
-- [ ] **Sonidos adicionales**: Sonido al ganar, al repartir cartas
-- [ ] **Responsive mejorado**: Mejor soporte para pantallas muy pequeñas (menos de 360px)
+### O10: Responsive final + Core Web Vitals + limpieza
+- [ ] **O10-C1**: Revisión integral de todas las resoluciones (360px → ultrawide)
+- [ ] **O10-C2**: Verificar LCP, CLS, INP (evitar animaciones costosas)
+- [ ] **O10-C3**: Correr batería completa de tests
+- [ ] **O10-C4**: Build final (`npm run build`) y verificar compilación
 
 ---
 
@@ -183,202 +124,36 @@
 | 🟡 En progreso | Tarea comenzada pero no terminada |
 | 🔵 Pendiente | Tarea identificada pero no comenzada |
 | 🟣 Sugerido | Mejora futura, no planificada |
-| ✅ | Checklist item completado |
-| ⬜ | Checklist item pendiente |
-| ⚠️ | Advertencia o nota importante |
+| ✅ Completado | Checklist item completado |
+| ⬜ Pendiente | Checklist item pendiente |
+| ❌ Descartado | Descartado por decisión del usuario |
 
 ---
 
 ## 🔍 CRITERIO DE AUTO-MOVE (documentado)
 
-Cuando el usuario hace clic en una carta boca arriba en el tableau, el sistema aplica el siguiente criterio:
+Cuando el usuario hace clic en una carta boca arriba en el tableau:
 
-### Prioridad 1: Foundation
-Si la carta es la **última** de su columna y puede ir a alguna foundation (mismo palo, rank superior en 1), se mueve automáticamente a la primera foundation disponible.
-
-### Prioridad 2: Tableau (mejor columna)
-Si la carta (o grupo) puede ir a una columna del tableau, se elige la columna que tenga **más cartas** (columna más construida = más útil estratégicamente). En caso de empate, se elige la columna **más a la derecha**.
-
-### Prioridad 3: Múltiples opciones de tableau
-Si hay más de un destino tableau válido, la carta se **selecciona** (no se mueve automáticamente) y el usuario debe hacer clic en el destino deseado.
-
-### Nota sobre grupos
-Si el clic es en una carta que no es la última de la columna, se verifica que todas las cartas desde esa posición hasta el final formen un **grupo válido** (alternando colores, descendiendo en rank). Si no es válido, no se selecciona ni se mueve nada.
+1. **Prioridad 1 — Foundation**: Si es última carta y puede ir a alguna foundation → auto-mover
+2. **Prioridad 2 — Tableau (mejor columna)**: Elegir columna con más cartas; empate → más a la derecha
+3. **Prioridad 3 — Múltiples opciones**: Seleccionar y dejar que usuario elija con segundo clic
 
 ---
 
 ## 🐛 BUGS CONOCIDOS (resueltos)
 
-| # | Bug | Síntoma | Solución | Estado |
-|---|-----|---------|----------|--------|
-| 1 | `container` indefinida en `startDrag` | ReferenceError al hacer drag de grupo | Agregar `const container = document.createElement('div')` | ✅ |
-| 2 | `dragStartPos.current` no inicializado | Click vs drag mal detectado | Inicializar en `startDrag` | ✅ |
-| 3 | EmptySlot no propaga props extra | `data-tableau-slot`/`data-foundation-slot` perdidos | Agregar `...rest` | ✅ |
-| 4 | Falta `data-tableau-slot` en columnas con cartas | Drag a columnas no vacías no funciona | Mover atributo al contenedor padre | ✅ |
-| 5 | Falta `data-foundation-slot` en foundations con cartas | Drag a foundations con cartas no funciona | Mover atributo al contenedor padre | ✅ |
-| 6 | Auto-move no chequeaba foundation primero | Carta iba a tableau en lugar de foundation | Reordenar prioridades | ✅ |
-| 7 | Código muerto en auto-move | Lógica duplicada que nunca se ejecutaba | Consolidar flujo | ✅ |
+| # | Bug | Estado |
+|---|-----|--------|
+| 1 | `container` indefinida en `startDrag` → ReferenceError | ✅ |
+| 2 | `dragStartPos.current` no inicializado → click vs drag mal detectado | ✅ |
+| 3 | EmptySlot no propaga `...rest` → slots perdidos | ✅ |
+| 4 | Falta `data-tableau-slot` en columnas con cartas | ✅ |
+| 5 | Falta `data-foundation-slot` en foundations con cartas | ✅ |
+| 6 | Auto-move no chequeaba foundation primero | ✅ |
+| 7 | Código muerto en auto-move (duplicado) | ✅ |
+| 8 | Reparto interrumpido en New Game (ms mezclados con segundos) | ✅ |
+| 9 | Offsets de cartas no acumulativos → cartas solapadas | ✅ |
+| 10 | Alto de columna fijo → escapes de recuadro verde | ✅ |
+| 11 | Test flaky visual-effects (isWon restaurado tarde) | ✅ |
+| 12 | Test app-routing buscaba texto incorrecto | ✅ |
 
----
-
-### 🟡 Fase 9: SESIÓN ACTUAL - Correcciones de layout/reparto + nuevas features
-**Fecha:** Sesión actual
-
-#### ✅ Análisis inicial (hecho)
-- [x] Leer código fuente: SolitaireGame.jsx, SolitaireCard.jsx, solitaire.js, useSoundEffects.js, index.css
-- [x] Leer todos los tests existentes (7 archivos, 66 tests)
-- [x] Ejecutar batería de tests (línea base): 66 tests pasan, 1 error no controlado en visual-effects.test.jsx
-- [x] Verificar consistencia del sitio: **TopSolitaire = Klondike Solitaire gratis, sin registro, con AdSense**, páginas Home/Privacy/Contact coherentes
-- [x] Explicar al usuario las causas raíz de los 3 bugs → aprobado por el usuario
-- [x] Crear este plan priorizado en TODO.md
-
-#### 🟢 Completados
-- [x] **P1-FIX-1** (Bug 3): Arreglar reparto interrumpido en "New Game" (mezcla segundos+ms en timeout) → `allCards.length * 80 + 600` (todo en ms) + animación de reparto al montar la página
-- [x] **P1-FIX-2** (Bug 1): Corregir offset de cartas a **cálculo acumulativo** con `getCardTop(column, index)` → separación constante boca abajo 20px / boca arriba 30px, sin importar cuántas cartas tenga la columna
-- [x] **P1-FIX-3** (Bug 2): Alto del recuadro verde **dinámico** con `getColumnHeight(column)` = `calc(top última carta + var(--card-height))` → El contenedor verde se ajusta automáticamente
-- [x] **P1-FIX-4**: Corregir test flaky de visual-effects.test.jsx (agregar `await` a `waitFor`, cambiar `/Moves: 0/i` por `/Moves:/i` porque el texto está dividido en 2 spans, restaurar `mockIsWon` antes de clickear "Play Again")
-
-#### 🟢 Verificación de tests
-- [x] **7 test files, 66 tests → ALL PASS** ✅ (1 unhandled error residual del viejo waitFor sin await, corregido en el re-run)
-
-#### 🔵 Pendiente (nuevas features - prioridad 2)
-- [ ] **P2-N1**: Efecto de reparto rápido pero visible al comenzar
-- [ ] **P2-N2**: Efecto visual de victoria mejorado (overlay + confeti pulido)
-- [ ] **P2-N3**: Sonidos verificados/mejorados (volteo, reparto, victoria)
-- [ ] **P2-N4**: **3 niveles de dificultad** (Fácil: repasos infinitos / Medio: 3 / Difícil: 1)
-
-#### 🔵 Pendiente (tests - prioridad 3)
-- [ ] **P3-T1**: Test de dificultad (3 niveles, config de repasos)
-- [ ] **P3-T2**: Test de layout del tableau (offsets acumulativos, alto dinámico)
-- [ ] **P3-T3**: Correr toda la batería de tests antes de producción
-- [ ] **P3-T4**: Actualizar README.md con las nuevas features
-
----
-
-### 🟠 Fase 10: Endurecer tests + limpieza de auth + features
-**Fecha:** Sesión actual
-
-#### ✅ Plan aprobado por el usuario (orden de trabajo)
-- [x] Confirmado: el sitio es TopSolitaire (Klondike gratis, **sin login/registro**, con AdSense)
-- [x] Confirmado: efecto visual de victoria **YA EXISTE** (confetti `canvas-confetti` + overlay "You Won!")
-- [x] Confirmado: sonido de festejo **YA EXISTE** (`public/sounds/win.mp3` + `playWinSound()`)
-- [x] Confirmado orden: (1) endurecer tests, (2) eliminar auth, (3) correr tests, (4) features
-
-#### 🟡 En progreso (P1-B — endurecer tests)
-- [x] **P1-B1**: Reescribir `__tests__/auto-move.test.jsx` con **estado determinista** (mock de `deal`) y verificación real del criterio de auto-move
-- [x] **P1-B2**: Reescribir `__tests__/drag-drop.test.jsx` con conteo real de slots y **drag con coordenadas** (mousedown/mousemove/mouseup)
-- [x] **P1-B3**: Crear `__tests__/app-routing.test.jsx` que verifique App y rutas (Home, Privacy, Contact, fallback) — **garantía de que eliminar auth no rompe el sitio**
-- [ ] **P1-B-Verify**: Correr batería completa de tests (7+3=10 archivos) y verificar que TODO pase
-
-#### 🔵 Pendiente (P1-A — limpieza de auth, después de P1-B)
-- [ ] **P1-A**: Eliminar sistema de autenticación/login NO utilizado:
-  - `src/pages/Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
-  - `src/components/AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
-  - `src/lib/AuthContext.jsx`, `src/lib/app-params.js`, `src/lib/PageNotFound.jsx`
-  - `src/api/topsolitaireClient.js`
-  - `topsolitaire-config/entities/User.jsonc`
-- [ ] **P1-A2**: Correr TODA la batería de tests tras eliminar auth → verificar 0 rupturas (los tests de `app-routing` lo confirman)
-
-#### 🔵 Pendiente (P2 — features)
-- [ ] **P2-A**: 3 niveles de dificultad (Fácil: repasos ∞ / Medio: 3 / Difícil: 1) con selector UI + `localStorage`
-- [ ] **P2-B**: Pulir efecto visual de victoria (confeti más vistoso + overlay animado)
-- [ ] **P2-C**: Verificar/mejorar sonido de festejo (`win.mp3`)
-- [ ] **P2-D** (opcional, aprobado): Atajo oculto para previsualizar la victoria sin ganar la partida
-
-#### 🔵 Pendiente (P3 — tests de features y pre-producción)
-- [ ] **P3-T1**: Test de dificultad (3 niveles, config de repasos)
-- [ ] **P3-T2**: Test de layout del tableau (offsets acumulativos, alto dinámico)
-- [ ] **P3-T3**: Correr batería completa pre-producción
-- [ ] **P3-T4**: Actualizar README.md con las nuevas features
-
----
-
-### 🟠 Fase 11: Botón de cafecito (donación)
-**Fecha:** Sesión actual
-
-#### ✅ Completado
-- [x] **Cafecito-1**: Agregar botón de cafecito a la izquierda del botón de sonido en `src/components/solitaire/SolitaireGame.jsx`
-  - Enlace a `https://cafecito.app/ferjuegos` (abre en pestaña nueva)
-  - Misma altura (`min-h-[64px]`) y estilo redondeado que el botón de sonido
-  - Usa la imagen oficial `button_4.png` con `srcset` (1x, 2x, 3.75x)
-  - No afecta el comportamiento del botón de sonido ni de "New Game"
-- [x] **Cafecito-2**: Agregar snippet Markdown del botón de cafecito al `README.md` (sección "Support")
-- [x] **Cafecito-3**: Verificar compilación con `npm run build` (build exitoso, sin errores)
-
----
-
-### 🟡 Fase 12: Rediseño UX/UI integrado + Modo Lluvioso 🎨
-**Fecha:** Sesión actual
-**Contexto:** Auditoría integral de UX/UI, diseño emocional, responsive, accesibilidad, rendimiento y publicidad. Se trabaja en **objetivos (branches) independientes**. Compromiso: **no romper la lógica del juego ni el código de AdSense**.
-
-#### 🟢 COMPLETADO — O7: Publicidad responsive (corrección de críticos)
-> **Prioridad:** se atacaron los críticos de AdSense/CLS primero. Enfoque aprobado: mantener los anuncios estáticos de `index.html` y eliminar los `AdBanner` duplicados de React.
-- [x] **O7-C1 (duplicado)**: Eliminados anuncios duplicados del mismo slot (`2778338000`, `1348751976`). Se quitaron los `AdBanner` de React en `App.jsx` (top/bottom/side) y `Home.jsx` (ad-top + aside). Un único punto de render por slot en `index.html`.
-- [x] **O7-C2 (lateral fijo)**: Se quitó `#root { margin-right:180px }` que desplazaba el tablero en ≥1200px. El `ad-side` queda fijo sin empujar el contenido.
-- [x] **O7-C3 (min-height fijo)**: Contenedores de anuncios colapsan elegantemente cuando el `<ins>` está vacío (`.ad-container:has(ins.adsbygoogle:empty)` → min-height:0, margin:0) para evitar huecos cuando AdSense está en evaluación.
-- [x] **O7-C4**: Verificado build (`npm run build`) → compila sin errores. El script de AdSense de `index.html` no se modificó.
-- [x] **O7-V**: Verificado: tests de `app-routing` y `ui` pasan (23/23). Se corrigió un fallo PREEXISTENTE en `app-routing.test.jsx` (buscaba `/no registration or login/` pero el texto real era "without registration or login").**Nota**: los tests de `drag-drop` y `auto-move` que fallan son **preexistentes** (documentados "⚠️ Parcial" en Fase 7) y NO están relacionados con O7.
-
-#### 🔵 PENDIENTE — O1: Contexto de tema + Toggle Modo Lluvioso
-- [ ] **O1-C1**: Crear `src/lib/ThemeContext.jsx` (React Context): `theme` (`'original' | 'rainy'`), `toggleTheme`, persistencia en `localStorage`, **activo por defecto = rainy**.
-- [ ] **O1-C2**: Crear `src/components/ui/ThemeToggle.jsx` (toggle elegante, sin recargar página).
-- [ ] **O1-C3**: Integrar en `App.jsx` y `main.jsx` (envolver con provider).
-- [ ] **O1-V**: Test de que el toggle cambia el estado y persiste en localStorage.
-
-#### 🔵 PENDIENTE — O2: Paleta de colores + variables CSS de ambos temas
-- [ ] **O2-C1**: Definir en `src/index.css` variables de ambos temas (fondo, superficies, acentos, texto, tablero, dorso de carta) con los HEX de la paleta propuesta.
-- [ ] **O2-C2**: Aplicar `[data-theme]` / clase en `body` para el cambio de tema.
-- [ ] **O2-V**: Transición suave de colores (`transition: background-color .5s`).
-
-#### 🔵 PENDIENTE — O3: Fondo animado (lluvia, niebla, nubes) — CSS puro
-- [ ] **O3-C1**: Crear `src/components/RainyBackground.jsx` (lluvia con rayas SVG + keyframes, niebla con radial-gradient, nubes).
-- [ ] **O3-C2**: Integrar en `App.jsx` (fondo fijo, `pointer-events:none`).
-- [ ] **O3-C3**: Respetar `prefers-reduced-motion`.
-
-#### 🔵 PENDIENTE — O4: Tipografías (Nunito)
-- [ ] **O4-C1**: Cargar Nunito en `index.html` (preconnect + display=swap, un solo archivo).
-- [ ] **O4-C2**: Actualizar `--font-heading`/`--font-body` en `index.css` y `tailwind.config.js`.
-
-#### 🔵 PENDIENTE — O5: Rediseño visual (tablero, cartas, botones, slots, íconos)
-- [ ] **O5-C1**: Rediseñar tablero (bordes, sombras, radio) y dorso de carta (textura cálida + lluvia).
-- [ ] **O5-C2**: Jerarquía visual del header (título + subtítulo con identidad).
-- [ ] **O5-C3**: Reemplazar emojis por íconos SVG (`lucide-react`, ya instalado).
-- [ ] **O5-C4**: Estilos consistentes del `details` "How to play".
-- [ ] **O5-V**: Verificar que la lógica del juego no cambia (tests siguen pasando).
-
-#### 🔵 PENDIENTE — O6: Botón Cafecito responsive
-- [ ] **O6-C1**: Convertir en **FAB flotante en móvil** (no tapa el juego) e **inline en desktop**.
-- [ ] **O6-C2**: Ajustar tamaño/posición según ancho disponible; nunca tapar contenido.
-- [ ] **O6-V**: Verificar en viewports móviles (360px, 390px, 768px) y desktop.
-
-#### 🔵 PENDIENTE — O8: Accesibilidad
-- [ ] **O8-C1**: `onKeyDown` (Enter/Espacio) en cartas para navegación por teclado.
-- [ ] **O8-C2**: Corregir contraste de texto (`text-slate-500` → WCAG AA) y slots vacíos.
-- [ ] **O8-C3**: `aria-label` en cartas/botones faltantes.
-- [ ] **O8-C4**: `prefers-reduced-motion` global.
-
-#### 🔵 PENDIENTE — O9: Sonido ambiental de lluvia (opcional, ligado al modo)
-- [ ] **O9-C1**: Hook `useRainSound` (Howler/useSound) con loop bajo, ligado al Modo Lluvioso.
-- [ ] **O9-C2**: Integrar sin romper `useSoundEffects` actual.
-
-#### 🔵 PENDIENTE — O10: Responsive final + Core Web Vitals + limpieza
-- [ ] **O10-C1**: Revisión integral de resolución (360px → ultrawide): distribución, cartas, fuentes, botones, márgenes, publicidad.
-- [ ] **O10-C2**: Verificar LCP/CLS/INP (evitar librerías pesadas, animaciones costosas).
-- [ ] **O10-C3**: Correr toda la batería de tests + build final.
-
----
-
-## 📋 FASE 12 — Resumen de objetivos (para branches de GitHub Desktop)
-
-| Objetivo | Estado | Descripción |
-|---|---|---|
-| **O7** | 🟢 Completado | Publicidad responsive (deduplicar slots, lateral, min-height) |
-| **O1** | 🔵 Pendiente | Contexto de tema + Toggle Modo Lluvioso |
-| **O2** | 🔵 Pendiente | Paleta de colores + variables de ambos temas |
-| **O3** | 🔵 Pendiente | Fondo animado lluvia/niebla/nubes (CSS puro) |
-| **O4** | 🔵 Pendiente | Tipografías (Nunito) |
-| **O5** | 🔵 Pendiente | Rediseño visual (tablero, cartas, botones, íconos) |
-| **O6** | 🔵 Pendiente | Botón Cafecito responsive (FAB en móvil) |
-| **O8** | 🔵 Pendiente | Accesibilidad (teclado, contraste, aria, reduced-motion) |
-| **O9** | 🔵 Pendiente | Sonido ambiental de lluvia |
-| **O10** | 🔵 Pendiente | Responsive final + CWV + limpieza |
