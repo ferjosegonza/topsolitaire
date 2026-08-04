@@ -61,7 +61,7 @@
 | Obj | Prioridad | Descripción | Estado |
 |-----|-----------|-------------|--------|
 | O3 | Alta | Fondo animado del Modo Lluvioso (CSS puro, ligero) | 🟢 Completado |
-| O4 | Alta | Tipografías Nunito (preconnect + variables) | 🔵 Pendiente |
+| O4 | Alta | Tipografías Nunito (preconnect + variables) | 🟢 Completado |
 | O5 | Alta | Rediseño visual (tablero, cartas, botones, íconos SVG) | 🔵 Pendiente |
 | O6 | Alta | Botón Cafecito responsive (FAB en móvil, inline desktop) | 🔵 Pendiente |
 | O8 | Media | Accesibilidad (teclado, contraste, aria, reduced-motion) | 🔵 Pendiente |
@@ -78,10 +78,11 @@
 - [x] **O3-C4**: Respetar `prefers-reduced-motion` (`display:none` en el media query)
 - [x] **O3-V**: Verificado: tests `rainy-background.test.jsx` (3) + `theme.test.jsx` (7) = 10/10 PASS; build `vite build` exitoso (2023 modules)
 
-### O4: Tipografías Nunito
-- [ ] **O4-C1**: Agregar preconnect + Google Fonts Nunito en `index.html`
-- [ ] **O4-C2**: Actualizar `--font-heading` y `--font-body` en `src/index.css`
-- [ ] **O4-C3**: Actualizar `fontFamily` en `tailwind.config.js`
+### O4: Tipografías Nunito — 🟢 Completo
+- [x] **O4-C1**: Agregar preconnect + Google Fonts Nunito en `index.html` (preconnect a fonts.googleapis.com y fonts.gstatic.com crossorigin + hoja con `display=swap`)
+- [x] **O4-C2**: Actualizar `--font-heading`, `--font-body` y `--font-display` en `src/index.css` a `'Nunito', ui-sans-serif, ...`
+- [x] **O4-C3**: Actualizar `fontFamily` en `tailwind.config.js` (ya usa `var(--font-heading/body/display)`) + agregados pesos `fontWeight` 400–900 (normal a extrabold) para las variantes de Nunito
+- [x] **O4-V**: `vite build` exitoso tras los cambios de tipografía
 
 ### O5: Rediseño visual
 - [ ] **O5-C1**: Rediseñar tablero (bordes, sombras suaves, border-radius)
