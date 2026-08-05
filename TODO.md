@@ -30,6 +30,15 @@
 - Transición suave de colores (0.5s), respeta `prefers-reduced-motion`
 - Tests de tema (`theme.test.jsx`) que verifican ciclo, persistencia y `aria-checked`
 
+### Donaciones (O6) — ✅ COMPLETADO
+- **Cafecito** (Argentina): botón con imagen oficial, intacto, en la fila de botones
+- **Ko-fi** (Internacional): botón con imagen oficial SVG, altura coherente (`h-[44px]`), en la fila de botones
+- Ambos enlazan a pestaña nueva, sin tapa el tablero ni los controles del juego
+- **Responsive**: fila de botones con `flex-wrap`; tamaños compactos en móvil (`min-h-[52px]`, imagen `h-[34px]`) y normales en `sm+` (`min-h-[64px]`, imagen `h-[44px]`)
+
+### Header (Home.jsx) — ✅ COMPLETADO
+- Pill "Play · Relax · Rainy Day" ahora usa colores legibles en modos rainy y dark (`var(--accent)` sobre `var(--accent-muted)`) en lugar de variables inexistentes (`--accent-strong`, `--bg-chip`, `--border-soft`)
+
 ### Tests
 - **10 archivos de test**: solitaire (lógica), sound, drag-drop, auto-move, ui, visual-effects, app-routing, theme (nuevo)
 - Tests de routing (`app-routing`) confirman que el sitio funciona sin auth
@@ -40,9 +49,9 @@
 
 ---
 
-## 🔵 EN PROGRESO
+## 🔵 PENDIENTE (activo)
 
-> *(vacío — todos los objetivos activos están en Pendiente)*
+> *(nada en progreso activo; los objetivos pendientes están abajo)*
 
 ---
 
@@ -56,54 +65,10 @@
 - [ ] Eliminar config: `User.jsonc`
 - [ ] Verificar: tests de `app-routing` pasan sin auth (ya probado)
 
-### Fase 12: Rediseño UX/UI + Modo Lluvioso
-
-| Obj | Prioridad | Descripción | Estado |
-|-----|-----------|-------------|--------|
-| O3 | Alta | Fondo animado del Modo Lluvioso (CSS puro, ligero) | 🟢 Completado |
-| O4 | Alta | Tipografías Nunito (preconnect + variables) | 🟢 Completado |
-| O5 | Alta | Rediseño visual (tablero, cartas, botones, íconos SVG) | 🔵 Pendiente |
-| O6 | Alta | Botón Cafecito responsive (FAB en móvil, inline desktop) | 🔵 Pendiente |
-| O8 | Media | Accesibilidad (teclado, contraste, aria, reduced-motion) | 🔵 Pendiente |
-| O9 | Baja | Sonido ambiental de lluvia (ligero, ligado al Modo Lluvioso) | 🔵 Pendiente |
-| O10 | Alta | Responsive final + Core Web Vitals + build | 🔵 Pendiente |
-
-### O3: Fondo animado (lluvia, niebla, nubes) — CSS puro, ligero
-- [x] **O3-C1**: Crear `src/components/RainyBackground.jsx` con animaciones CSS:
-  - Lluvia: rayas (`span`) animadas con `@keyframes rainy-fall`
-  - Niebla: radial-gradient animado con `@keyframes rainy-fog-drift`
-  - Nubes: CSS shapes (`::before/::after`) con `@keyframes rainy-cloud-drift`
-- [x] **O3-C2**: Integrar en `App.jsx` (capa `position: fixed`, `pointer-events: none`, `z-index: 30`, `aria-hidden`)
-- [x] **O3-C3**: Solo visible en modo rainy (oculto en dark/light — `theme !== 'rainy' → null`)
-- [x] **O3-C4**: Respetar `prefers-reduced-motion` (`display:none` en el media query)
-- [x] **O3-V**: Verificado: tests `rainy-background.test.jsx` (3) + `theme.test.jsx` (7) = 10/10 PASS; build `vite build` exitoso (2023 modules)
-
-### O4: Tipografías Nunito — 🟢 Completo
-- [x] **O4-C1**: Agregar preconnect + Google Fonts Nunito en `index.html` (preconnect a fonts.googleapis.com y fonts.gstatic.com crossorigin + hoja con `display=swap`)
-- [x] **O4-C2**: Actualizar `--font-heading`, `--font-body` y `--font-display` en `src/index.css` a `'Nunito', ui-sans-serif, ...`
-- [x] **O4-C3**: Actualizar `fontFamily` en `tailwind.config.js` (ya usa `var(--font-heading/body/display)`) + agregados pesos `fontWeight` 400–900 (normal a extrabold) para las variantes de Nunito
-- [x] **O4-V**: `vite build` exitoso tras los cambios de tipografía
-
-### O5: Rediseño visual — 🟡 EN PROGRESO (sesión actual)
-- [x] **O5-C2**: Dorso de carta con textura cálida (rainy) / original (dark·light) ✅
-- [x] **O5-C4**: Emojis → íconos SVG `lucide-react` (Volume2/VolumeX, RefreshCw, Trophy, RotateCcw, CloudRain/Moon/Sun) ✅
-- [x] **O5-C5**: `details` "How to play" con variables de tema ✅
-- [ ] **O5-C1**: Rediseñar tablero (bordes, sombras suaves, border-radius) — EN CURSO
-- [ ] **O5-C3**: Jerarquía visual del header (pill de marca + título/subtítulo) — EN CURSO
-- [ ] **O5-V**: Tests no se rompen, build exitoso
-
-#### 🧩 Pasos O5 (sesión actual)
-1. [ ] CSS: variables por tema (`--slot-border`, `--slot-text`, `--slot-bg`, `--board-border`) + clases `.game-board` y `.game-slot`
-2. [ ] `SolitaireGame.jsx`: aplicar `.game-board` al tablero y `.game-slot` a `EmptySlot`; radio consistente en overlay de victoria
-3. [ ] `SolitaireCard.jsx`: border-radius consistente (`rounded-[10px]`) en cartas cara arriba/abajo/volteando
-4. [ ] `Home.jsx`: header con pill de marca (ícono Spade + "Klondike") y mejor jerarquía
-5. [ ] Correr batería de tests + `npm run build`
-
-### O6: Botón Cafecito responsive
-- [ ] **O6-C1**: FAB flotante en móviles (<768px) — estilo botón redondo, posición bottom-right
-- [ ] **O6-C2**: Inline en desktop (≥768px) — mismo estilo actual
-- [ ] **O6-C3**: Nunca tapa el tablero ni botones de juego
-- [ ] **O6-V**: Verificar en viewports 360px, 390px, 768px, 1200px, 1920px
+### O5: Rediseño visual (finalizar)
+- [ ] **O5-C1**: Pulido final del tablero (bordes, sombras suaves, border-radius) — clases `game-board`/`game-slot` ya aplicadas
+- [ ] **O5-C3**: Jerarquía del header en `Home.jsx` (pill de marca con ícono SVG Spade + identidad "Klondike", título/subtítulo) — hoy AÚN usa emoji ☕
+- [ ] **O5-V**: Verificación final (tests + `npm run build`)
 
 ### O8: Accesibilidad
 - [ ] **O8-C1**: `onKeyDown` (Enter/Espacio) en cartas para navegación por teclado
@@ -121,6 +86,34 @@
 - [ ] **O10-C2**: Verificar LCP, CLS, INP (evitar animaciones costosas)
 - [ ] **O10-C3**: Correr batería completa de tests
 - [ ] **O10-C4**: Build final (`npm run build`) y verificar compilación
+
+### 📱 Auditoría Responsive — Estado por elemento
+
+> Identifica qué ya tiene comportamiento responsive adecuado y qué falta mejorar.
+
+| Elemento | Estado | Detalle |
+|----------|--------|---------|
+| Cartas (ancho) | ✅ | `--card-w: clamp(36px, 11vw, 78px)` se adapta en todas las resoluciones |
+| Alto de columnas | ✅ | `getColumnHeight` dinámico, no escapa del recuadro |
+| Tablero | ✅ | `game-board` con `p-2 sm:p-4`, grid `gap-1 sm:gap-2` |
+| Grid 7 columnas | ✅ | `grid-cols-7` fijo; las cartas se encogen vía `clamp` |
+| Layout Home | ✅ | `flex-col lg:flex-row`, `px-3 py-5 sm:py-7`, `max-w-[1100px]` |
+| Header pill/título | ✅ | `text-center sm:text-left`, títulos `text-2xl sm:text-3xl` |
+| Botones donación (Ko-fi/Cafecito) | ✅ | `flex-wrap` en la fila; compactos en móvil (`min-h-[52px]`, img `h-[34px]`), normales en `sm+` |
+| Fila de botones | ✅ | `flex-wrap items-center justify-end gap-2` |
+| Botón sonido | ✅ | `min-h-[52px] sm:min-h-[64px]`, `px-3 sm:px-4` |
+| Botón New Game | ✅ | `text-base sm:text-lg`, `px-4 sm:px-6`, sin `min-w` rígido |
+| Overlay de victoria | ✅ | `px-4`, texto responsivo |
+| Details "How to play" | ✅ | `text-sm`, lista fluida |
+| Anuncios (top/bottom/side) | ✅ | `ad-container` responsive, lateral solo ≥1200px, colapso con `:has()` |
+| Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de O10-C1 |
+| Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar que no se vea "perdido" ni se dispare el lateral |
+
+**Pendiente de mejora responsive (para O10):**
+- [ ] Revisar footer y páginas administrativas (Privacy/Contact) en 360px–390px
+- [ ] Validar composición en ultrawide (1920px+): el tablero centrado a 1100px puede sentirse pequeño; evaluar `max-w` mayor o fondo decorativo
+- [ ] Confirmar que el anuncio lateral fijo (160px) no genere solapamiento con el contenido en 1200–1400px
+- [ ] Verificación visual de la fila de botones en 360px (que no queden 2 botones partidos de forma fea)
 
 ---
 
@@ -164,4 +157,3 @@ Cuando el usuario hace clic en una carta boca arriba en el tableau:
 | 10 | Alto de columna fijo → escapes de recuadro verde | ✅ |
 | 11 | Test flaky visual-effects (isWon restaurado tarde) | ✅ |
 | 12 | Test app-routing buscaba texto incorrecto | ✅ |
-

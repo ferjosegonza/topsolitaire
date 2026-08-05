@@ -342,9 +342,10 @@ Si el clic es en una carta que no es la última de la columna, se verifica que t
 - [ ] **O5-C4**: Estilos consistentes del `details` "How to play".
 - [ ] **O5-V**: Verificar que la lógica del juego no cambia (tests siguen pasando).
 
-#### 🔵 PENDIENTE — O6: Botón Cafecito responsive
-- [ ] **O6-C1**: FAB flotante en móvil (no tapa el juego) e **inline en desktop**.
-- [ ] **O6-C2**: Ajustar tamaño/posición según ancho disponible; nunca tapar contenido.
+#### 🔵 PENDIENTE — O6: Botones de donación responsive (Cafecito + Ko-fi)
+- [x] **O6-C1**: Botones Cafecito y Ko-fi con imagen oficial (altura `h-[44px]`) en la fila de botones.
+- [ ] **O6-C2**: FAB flotante en móvil (no tapa el juego) e **inline en desktop** (responsive fino).
+- [ ] **O6-C3**: Ajustar tamaño/posición según ancho disponible; nunca tapar contenido.
 - [ ] **O6-V**: Verificar en viewports móviles (360px, 390px, 768px) y desktop.
 
 #### 🔵 PENDIENTE — O8: Accesibilidad
