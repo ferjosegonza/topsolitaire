@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { Volume2, VolumeX, RotateCcw, Trophy, RefreshCw } from 'lucide-react';
 
 import {
   deal,
@@ -10,6 +11,7 @@ import {
   SUIT_SYMBOLS,
 } from '@/lib/solitaire';
 import SolitaireCard from './SolitaireCard';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 const CARD_VARS = {
@@ -52,7 +54,7 @@ function EmptySlot({ onClick, children, className = '', ...rest }) {
   return (
     <div
       onClick={onClick}
-      className={`solitaire-card rounded-md border border-dashed border-white/25 flex items-center justify-center text-white/30 ${className}`}
+      className={`solitaire-card game-slot flex items-center justify-center ${className}`}
       {...rest}
     >
       {children}
@@ -1006,7 +1008,7 @@ const isDealingCard = (colIndex, rowIndex) => {
 
   return (
     <div style={CARD_VARS} className="w-full">
-      <div className="flex items-center justify-between mb-3 text-emerald-50/90 text-sm">
+      <div className="flex items-center justify-between mb-3 text-sm" style={{ color: 'var(--text-primary)' }}>
         <div className="flex gap-4">
           <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
@@ -1030,29 +1032,38 @@ const isDealingCard = (colIndex, rowIndex) => {
             />
           </a>
 
-          <button
+          <ThemeToggle />
+
+<button
             onClick={toggleMute}
-            className={`rounded-2xl text-white font-bold transition-all duration-200 flex items-center gap-4 min-h-[64px] text-xl shadow-xl ${
+            className={`inline-flex items-center justify-center rounded-2xl min-h-[64px] px-4 text-white font-bold text-xl transition-all duration-200 shadow-xl hover:scale-[1.02] border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-400 ${
               isMuted
-                ? 'bg-red-600/60 hover:bg-red-600/80 border-2 border-red-400/60'
-                : 'bg-emerald-600/60 hover:bg-emerald-600/80 border-2 border-emerald-400/60'
+                ? 'bg-red-600/60 hover:bg-red-600/80 border-red-400/60'
+                : 'bg-emerald-600/60 hover:bg-emerald-600/80 border-emerald-400/60'
             }`}
             aria-label={isMuted ? "Activar sonido" : "Silenciar sonido"}
           >
-            <span className="text-5xl">{isMuted ? '🔇' : '🔊'}</span>
+            <span className="text-5xl flex items-center justify-center">
+              {isMuted ? <VolumeX className="w-7 h-7" aria-hidden="true" /> : <Volume2 className="w-7 h-7" aria-hidden="true" />}
+            </span>
           </button>
 
           <button
             onClick={newGame}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-lg transition-all duration-200 flex items-center gap-2 min-h-[56px] min-w-[140px] shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
           >
-            <span className="text-2xl">🔄</span>
+            <RefreshCw className="w-5 h-5" aria-hidden="true" />
             New Game
           </button>
         </div>
       </div>
 
-      <div className="relative rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-900 p-2 sm:p-4 shadow-xl">
+      <div
+        className="game-board p-2 sm:p-4"
+        style={{
+          background: 'linear-gradient(135deg, var(--bg-board-2) 0%, var(--bg-board) 100%)',
+        }}
+      >
         <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-3">
           <div>
             {game.stock.length > 0 ? (
@@ -1064,7 +1075,11 @@ const isDealingCard = (colIndex, rowIndex) => {
               />
             ) : (
               <EmptySlot onClick={handleStockClick}>
-                <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.7)' }}>↻</span>
+                <RotateCcw
+                  className="opacity-70"
+                  style={{ width: 'calc(var(--card-font) * 1.8)', height: 'calc(var(--card-font) * 1.8)' }}
+                  aria-hidden="true"
+                />
               </EmptySlot>
             )}
           </div>
@@ -1250,14 +1265,15 @@ const isDealingCard = (colIndex, rowIndex) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-              className="absolute inset-0 rounded-2xl bg-emerald-950/80 backdrop-blur-sm flex flex-col items-center justify-center text-center px-4 z-10"
+              className="absolute inset-0 rounded-[1.25rem] bg-emerald-950/80 backdrop-blur-sm flex flex-col items-center justify-center text-center px-4 z-10"
             >
               <motion.h2
-                className="text-2xl sm:text-3xl font-bold text-white mb-2"
+                className="text-2xl sm:text-3xl font-bold text-white mb-2 flex items-center justify-center gap-3"
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
               >
-                🎉 You Won!
+                <Trophy className="w-8 h-8 text-amber-300" aria-hidden="true" />
+                You Won!
               </motion.h2>
               <p className="text-emerald-100 mb-1">Solved in {moves} moves</p>
               <p className="text-emerald-100 mb-4">Time: {formatTime(seconds)}</p>
@@ -1272,8 +1288,8 @@ const isDealingCard = (colIndex, rowIndex) => {
         </AnimatePresence>
       </div>
 
-      <details className="mt-4 text-sm text-slate-600">
-        <summary className="cursor-pointer font-medium text-slate-700">How to play</summary>
+<details className="mt-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+        <summary className="cursor-pointer font-medium" style={{ color: 'var(--text-primary)' }}>How to play</summary>
         <ul className="mt-2 space-y-1 list-disc pl-5">
           <li>Tap the stock pile (top-left) to draw a card.</li>
           <li>Build foundations up by suit, from Ace to King.</li>

@@ -61,11 +61,18 @@ module.exports = {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
-  		fontFamily: {
+fontFamily: {
   			heading: ['var(--font-heading)'],
   			body: ['var(--font-body)'],
   			display: ['var(--font-display)'],
   			mono: ['var(--font-mono)']
+  		},
+  		fontWeight: {
+  			normal: '400',
+  			medium: '600',
+  			semibold: '700',
+  			bold: '800',
+  			extrabold: '900'
   		},
   		keyframes: {
   			'accordion-down': {

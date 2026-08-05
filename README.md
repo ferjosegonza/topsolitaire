@@ -31,7 +31,7 @@ The build output will be created in the `dist` folder and can be served directly
 
 ## Running Tests
 
-This project uses **Vitest** for testing. Tests cover game logic, sound system, and component rendering.
+This project uses **Vitest** for testing. Tests cover game logic, sound system, component rendering, and theme switching.
 
 ### Run all tests
 
@@ -73,9 +73,15 @@ npm run test -- --reporter=verbose
 
 ```
 __tests__/
-├── setup.test.js          # Environment configuration tests
-├── solitaire.test.jsx     # Game logic tests (createDeck, shuffle, deal, etc.)
-└── sound.test.jsx         # Sound system tests
+├── setup.test.js            # Environment configuration tests
+├── solitaire.test.jsx       # Game logic tests (createDeck, shuffle, deal, etc.)
+├── sound.test.jsx           # Sound system tests
+├── theme.test.jsx           # Theme toggle (rainy / dark / light) cycle & persistence
+├── app-routing.test.jsx     # App routing (Home, Privacy, Contact, fallback)
+├── ui.test.jsx              # UI button and counter tests
+├── visual-effects.test.jsx  # Visual effects, sounds and animations
+├── auto-move.test.jsx       # Auto-move criteria on click
+└── drag-drop.test.jsx       # Drag and drop cards
 ```
 
 ### What is tested
@@ -85,6 +91,12 @@ __tests__/
 | `setup.test.js` | Vitest environment, jsdom, matchMedia, adsbygoogle mock |
 | `solitaire.test.jsx` | Deck creation, shuffling, dealing, card placement rules, win detection |
 | `sound.test.jsx` | Sound effects hook, mute/unmute functionality |
+| `theme.test.jsx` | Theme toggle cycles rainy→dark→light→rainy, persists in localStorage |
+| `app-routing.test.jsx` | App routing (Home, Privacy, Contact, fallback, no auth) |
+| `ui.test.jsx` | Buttons, counters, footer, home, accessibility |
+| `visual-effects.test.jsx` | Visual effects, sounds and animations |
+| `auto-move.test.jsx` | Auto-move criteria on click |
+| `drag-drop.test.jsx` | Drag and drop cards |
 
 ### Adding new tests
 
@@ -100,7 +112,8 @@ The app is intentionally designed as a public solitaire experience with no login
 ## Features
 
 - **Sound System**: Card flip, place, deal, and win sounds with mute/unmute toggle
-- **Visual Effects**: Smooth animations for card movements
+- **Visual Effects**: Smooth animations for card movements (flip, land, deal, victory confetti)
+- **3 Visual Themes**: Toggle between **Rainy Mode** (default, calm blues and mist), **Dark Mode** (emerald/forest), and **Light Mode** (clean, bright). Persisted in localStorage.
 - **Responsive**: Works on desktop, tablet, and mobile devices
 - **No Installation Required**: Play directly in your browser
 
@@ -118,4 +131,6 @@ If you enjoy the game, you can invite me a coffee (donation) here:
 - **Vitest** - Testing framework
 - **use-sound** - Audio playback
 - **Framer Motion** - Animations
-```
+- **lucide-react** - Icons
+- **canvas-confetti** - Victory effect
+

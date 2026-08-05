@@ -45,7 +45,7 @@ describe('App - rutas y navegación del sitio', () => {
     setHash('#/privacy-policy');
     render(<App />);
     expect(screen.getAllByText(/Privacy Policy/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/no registration or login/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText((content) => content.includes('without registration or login')).length).toBeGreaterThan(0);
   });
 
   it('renderiza la página de Contact en /contact', () => {
@@ -78,4 +78,3 @@ describe('App - rutas y navegación del sitio', () => {
     expect(screen.queryByText(/Create your account/i)).toBeNull();
   });
 });
-
