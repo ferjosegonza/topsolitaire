@@ -84,13 +84,20 @@
 - [x] **O4-C3**: Actualizar `fontFamily` en `tailwind.config.js` (ya usa `var(--font-heading/body/display)`) + agregados pesos `fontWeight` 400–900 (normal a extrabold) para las variantes de Nunito
 - [x] **O4-V**: `vite build` exitoso tras los cambios de tipografía
 
-### O5: Rediseño visual
-- [ ] **O5-C1**: Rediseñar tablero (bordes, sombras suaves, border-radius)
-- [ ] **O5-C2**: Dorso de carta con textura cálida (rainy) y textura original (dark/light)
-- [ ] **O5-C3**: Jerarquía visual del header (título + subtítulo)
-- [ ] **O5-C4**: Reemplazar emojis (`🔊`, `🔇`, `🔄`, `🎉`, `↻`, `☕`) por íconos SVG de `lucide-react`
-- [ ] **O5-C5**: Estilos consistentes del `details` "How to play"
+### O5: Rediseño visual — 🟡 EN PROGRESO (sesión actual)
+- [x] **O5-C2**: Dorso de carta con textura cálida (rainy) / original (dark·light) ✅
+- [x] **O5-C4**: Emojis → íconos SVG `lucide-react` (Volume2/VolumeX, RefreshCw, Trophy, RotateCcw, CloudRain/Moon/Sun) ✅
+- [x] **O5-C5**: `details` "How to play" con variables de tema ✅
+- [ ] **O5-C1**: Rediseñar tablero (bordes, sombras suaves, border-radius) — EN CURSO
+- [ ] **O5-C3**: Jerarquía visual del header (pill de marca + título/subtítulo) — EN CURSO
 - [ ] **O5-V**: Tests no se rompen, build exitoso
+
+#### 🧩 Pasos O5 (sesión actual)
+1. [ ] CSS: variables por tema (`--slot-border`, `--slot-text`, `--slot-bg`, `--board-border`) + clases `.game-board` y `.game-slot`
+2. [ ] `SolitaireGame.jsx`: aplicar `.game-board` al tablero y `.game-slot` a `EmptySlot`; radio consistente en overlay de victoria
+3. [ ] `SolitaireCard.jsx`: border-radius consistente (`rounded-[10px]`) en cartas cara arriba/abajo/volteando
+4. [ ] `Home.jsx`: header con pill de marca (ícono Spade + "Klondike") y mejor jerarquía
+5. [ ] Correr batería de tests + `npm run build`
 
 ### O6: Botón Cafecito responsive
 - [ ] **O6-C1**: FAB flotante en móviles (<768px) — estilo botón redondo, posición bottom-right
