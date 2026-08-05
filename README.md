@@ -119,9 +119,10 @@ The app is intentionally designed as a public solitaire experience with no login
 
 ## Support
 
-If you enjoy the game, you can invite me a coffee (donation) here:
+If you enjoy the game, you can support my work (donation) here:
 
-[![Invitame un café en cafecito.app](https://cdn.cafecito.app/imgs/buttons/button_4.svg)](https://cafecito.app/ferjuegos)
+- **Cafecito (Argentina):** [![Invitame un café en cafecito.app](https://cdn.cafecito.app/imgs/buttons/button_4.svg)](https://cafecito.app/ferjuegos)
+- **Ko-fi (International):** [![Support me on Ko-fi](https://storage.ko-fi.com/cdn/kofi2.png)](https://ko-fi.com/Y8Y6XTKCE)
 
 ## Tech Stack
 

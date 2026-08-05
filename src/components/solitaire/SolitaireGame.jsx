@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Volume2, VolumeX, RotateCcw, Trophy, RefreshCw } from 'lucide-react';
+import { Volume2, VolumeX, RotateCcw, Trophy, RefreshCw, Heart, Coffee } from 'lucide-react';
 
 import {
   deal,
@@ -1008,52 +1008,107 @@ const isDealingCard = (colIndex, rowIndex) => {
 
   return (
     <div style={CARD_VARS} className="w-full">
-      <div className="flex items-center justify-between mb-3 text-sm" style={{ color: 'var(--text-primary)' }}>
-        <div className="flex gap-4">
+{/* ============================================================ */}
+      {/* BARRA DE CONTROLES                                            */}
+      {/* - Desktop: Moves/Time a la izquierda, botones a la derecha.   */}
+      {/* - Móvil: los botones quedan arriba y Moves/Time se desplazan  */}
+      {/*   a una línea debajo (por encima del tablero).                */}
+      {/* - Todos los botones tienen dimensiones consistentes (cuadrados */}
+      {/*   iguales en móvil, altura uniforme en desktop).              */}
+      {/* ============================================================ */}
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3 text-sm" style={{ color: 'var(--text-primary)' }}>
+        {/* Contador de movimientos y tiempo: desktop izquierda / móvil debajo */}
+        <div className="flex gap-4 order-2 sm:order-1">
           <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
           <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
         </div>
-        <div className="flex gap-2">
+
+        {/* Fila de botones: desktop derecha / móvil arriba */}
+        <div className="flex flex-wrap items-center justify-end gap-2 order-1 sm:order-2">
+
+{/* ============================================================ */}
+          {/* ☕ KO-FI - Donación internacional (EE.UU. / Europa / resto)   */}
+          {/* Desktop: logo oficial + "🌍 Internacional" DEBAJO del logo.  */}
+          {/* Móvil: ícono Heart (lucide) + banderita 🌍 en la esquina.    */}
           {/* ============================================================ */}
-          {/* ☕ BOTÓN CAFECITO - Invitar un café (donación)              */}
+<a
+            href="https://ko-fi.com/Y8Y6XTKCE"
+            target="_blank"
+            rel="noopener"
+            className="relative inline-flex flex-col items-center justify-center rounded-2xl w-[52px] h-[52px] gap-0.5 sm:w-auto sm:min-h-[64px] sm:px-4 sm:py-2 shadow-xl hover:scale-[1.02] border-2 border-[#72a4f2] bg-[#72a4f2] text-white transition-all duration-200"
+            aria-label="Support me on Ko-fi (International)"
+            title="Support me on Ko-fi"
+          >
+            {/* Móvil: ícono Heart de lucide-react (reemplaza la imagen) */}
+            <Heart className="w-6 h-6 sm:hidden" fill="currentColor" aria-hidden="true" />
+            {/* Desktop: logo oficial Ko-fi */}
+            <img
+              src="https://storage.ko-fi.com/cdn/kofi5.png"
+              alt="Ko-fi"
+              className="hidden sm:block h-[28px] w-auto"
+            />
+            {/* Desktop: texto debajo del logo */}
+            <span className="hidden sm:flex items-center gap-1 text-[11px] leading-none opacity-90">
+              <span aria-hidden="true">🌍</span>
+              <span>Internacional</span>
+            </span>
+            {/* Móvil: banderita del mundo en la esquina */}
+            <span className="sm:hidden absolute top-0.5 right-0.5 text-[10px] leading-none" aria-hidden="true">🌍</span>
+          </a>
+
+{/* ============================================================ */}
+          {/* ☕ CAFECITO - Donación Argentina (evita impuestos al dólar)   */}
+          {/* Desktop: logo oficial + "🇦🇷 Argentina" DEBAJO del logo.    */}
+          {/* Móvil: ícono Coffee (lucide) + banderita 🇦🇷 en la esquina. */}
           {/* ============================================================ */}
-          <a
+<a
             href="https://cafecito.app/ferjuegos"
             target="_blank"
             rel="noopener"
-            className="rounded-2xl transition-all duration-200 flex items-center justify-center gap-4 min-h-[64px] shadow-xl hover:scale-[1.02] bg-[#80A9BA] hover:bg-[#80A9BA] border-2 border-[#80A9BA] px-4"
-            aria-label="Invitame un café en cafecito.app"
+            className="relative inline-flex flex-col items-center justify-center rounded-2xl w-[52px] h-[52px] gap-0.5 sm:w-auto sm:min-h-[64px] sm:px-4 sm:py-2 shadow-xl hover:scale-[1.02] border-2 border-[#80A9BA] bg-[#80A9BA] text-white transition-all duration-200"
+            aria-label="Invitame un cafecito (Argentina)"
+            title="Invitame un Cafecito"
           >
+            {/* Móvil: ícono Coffee de lucide-react (reemplaza la imagen) */}
+            <Coffee className="w-6 h-6 sm:hidden" fill="currentColor" aria-hidden="true" />
+            {/* Desktop: logo oficial Cafecito */}
             <img
               src="https://cdn.cafecito.app/imgs/buttons/button_4.png"
               srcSet="https://cdn.cafecito.app/imgs/buttons/button_4.png 1x, https://cdn.cafecito.app/imgs/buttons/button_4_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_4_3.75x.png 3.75x"
-              alt="Invitame un café en cafecito.app"
-              className="h-[44px] w-auto"
+              alt="Cafecito"
+              className="hidden sm:block h-[28px] w-auto"
             />
+            {/* Desktop: texto debajo del logo */}
+            <span className="hidden sm:flex items-center gap-1 text-[11px] leading-none opacity-90">
+              <span aria-hidden="true">🇦🇷</span>
+              <span>Argentina</span>
+            </span>
+            {/* Móvil: banderita de Argentina en la esquina */}
+            <span className="sm:hidden absolute top-0.5 right-0.5 text-[10px] leading-none" aria-hidden="true">🇦🇷</span>
           </a>
 
           <ThemeToggle />
 
-<button
+          <button
             onClick={toggleMute}
-            className={`inline-flex items-center justify-center rounded-2xl min-h-[64px] px-4 text-white font-bold text-xl transition-all duration-200 shadow-xl hover:scale-[1.02] border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-400 ${
+            className={`inline-flex items-center justify-center rounded-2xl w-[52px] h-[52px] sm:w-auto sm:min-h-[64px] sm:px-4 text-white font-bold text-xl transition-all duration-200 shadow-xl hover:scale-[1.02] border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-400 ${
               isMuted
                 ? 'bg-red-600/60 hover:bg-red-600/80 border-red-400/60'
                 : 'bg-emerald-600/60 hover:bg-emerald-600/80 border-emerald-400/60'
             }`}
             aria-label={isMuted ? "Activar sonido" : "Silenciar sonido"}
           >
-            <span className="text-5xl flex items-center justify-center">
-              {isMuted ? <VolumeX className="w-7 h-7" aria-hidden="true" /> : <Volume2 className="w-7 h-7" aria-hidden="true" />}
-            </span>
+            {isMuted ? <VolumeX className="w-7 h-7" aria-hidden="true" /> : <Volume2 className="w-7 h-7" aria-hidden="true" />}
           </button>
 
           <button
             onClick={newGame}
-            className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-lg transition-all duration-200 flex items-center gap-2 min-h-[56px] min-w-[140px] shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+            aria-label="New Game"
+            title="New Game"
+            className="inline-flex items-center justify-center rounded-2xl w-[52px] h-[52px] sm:w-auto sm:min-h-[64px] sm:px-6 gap-2 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-base sm:text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
           >
-            <RefreshCw className="w-5 h-5" aria-hidden="true" />
-            New Game
+            <RefreshCw className="w-6 h-6 sm:w-5 sm:h-5" aria-hidden="true" />
+            <span className="hidden sm:inline">New Game</span>
           </button>
         </div>
       </div>

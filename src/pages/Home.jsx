@@ -15,8 +15,8 @@ export default function Home() {
         <div className="mx-auto max-w-[1100px] px-3 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
           <section className="flex-1 min-w-0">
 <header className="mb-5 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium tracking-wide uppercase mb-2"
-                style={{ color: 'var(--accent-strong)', backgroundColor: 'var(--bg-chip)', border: '1px solid var(--border-soft)' }}>
+<div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium tracking-wide uppercase mb-2"
+                style={{ color: 'var(--accent)', backgroundColor: 'var(--accent-muted)', border: '1px solid var(--accent-hover)' }}>
                 ☕ Play · Relax · Rainy Day
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{ color: 'var(--text-primary)' }}>
