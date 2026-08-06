@@ -1026,65 +1026,55 @@ const isDealingCard = (colIndex, rowIndex) => {
         {/* Fila de botones: desktop derecha / móvil arriba */}
         <div className="flex flex-wrap items-center justify-end gap-2 order-1 sm:order-2">
 
-{/* ============================================================ */}
+          {/* ============================================================ */}
           {/* ☕ KO-FI - Donación internacional (EE.UU. / Europa / resto)   */}
           {/* Desktop: logo oficial + "🌍 Internacional" DEBAJO del logo.  */}
           {/* Móvil: ícono Heart (lucide) + banderita 🌍 en la esquina.    */}
           {/* ============================================================ */}
-<a
+          <a
             href="https://ko-fi.com/Y8Y6XTKCE"
             target="_blank"
             rel="noopener"
-            className="relative inline-flex flex-col items-center justify-center rounded-2xl w-[52px] h-[52px] gap-0.5 sm:w-auto sm:min-h-[64px] sm:px-4 sm:py-2 shadow-xl hover:scale-[1.02] border-2 border-[#72a4f2] bg-[#72a4f2] text-white transition-all duration-200"
+className="relative inline-flex flex-col items-center justify-center rounded-2xl w-[52px] h-[52px] gap-0.5 sm:w-auto sm:min-h-[64px] sm:px-2 sm:py-1 shadow-xl hover:scale-[1.02] border-2 border-[#72a4f2] bg-[#72a4f2] text-white transition-all duration-200"
             aria-label="Support me on Ko-fi (International)"
             title="Support me on Ko-fi"
           >
             {/* Móvil: ícono Heart de lucide-react (reemplaza la imagen) */}
-            <Heart className="w-6 h-6 sm:hidden" fill="currentColor" aria-hidden="true" />
+            <Heart className="w-7 h-7 sm:hidden" fill="currentColor" aria-hidden="true" />
             {/* Desktop: logo oficial Ko-fi */}
             <img
               src="https://storage.ko-fi.com/cdn/kofi5.png"
               alt="Ko-fi"
-              className="hidden sm:block h-[28px] w-auto"
+              className="hidden sm:block h-11 w-auto"
             />
-            {/* Desktop: texto debajo del logo */}
-            <span className="hidden sm:flex items-center gap-1 text-[11px] leading-none opacity-90">
-              <span aria-hidden="true">🌍</span>
-              <span>Internacional</span>
-            </span>
-            {/* Móvil: banderita del mundo en la esquina */}
-            <span className="sm:hidden absolute top-0.5 right-0.5 text-[10px] leading-none" aria-hidden="true">🌍</span>
+            {/* Banderita del mundo en la esquina (móvil y desktop) */}
+            <span className="absolute top-0.5 right-0.5 text-[10px] sm:text-sm leading-none" aria-hidden="true">🌍</span>
           </a>
 
-{/* ============================================================ */}
+          {/* ============================================================ */}
           {/* ☕ CAFECITO - Donación Argentina (evita impuestos al dólar)   */}
           {/* Desktop: logo oficial + "🇦🇷 Argentina" DEBAJO del logo.    */}
           {/* Móvil: ícono Coffee (lucide) + banderita 🇦🇷 en la esquina. */}
           {/* ============================================================ */}
-<a
+          <a
             href="https://cafecito.app/ferjuegos"
             target="_blank"
             rel="noopener"
-            className="relative inline-flex flex-col items-center justify-center rounded-2xl w-[52px] h-[52px] gap-0.5 sm:w-auto sm:min-h-[64px] sm:px-4 sm:py-2 shadow-xl hover:scale-[1.02] border-2 border-[#80A9BA] bg-[#80A9BA] text-white transition-all duration-200"
+className="relative inline-flex flex-col items-center justify-center rounded-2xl w-[52px] h-[52px] gap-0.5 sm:w-auto sm:min-h-[64px] sm:px-2 sm:py-1 shadow-xl hover:scale-[1.02] border-2 border-[#80A9BA] bg-[#80A9BA] text-white transition-all duration-200"
             aria-label="Invitame un cafecito (Argentina)"
             title="Invitame un Cafecito"
           >
             {/* Móvil: ícono Coffee de lucide-react (reemplaza la imagen) */}
-            <Coffee className="w-6 h-6 sm:hidden" fill="currentColor" aria-hidden="true" />
+            <Coffee className="w-7 h-7 sm:hidden" fill="currentColor" aria-hidden="true" />
             {/* Desktop: logo oficial Cafecito */}
             <img
               src="https://cdn.cafecito.app/imgs/buttons/button_4.png"
               srcSet="https://cdn.cafecito.app/imgs/buttons/button_4.png 1x, https://cdn.cafecito.app/imgs/buttons/button_4_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_4_3.75x.png 3.75x"
               alt="Cafecito"
-              className="hidden sm:block h-[28px] w-auto"
+              className="hidden sm:block h-10 w-auto"
             />
-            {/* Desktop: texto debajo del logo */}
-            <span className="hidden sm:flex items-center gap-1 text-[11px] leading-none opacity-90">
-              <span aria-hidden="true">🇦🇷</span>
-              <span>Argentina</span>
-            </span>
-            {/* Móvil: banderita de Argentina en la esquina */}
-            <span className="sm:hidden absolute top-0.5 right-0.5 text-[10px] leading-none" aria-hidden="true">🇦🇷</span>
+            {/* Banderita de Argentina en la esquina (móvil y desktop) */}
+            <span className="absolute top-0.5 right-0.5 text-[10px] sm:text-sm leading-none" aria-hidden="true">🇦🇷</span>
           </a>
 
           <ThemeToggle />
