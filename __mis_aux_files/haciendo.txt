@@ -13,6 +13,7 @@
 PENDIENTE DE INCLUIR EN EL TODO.md
 - múltiples idiomas
 - averiguar si se puede agregar un formulario para que los visitantes del sitio me puedan enviar algún mensaje y ver si es posible que eso me llegue por email o de alguna otra forma teniendo en cuenta que el sitio web no trabaja con bases de datos.
+-  averiguar si se puede hacer un seguimiento para tener conocimiento sobre si los que visitan el sitio web llegan a jugar o no. Qué datos se puede recabar, qué enfoques hay para esto.
 
 ## Para pedir en algún momento:
 - revisa si todo el contenido de los archivos es consistente con el resto del proyecto, analiza de qué se trata el sitio web y que el contenido de todos los archivos se corresponda con el mismo y que no haya cabos sueltos, por ejemplo si hay archivos relacionados a un proceso de login y ves que no se utiliza gestión de usuarios en ninguna parte del sitio web, planteame como tarea a realizar quitar los archivos relacionados a gestión de login, si te lo apruebo, sería una tarea más a realizar por ti.
