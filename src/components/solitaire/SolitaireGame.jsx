@@ -1041,19 +1041,14 @@ const isDealingCard = (colIndex, rowIndex) => {
           >
             {/* Móvil: ícono Heart de lucide-react (reemplaza la imagen) */}
             <Heart className="w-6 h-6 sm:hidden" fill="currentColor" aria-hidden="true" />
-            {/* Desktop: logo oficial Ko-fi */}
+{/* Desktop: logo oficial Ko-fi */}
             <img
               src="https://storage.ko-fi.com/cdn/kofi5.png"
               alt="Ko-fi"
               className="hidden sm:block h-[28px] w-auto"
             />
-            {/* Desktop: texto debajo del logo */}
-            <span className="hidden sm:flex items-center gap-1 text-[11px] leading-none opacity-90">
-              <span aria-hidden="true">🌍</span>
-              <span>Internacional</span>
-            </span>
-            {/* Móvil: banderita del mundo en la esquina */}
-            <span className="sm:hidden absolute top-0.5 right-0.5 text-[10px] leading-none" aria-hidden="true">🌍</span>
+            {/* Banderita del mundo en la esquina (móvil y desktop) */}
+            <span className="absolute top-0.5 right-0.5 text-[10px] sm:text-sm leading-none" aria-hidden="true">🌍</span>
           </a>
 
 {/* ============================================================ */}
@@ -1071,20 +1066,15 @@ const isDealingCard = (colIndex, rowIndex) => {
           >
             {/* Móvil: ícono Coffee de lucide-react (reemplaza la imagen) */}
             <Coffee className="w-6 h-6 sm:hidden" fill="currentColor" aria-hidden="true" />
-            {/* Desktop: logo oficial Cafecito */}
+{/* Desktop: logo oficial Cafecito */}
             <img
               src="https://cdn.cafecito.app/imgs/buttons/button_4.png"
               srcSet="https://cdn.cafecito.app/imgs/buttons/button_4.png 1x, https://cdn.cafecito.app/imgs/buttons/button_4_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_4_3.75x.png 3.75x"
               alt="Cafecito"
               className="hidden sm:block h-[28px] w-auto"
             />
-            {/* Desktop: texto debajo del logo */}
-            <span className="hidden sm:flex items-center gap-1 text-[11px] leading-none opacity-90">
-              <span aria-hidden="true">🇦🇷</span>
-              <span>Argentina</span>
-            </span>
-            {/* Móvil: banderita de Argentina en la esquina */}
-            <span className="sm:hidden absolute top-0.5 right-0.5 text-[10px] leading-none" aria-hidden="true">🇦🇷</span>
+            {/* Banderita de Argentina en la esquina (móvil y desktop) */}
+            <span className="absolute top-0.5 right-0.5 text-[10px] sm:text-sm leading-none" aria-hidden="true">🇦🇷</span>
           </a>
 
           <ThemeToggle />
