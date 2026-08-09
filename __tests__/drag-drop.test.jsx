@@ -31,6 +31,12 @@ const emptyGame = () => ({
 
 const movesValue = () => document.querySelector('.tabular-nums')?.textContent;
 
+// Esperar a que termine la animación de reparto inicial (bloquea drag mientras isDealing)
+const waitForDealing = () =>
+  act(async () => {
+    await new Promise((r) => setTimeout(r, 1200));
+  });
+
 // Mock de getBoundingClientRect para poder detectar destinos en jsdom
 function mockRects() {
   document.querySelectorAll('[data-tableau-slot]').forEach((slot, i) => {
@@ -82,6 +88,8 @@ const dragFromTo = async (cardId, fromX, fromY, toX, toY) => {
   await act(async () => {
     fireEvent.mouseDown(cardEl, { button: 0, clientX: fromX, clientY: fromY });
   });
+  // Re-aplicar mocks tras el re-render que dispara isDragging
+  mockRects();
   await act(async () => {
     fireEvent.mouseMove(document, { clientX: toX, clientY: toY });
   });
@@ -123,6 +131,7 @@ describe('Drag & Drop - comportamiento real (estado determinista)', () => {
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
     render(<SolitaireGame />);
+    await waitForDealing();
     mockRects();
 
     // Suelta sobre la col 1 (left 80–150)
@@ -140,6 +149,7 @@ describe('Drag & Drop - comportamiento real (estado determinista)', () => {
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
     render(<SolitaireGame />);
+    await waitForDealing();
     mockRects();
 
     // Suelta sobre la foundation 0 (left 300–370)
@@ -157,6 +167,7 @@ describe('Drag & Drop - comportamiento real (estado determinista)', () => {
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
     render(<SolitaireGame />);
+    await waitForDealing();
     mockRects();
 
     // Solo 3px de desplazamiento
@@ -178,6 +189,7 @@ describe('Drag & Drop - comportamiento real (estado determinista)', () => {
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
     render(<SolitaireGame />);
+    await waitForDealing();
     mockRects();
 
     await dragFromTo('c1', 30, 30, 120, 250);
@@ -198,6 +210,7 @@ describe('Drag & Drop - comportamiento real (estado determinista)', () => {
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
     render(<SolitaireGame />);
+    await waitForDealing();
     mockRects();
 
     await dragFromTo('c1', 30, 30, 120, 250);

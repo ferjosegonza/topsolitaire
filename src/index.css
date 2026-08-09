@@ -42,6 +42,15 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+}
+
+html[data-lang="zh"],
+html[data-lang="zh-TW"] {
+  --font-heading: 'Noto Sans SC', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Noto Sans SC', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Noto Sans SC', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body);
+}
 
   .dark {
     --background: 0 0% 3.9%;
