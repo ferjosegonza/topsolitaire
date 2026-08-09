@@ -59,6 +59,8 @@
 
 ## 🔵 PENDIENTE
 
+### Que se pueda deshacer una jugada
+- [ ] Que se pueda volver atrás las jugadas (ver si conviene integrar el botón en el tablero del juego o dónde para que se entienda qué hace y para qué sirve).
 ### P1-A: Eliminar archivos de auth no utilizados
 - [ ] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
 - [ ] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
