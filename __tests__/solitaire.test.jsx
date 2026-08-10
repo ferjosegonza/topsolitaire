@@ -13,6 +13,29 @@ import SolitaireGame from '../src/components/solitaire/SolitaireGame';
 
 describe('Solitaire Game - Tests', () => {
   describe('Lógica del juego (solitaire.js)', () => {
+    it('guarda y restaura un snapshot previo del juego para deshacer', () => {
+      const initialGame = solitaire.deal();
+      const initialSnapshot = solitaire.createGameSnapshot(initialGame, 3, 45, false, null);
+
+      const mutatedState = {
+        game: solitaire.cloneGameState(initialGame),
+        moves: 4,
+        seconds: 46,
+        won: true,
+        selection: { source: 'waste' },
+      };
+      mutatedState.game.stock = [];
+      mutatedState.game.waste = [{ suit: 'hearts', rank: 1, faceUp: true, id: 'h-1' }];
+
+      const restored = solitaire.restoreGameSnapshot(mutatedState, initialSnapshot);
+
+      expect(restored.game.stock).toHaveLength(initialGame.stock.length);
+      expect(restored.game.waste).toHaveLength(0);
+      expect(restored.moves).toBe(3);
+      expect(restored.seconds).toBe(45);
+      expect(restored.won).toBe(false);
+      expect(restored.selection).toBeNull();
+    });
     it('crea un mazo de 52 cartas', () => {
       const deck = solitaire.createDeck();
       expect(deck).toHaveLength(52);
