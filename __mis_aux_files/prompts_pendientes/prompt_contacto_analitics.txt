@@ -1,0 +1,80 @@
+# Conversación guardada — Formulario de contacto + Analytics (para retomar luego)
+
+> Estado: la conversación quedó en análisis/planificación. Nadie ha implementado todavía nada.
+> Sitio: Vite + React + Tailwind, estático, SIN backend ni base de datos.
+
+---
+
+## 🎯 Petición original del usuario
+
+Quiere saber si es posible (y cómo):
+
+### 1) Formulario de contacto (mensajes que le lleguen por email)
+El sitio NO trabaja con bases de datos. ¿Qué opciones hay?
+
+### 2) Seguimiento / analytics
+¿Se puede saber si los que visitan el sitio llegan a jugar? ¿Qué datos se pueden recabar y qué enfoques hay?
+
+---
+
+## 📋 Mi análisis (ya compartido con el usuario)
+
+### Formulario de contacto (sin backend)
+
+**Opción A — Servicios de formularios de terceros (recomendada)**
+- **Formspree**: endpoint `https://formspree.io/f/XXXX`; el form hace `POST` y llega por email. Plan gratis ~50 envíos/mes.
+- **FormSubmit**: gratis, `action="https://formsubmit.co/tu@email.com"`, con opción de reCAPTCHA.
+- **Web3Forms**: gratis, solo requiere verificar tu email.
+- **Basin / Getform / formcarry**: alternativas con planes gratuitos limitados.
+
+Implicación en el código: componente `<ContactForm>` en React con estado y `fetch`/`<form>` apuntando al endpoint elegido.
+
+**Opción B — Google Forms** (gratis, familiar): las respuestas van a una Google Sheet. Simple pero estética "de Google".
+
+**Opción C — Función serverless** (más robusta): si se publica en Vercel/Netlify/Cloudflare Pages, crear una función que envíe el email vía **Resend**, **SendGrid** o **SMTP**.
+
+### Analytics (¿juegan o no?)
+
+**Datos posibles de recabar:**
+- Visitas, páginas vistas, tiempo en sitio, rebote.
+- Eventos de juego: carga de tablero, inicio de partida, primer movimiento/robo de carta, victoria.
+- Datos técnicos: dispositivo, navegador, país aproximado.
+
+**Enfoques:**
+- **Opción A — Google Analytics 4 (GA4)**: gratis; eventos personalizados (`game_start`, `card_draw`, `card_move`, `game_win`) para armar un embudo entrar→jugar→completar. RECOMENDADO para saber si juegan.
+- **Opción B — Plausible / Umami / Fathom**: ligeros y de privacidad (sin cookies). Umami/Plausible pueden ser own-hosted.
+- **Opción C — Cloudflare Web Analytics**: gratis, sin cookies, básico.
+
+---
+
+## 🛤️ Pasos propuestos para implementar (pendientes de confirmación)
+
+1. **Formulario de contacto**:
+   - Crear componente `<ContactForm>` (nombre, email, mensaje).
+   - Conectar a Formspree o FormSubmit (definir cuál).
+   - Agregar estado de envío (enviando / éxito / error).
+   - Insertar en la página de Contact (`src/pages/Contact.jsx`) o donde convenga.
+   - Doc en `haciendo.txt` / `TODO.md` con la URL del servicio usado.
+
+2. **Analytics de juego**:
+   - Definir si GA4 (con Measurement ID) o Plausible/Umami.
+   - Agregar el snippet de carga de analytics.
+   - Disparar eventos en `SolitaireGame.jsx`: `game_start`, `card_draw`, `card_move`, `game_win` (nuevas partidas, robo de stock, movimientos válidos, victoria).
+   - Revisar COOKIE/privacy (GA4 usa cookies; si se prefiere privacidad → Plausible/Umami).
+
+---
+
+## 📌 Pregunta abierta al usuario
+
+¿Por cuál prioriza?
+1. Formulario de contacto (Formspree/FormSubmit)
+2. Analytics (GA4 + eventos de juego)
+3. Ambos
+
+---
+
+## 💾 Cómo retomar
+- Continuar esta conversación o reabrir este archivo.
+- Al aprobar la implementación, seguir los pasos de la sección "Pasos propuestos".
+- Recordar reglas del proyecto: actualizar `TODO.md` (sin borrar contenido), verificar tests antes de subir, y poner prioridad en corregir antes que en crear.
+

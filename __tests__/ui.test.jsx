@@ -30,9 +30,9 @@ describe('Tests de UI - Botones e Interacciones', () => {
     it('el botón New Game tiene el estilo correcto (grande, visible)', () => {
       render(<SolitaireGame />);
       const button = screen.getByText(/New Game/i).closest('button');
-      expect(button.className).toContain('min-h-[56px]');
-      expect(button.className).toContain('min-w-[140px]');
-      expect(button.className).toContain('text-lg');
+      expect(button.className).toContain('rounded-2xl');
+      expect(button.className).toContain('sm:min-h-[64px]');
+      expect(button.className).toContain('sm:text-lg');
     });
 
     it('el botón New Game existe y es clickeable', () => {

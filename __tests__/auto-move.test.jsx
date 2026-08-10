@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import SolitaireGame from '../src/components/solitaire/SolitaireGame';
 import * as solitaire from '../src/lib/solitaire';
@@ -92,8 +92,12 @@ describe('Auto-move - comportamiento real (estado determinista)', () => {
   it('si hay varios destinos tableau, elige la columna con MÁS cartas', () => {
     const game = emptyGame();
     game.tableau[0] = [c('c1', 'clubs', 12, true)]; // Q ♣
-    game.tableau[1] = [c('c2', 'diamonds', 13, true), c('c3', 'hearts', 12, true), c('c4', 'spades', 11, true)]; // 3 cartas
-    game.tableau[2] = [c('c5', 'spades', 13, true)]; // 1 carta
+    game.tableau[1] = [
+      c('c2', 'diamonds', 5, false),
+      c('c3', 'hearts', 4, false),
+      c('c4', 'diamonds', 13, true),
+    ]; // 3 cartas, top K ♦
+    game.tableau[2] = [c('c5', 'hearts', 13, true)]; // 1 carta, top K ♥
     vi.spyOn(solitaire, 'deal').mockReturnValue(game);
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
@@ -108,8 +112,8 @@ describe('Auto-move - comportamiento real (estado determinista)', () => {
   it('en caso de empate entre destinos, elige la columna más a la derecha', () => {
     const game = emptyGame();
     game.tableau[0] = [c('c1', 'clubs', 12, true)]; // Q ♣
-    game.tableau[1] = [c('c2', 'diamonds', 13, true)]; // 1 carta
-    game.tableau[2] = [c('c3', 'spades', 13, true)]; // 1 carta (empate)
+    game.tableau[1] = [c('c2', 'diamonds', 13, true)]; // K ♦
+    game.tableau[2] = [c('c3', 'hearts', 13, true)]; // K ♥ (empate, más a la derecha)
     vi.spyOn(solitaire, 'deal').mockReturnValue(game);
     vi.spyOn(solitaire, 'isWon').mockReturnValue(false);
 
@@ -121,7 +125,7 @@ describe('Auto-move - comportamiento real (estado determinista)', () => {
     expect(document.querySelector('[data-tableau-slot="1"] [data-card-id="c1"]')).toBeNull();
   });
 
-  it('un clic en la última carta boca abajo la voltea (no la mueve)', () => {
+  it('un clic en la última carta boca abajo la voltea (no la mueve)', async () => {
     const game = emptyGame();
     game.tableau[0] = [c('c1', 'hearts', 5, false)];
     vi.spyOn(solitaire, 'deal').mockReturnValue(game);
@@ -134,9 +138,10 @@ describe('Auto-move - comportamiento real (estado determinista)', () => {
 
     clickCard('c1');
 
-    // Tras el clic quedó boca arriba
-    expect(document.querySelector('[data-card-id="c1"] .solitaire-card-back')).toBeNull();
-    expect(document.querySelector('[data-card-id="c1"] .solitaire-card:not(.solitaire-card-back)')).toBeTruthy();
+    // Tras la animación de volteo quedó boca arriba
+    await waitFor(() => {
+      expect(document.querySelector('[data-card-id="c1"] .solitaire-card:not(.solitaire-card-back)')).toBeTruthy();
+    });
     expect(movesValue()).toBe('0');
     expect(mockPlayFlipSound).toHaveBeenCalled();
   });
@@ -150,16 +155,16 @@ describe('Auto-move - comportamiento real (estado determinista)', () => {
 
     render(<SolitaireGame />);
 
-    // El stock está vacío → muestra el símbolo de reinicio ↻
-    const resetBtn = screen.getByText('↻').closest('div');
-    expect(resetBtn).toBeTruthy();
-    fireEvent.click(resetBtn);
+    // El stock está vacío → slot clickeable con icono de reinicio
+    const stockSlot = document.querySelector('.grid-cols-7')?.children[0]?.querySelector('.game-slot');
+    expect(stockSlot).toBeTruthy();
+    fireEvent.click(stockSlot);
 
     // El stock ahora tiene una carta boca abajo
     expect(document.querySelector('.grid-cols-7 .solitaire-card-back')).toBeTruthy();
-    // El waste quedó vacío (sin carta boca arriba)
+    // El waste quedó vacío (sin carta visible con data-card-id)
     const topRow = document.querySelectorAll('.grid-cols-7')[0];
-    expect(topRow.children[1].querySelector('.solitaire-card:not(.solitaire-card-back)')).toBeNull();
+    expect(topRow.children[1].querySelector('[data-card-id]')).toBeNull();
   });
 });
 

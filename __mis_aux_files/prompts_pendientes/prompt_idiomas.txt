@@ -1,0 +1,21 @@
+Eres un experto en diseño gráfico y en programación web con las tecnologías presentes en el proyecto.
+Antes de ponerte a trabajar quiero que me digas lo que entiendes y me hagas todas las preguntas que encuentres necesarias, así te confirmo y te pones a trabajar.
+Quiero que implementes idiomas múltiples teniendo en cuenta todo lo que te pido:
+Montar react-i18next con detección por navigator.language, selector manual de idioma persistente en localStorage y fallback a inglés. No necesita backend.
+Quiero que el botón se ubique en un lugar agradable y lógico estéticamente.
+Quiero que me digas si hay ventajas y desventajas en incluir el idioma chino entre los lenguajes soportados.
+Quiero los siguientes idiomas:
+inglés
+español
+francés
+italiano
+polaco
+alemán
+chino
+
+Te contesto lo que me preguntaste:
+Quiero también traducir solo la interfaz del juego + Home + Footer a todos los idiomas, las páginas largas como Privacy Policy, Contact no hace falta.
+Prefiero un selector desplegable con el nombre del idioma junto con una banderita a la izquierda del nombre de cada idioma. Que sea responsivo es decir que al reducirse el ancho quiero que el botón tenga sólo el simbolito del mundo.
+En cuanto a chino prefiero ambos auto-detectados por navigator.language. Quiero que añadas una fuente CJK (Noto Sans SC) para que el chino se vea bien en todos los sistemas.
+Quiero que el <title> y metas de index.html se actualicen dinámicamente según el idioma.
+El fallback siempre debe ser inglés.

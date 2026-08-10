@@ -1,3 +1,6 @@
+Te paso el contenido del archivo "C:\xampp\htdocs\topsolitaire\TODO.md" y lo nuevo, quiero que incluyas lo nuevo al contenido actual de "TODO.md":
+
+A continuación te paso el contenido actual del archivo "C:\xampp\htdocs\topsolitaire\TODO.md":
 # TODO — TopSolitaire
 
 > 📜 **Historial cronológico completo** → `__mis_aux_files/TODO_HISTORICO.md`
@@ -39,28 +42,24 @@
 ### Header (Home.jsx) — ✅ COMPLETADO
 - Pill "Play · Relax · Rainy Day" ahora usa colores legibles en modos rainy y dark (`var(--accent)` sobre `var(--accent-muted)`) en lugar de variables inexistentes (`--accent-strong`, `--bg-chip`, `--border-soft`)
 
-### Soporte Multilingüe (i18n) — ✅ COMPLETADO EN SU MAYORÍA
-- Dependencias `i18next` y `react-i18next` ya están instaladas.
-- `src/i18n.js` existe con configuración, 7 idiomas soportados + `zh-TW`, detección de `navigator.language`, persistencia en `localStorage` y fallback a `en`.
-- `src/components/ui/LanguageSelector.jsx` implementa selector de idioma con bandera + nombre en desktop y solo globo en móvil.
-- `src/lib/useDocumentMeta.js` actualiza dinámicamente `<title>` y metas `description`, `og:` y `twitter:` según el idioma.
-- `src/main.jsx` envuelve `App` con `I18nextProvider`.
-- `src/App.jsx` usa `useDocumentMeta()` para sincronizar metas al cambiar idioma.
-- `src/pages/Home.jsx`, `src/components/Footer.jsx` y `src/components/solitaire/SolitaireGame.jsx` usan `t()` para traducciones.
-- `src/components/solitaire/SolitaireGame.jsx` incluye el `LanguageSelector` en la barra de juego.
-- `__tests__/i18n.test.jsx` cubre claves de traducción, cambios de idioma, persistencia y el selector.
+### Tests
+- **10 archivos de test**: solitaire (lógica), sound, drag-drop, auto-move, ui, visual-effects, app-routing, theme (nuevo)
+- Tests de routing (`app-routing`) confirman que el sitio funciona sin auth
+- Tests de tema que verifican ciclo 3 modos y persistencia
 
-### Recursos de idioma CJK — ✅ COMPLETADO
-- `index.html` ahora incluye la importación de `Noto Sans SC` desde Google Fonts.
-- `src/index.css` aplica `Noto Sans SC` mediante variables CSS cuando `html[data-lang="zh"]` o `html[data-lang="zh-TW"]` están activos.
+### Sonidos
+- `card-flip.mp3`, `card-place.mp3`, `deal.mp3`, `win.mp3`, `click.mp3`
+
+---
+
+## 🔵 PENDIENTE (activo)
+
 > *(nada en progreso activo; los objetivos pendientes están abajo)*
 
 ---
 
 ## 🔵 PENDIENTE
 
-### Que se pueda deshacer una jugada
-- [ ] Que se pueda volver atrás las jugadas (ver si conviene integrar el botón en el tablero del juego o dónde para que se entienda qué hace y para qué sirve).
 ### P1-A: Eliminar archivos de auth no utilizados
 - [ ] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
 - [ ] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
@@ -161,3 +160,22 @@ Cuando el usuario hace clic en una carta boca arriba en el tableau:
 | 10 | Alto de columna fijo → escapes de recuadro verde | ✅ |
 | 11 | Test flaky visual-effects (isWon restaurado tarde) | ✅ |
 | 12 | Test app-routing buscaba texto incorrecto | ✅ |
+
+A continuación lo nuevo (que ya está hecho) que quiero que integres el contenido actual del archivo "C:\xampp\htdocs\topsolitaire\TODO.md":
+# TODO — Soporte Multilingüe (i18n) en TopSolitaire
+
+## Pasos del plan
+
+- [ ] 1. Instalar dependencias `i18next` + `react-i18next`
+- [ ] 2. Crear `src/i18n.js` (config + 7 idiomas + detección navigator.language + localStorage + fallback en)
+- [ ] 3. Crear `src/components/ui/LanguageSelector.jsx` (desplegable bandera+nombre; mobile solo globo)
+- [ ] 4. Crear hook `src/lib/useDocumentMeta.js` (actualiza <title> y metas dinámicamente)
+- [ ] 5. Modificar `src/main.jsx` (envolver con I18nextProvider)
+- [ ] 6. Modificar `src/App.jsx` (montar LanguageSelector + hook de meta)
+- [ ] 7. Modificar `src/pages/Home.jsx` (textos con t())
+- [ ] 8. Modificar `src/components/Footer.jsx` (textos con t())
+- [ ] 9. Modificar `src/components/solitaire/SolitaireGame.jsx` (textos con t() + LanguageSelector en barra)
+- [ ] 10. Modificar `src/index.css` (fuente CJK Noto Sans SC para zh)
+- [ ] 11. Modificar `index.html` (preconnect + fuente Noto Sans SC)
+- [ ] 12. Añadir test básico de i18n
+- [ ] 13. Ejecutar tests y build de verificación

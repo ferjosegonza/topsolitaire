@@ -8,8 +8,12 @@ import Home from './pages/Home';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Contact from './pages/Contact';
 import { Analytics } from '@vercel/analytics/react';
+import useDocumentMeta from './lib/useDocumentMeta';
 
 function App() {
+  // Actualiza <title> y metas SEO según el idioma actual
+  useDocumentMeta();
+
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>

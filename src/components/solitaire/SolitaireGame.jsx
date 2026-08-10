@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Volume2, VolumeX, RotateCcw, Trophy, RefreshCw, Heart, Coffee } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import {
   deal,
@@ -12,6 +13,7 @@ import {
 } from '@/lib/solitaire';
 import SolitaireCard from './SolitaireCard';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
 
 const CARD_VARS = {
@@ -63,6 +65,7 @@ function EmptySlot({ onClick, children, className = '', ...rest }) {
 }
 
 export default function SolitaireGame() {
+  const { t } = useTranslation();
   const [game, setGame] = useState(() => deal());
   const [selection, setSelection] = useState(null);
   const [moves, setMoves] = useState(0);
@@ -612,27 +615,79 @@ const startDrag = (e, card, source) => {
     let targetCol = -1;
     let targetFoundation = -1;
 
-    const tableauSlots = document.querySelectorAll('[data-tableau-slot]');
-    tableauSlots.forEach((slot, i) => {
+    document.querySelectorAll('[data-tableau-slot]').forEach((slot) => {
       const rect = slot.getBoundingClientRect();
       if (clientX >= rect.left && clientX <= rect.right &&
           clientY >= rect.top && clientY <= rect.bottom) {
-        targetCol = i;
+        targetCol = parseInt(slot.getAttribute('data-tableau-slot'), 10);
       }
     });
 
-    const foundationSlots = document.querySelectorAll('[data-foundation-slot]');
-    foundationSlots.forEach((slot, i) => {
+    document.querySelectorAll('[data-foundation-slot]').forEach((slot) => {
       const rect = slot.getBoundingClientRect();
       if (clientX >= rect.left && clientX <= rect.right &&
           clientY >= rect.top && clientY <= rect.bottom) {
-        targetFoundation = i;
+        targetFoundation = parseInt(slot.getAttribute('data-foundation-slot'), 10);
       }
     });
 
     let moved = false;
 
-    if (targetCol >= 0) {
+    if (targetFoundation >= 0) {
+      // ===== MOVER A FOUNDATION =====
+      let cardToMove = null;
+
+      if (dragSource && dragSource.source === 'tableau') {
+        const col = game.tableau[dragSource.col];
+        if (col.length > 0) {
+          const lastCard = col[col.length - 1];
+          // Solo la última carta (superior) puede ir a foundation
+          if (dragSource.cardIndex === col.length - 1 && canPlaceOnFoundation(lastCard, game.foundations[targetFoundation])) {
+            cardToMove = lastCard;
+          }
+        }
+      } else if (dragSource && dragSource.source === 'waste') {
+        if (game.waste.length > 0) {
+          const wasteCard = game.waste[game.waste.length - 1];
+          if (canPlaceOnFoundation(wasteCard, game.foundations[targetFoundation])) {
+            cardToMove = wasteCard;
+          }
+        }
+      }
+
+      if (cardToMove) {
+        setGame((g) => {
+          const tableau = g.tableau.map((c) => [...c]);
+          const foundations = g.foundations.map((f) => [...f]);
+          const waste = [...g.waste];
+
+          if (dragSource.source === 'tableau') {
+            const moved = tableau[dragSource.col].pop();
+            const col2 = tableau[dragSource.col];
+            if (col2.length && !col2[col2.length - 1].faceUp) {
+              col2[col2.length - 1] = { ...col2[col2.length - 1], faceUp: true };
+            }
+            foundations[targetFoundation].push(moved);
+            if (moved) {
+              setTimeout(() => setLandingCard(moved.id), 50);
+              setTimeout(() => setLandingCard(null), 500);
+            }
+          } else {
+            const moved = waste.pop();
+            foundations[targetFoundation].push(moved);
+            if (moved) {
+              setTimeout(() => setLandingCard(moved.id), 50);
+              setTimeout(() => setLandingCard(null), 500);
+            }
+          }
+
+          return { ...g, tableau, waste, foundations };
+        });
+        setMoves((m) => m + 1);
+        playPlaceSound();
+        moved = true;
+      }
+    } else if (targetCol >= 0) {
       // ===== MOVER A TABLEAU =====
       let cardToMove = null;
       let sourceCol = -1;
@@ -683,62 +738,6 @@ const startDrag = (e, card, source) => {
           }
 
           return { ...g, tableau, waste };
-        });
-        setMoves((m) => m + 1);
-        playPlaceSound();
-        moved = true;
-      }
-    } else if (targetFoundation >= 0) {
-      // ===== MOVER A FOUNDATION =====
-      let cardToMove = null;
-
-      if (dragSource && dragSource.source === 'tableau') {
-        const col = game.tableau[dragSource.col];
-        if (col.length > 0) {
-          const lastCard = col[col.length - 1];
-          // Solo la última carta (superior) puede ir a foundation
-          if (dragSource.cardIndex === col.length - 1 && canPlaceOnFoundation(lastCard, game.foundations[targetFoundation])) {
-            cardToMove = lastCard;
-          }
-        }
-      } else if (dragSource && dragSource.source === 'waste') {
-        // ✅ FIX: Mover carta del waste a foundation
-        if (game.waste.length > 0) {
-          const wasteCard = game.waste[game.waste.length - 1];
-          if (canPlaceOnFoundation(wasteCard, game.foundations[targetFoundation])) {
-            cardToMove = wasteCard;
-          }
-        }
-      }
-
-      if (cardToMove) {
-        setGame((g) => {
-          const tableau = g.tableau.map((c) => [...c]);
-          const foundations = g.foundations.map((f) => [...f]);
-          const waste = [...g.waste];
-
-          if (dragSource.source === 'tableau') {
-            const moved = tableau[dragSource.col].pop();
-            const col2 = tableau[dragSource.col];
-            if (col2.length && !col2[col2.length - 1].faceUp) {
-              col2[col2.length - 1] = { ...col2[col2.length - 1], faceUp: true };
-            }
-            foundations[targetFoundation].push(moved);
-            if (moved) {
-              setTimeout(() => setLandingCard(moved.id), 50);
-              setTimeout(() => setLandingCard(null), 500);
-            }
-          } else {
-            // waste
-            const moved = waste.pop();
-            foundations[targetFoundation].push(moved);
-            if (moved) {
-              setTimeout(() => setLandingCard(moved.id), 50);
-              setTimeout(() => setLandingCard(null), 500);
-            }
-          }
-
-          return { ...g, tableau, waste, foundations };
         });
         setMoves((m) => m + 1);
         playPlaceSound();
@@ -1018,9 +1017,9 @@ const isDealingCard = (colIndex, rowIndex) => {
       {/* ============================================================ */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3 text-sm" style={{ color: 'var(--text-primary)' }}>
         {/* Contador de movimientos y tiempo: desktop izquierda / móvil debajo */}
-        <div className="flex gap-4 order-2 sm:order-1">
-          <span className="font-medium">Moves: <span className="tabular-nums">{moves}</span></span>
-          <span className="font-medium">Time: <span className="tabular-nums">{formatTime(seconds)}</span></span>
+<div className="flex gap-4 order-2 sm:order-1">
+          <span className="font-medium">{t('game.moves')}: <span className="tabular-nums">{moves}</span></span>
+          <span className="font-medium">{t('game.time')}: <span className="tabular-nums">{formatTime(seconds)}</span></span>
         </div>
 
         {/* Fila de botones: desktop derecha / móvil arriba */}
@@ -1077,7 +1076,9 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
             <span className="absolute top-0.5 right-0.5 text-[10px] sm:text-sm leading-none" aria-hidden="true">🇦🇷</span>
           </a>
 
-          <ThemeToggle />
+<ThemeToggle />
+
+          <LanguageSelector />
 
           <button
             onClick={toggleMute}
@@ -1091,14 +1092,14 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
             {isMuted ? <VolumeX className="w-7 h-7" aria-hidden="true" /> : <Volume2 className="w-7 h-7" aria-hidden="true" />}
           </button>
 
-          <button
+<button
             onClick={newGame}
-            aria-label="New Game"
-            title="New Game"
+            aria-label={t('game.ariaNewGame')}
+            title={t('game.newGame')}
             className="inline-flex items-center justify-center rounded-2xl w-[52px] h-[52px] sm:w-auto sm:min-h-[64px] sm:px-6 gap-2 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white font-bold text-base sm:text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
           >
             <RefreshCw className="w-6 h-6 sm:w-5 sm:h-5" aria-hidden="true" />
-            <span className="hidden sm:inline">New Game</span>
+            <span className="hidden sm:inline">{t('game.newGame')}</span>
           </button>
         </div>
       </div>
@@ -1173,10 +1174,7 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
                     isDealing={false}
                   />
                 ) : (
-                  <EmptySlot
-                    onClick={() => handleFoundationClick(f)}
-                    data-foundation-slot={f}
-                  >
+                  <EmptySlot onClick={() => handleFoundationClick(f)}>
                     <span style={{ fontSize: 'calc(var(--card-font-lg) * 0.6)' }}>A</span>
                   </EmptySlot>
                 )}
@@ -1317,16 +1315,16 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
               >
-                <Trophy className="w-8 h-8 text-amber-300" aria-hidden="true" />
-                You Won!
+<Trophy className="w-8 h-8 text-amber-300" aria-hidden="true" />
+                {t('game.youWon')}
               </motion.h2>
-              <p className="text-emerald-100 mb-1">Solved in {moves} moves</p>
-              <p className="text-emerald-100 mb-4">Time: {formatTime(seconds)}</p>
+              <p className="text-emerald-100 mb-1">{t('game.solvedIn', { moves })}</p>
+              <p className="text-emerald-100 mb-4">{t('game.timeLabel', { time: formatTime(seconds) })}</p>
               <button
                 onClick={newGame}
                 className="px-5 py-2.5 rounded-lg bg-white text-emerald-900 font-semibold hover:bg-emerald-50 transition-colors"
               >
-                Play Again
+                {t('game.playAgain')}
               </button>
             </motion.div>
           )}
@@ -1334,13 +1332,13 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
       </div>
 
 <details className="mt-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
-        <summary className="cursor-pointer font-medium" style={{ color: 'var(--text-primary)' }}>How to play</summary>
+<summary className="cursor-pointer font-medium" style={{ color: 'var(--text-primary)' }}>{t('game.howToPlay')}</summary>
         <ul className="mt-2 space-y-1 list-disc pl-5">
-          <li>Tap the stock pile (top-left) to draw a card.</li>
-          <li>Build foundations up by suit, from Ace to King.</li>
-          <li>Build tableau columns down with alternating colors.</li>
-          <li>Tap a card to select it, then tap a destination to move. Double-tap to send a card to the foundations.</li>
-          <li>Only Kings can be placed in empty tableau columns.</li>
+          <li>{t('game.rule1')}</li>
+          <li>{t('game.rule2')}</li>
+          <li>{t('game.rule3')}</li>
+          <li>{t('game.rule4')}</li>
+          <li>{t('game.rule5')}</li>
         </ul>
       </details>
     </div>
