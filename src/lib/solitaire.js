@@ -59,3 +59,34 @@ export function canPlaceOnFoundation(card, foundation) {
 export function isWon(game) {
   return game.foundations.every((f) => f.length === 13);
 }
+
+function cloneValue(value) {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(value);
+  }
+  return JSON.parse(JSON.stringify(value));
+}
+
+export function cloneGameState(game) {
+  return cloneValue(game);
+}
+
+export function createGameSnapshot(game, moves = 0, seconds = 0, won = false, selection = null) {
+  return {
+    game: cloneGameState(game),
+    moves,
+    seconds,
+    won,
+    selection: selection ? { ...selection } : null,
+  };
+}
+
+export function restoreGameSnapshot(state, snapshot) {
+  return {
+    game: snapshot?.game ? cloneGameState(snapshot.game) : cloneGameState(state.game),
+    moves: snapshot?.moves ?? state.moves,
+    seconds: snapshot?.seconds ?? state.seconds,
+    won: snapshot?.won ?? state.won,
+    selection: null,
+  };
+}

@@ -10,6 +10,8 @@ import {
   canPlaceOnFoundation,
   isWon,
   SUIT_SYMBOLS,
+  createGameSnapshot,
+  restoreGameSnapshot,
 } from '@/lib/solitaire';
 import SolitaireCard from './SolitaireCard';
 import ThemeToggle from '@/components/ui/ThemeToggle';
@@ -71,6 +73,7 @@ export default function SolitaireGame() {
   const [moves, setMoves] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [won, setWon] = useState(false);
+  const [history, setHistory] = useState([]);
   const timerRef = useRef(null);
 
   const [dealingCards, setDealingCards] = useState([]);
@@ -87,6 +90,39 @@ export default function SolitaireGame() {
     playWinSound,
     playClickSound,
   } = useSoundEffects();
+
+  const pushHistorySnapshot = useCallback(() => {
+    setHistory((prev) => [...prev, createGameSnapshot(game, moves, seconds, won, selection)]);
+  }, [game, moves, seconds, won, selection]);
+
+  const handleUndo = useCallback(() => {
+    if (!history.length) return;
+
+    const snapshot = history[history.length - 1];
+    const restored = restoreGameSnapshot({ game, moves, seconds, won, selection }, snapshot);
+
+    setHistory((prev) => prev.slice(0, -1));
+    setGame(restored.game);
+    setSelection(null);
+    setMoves(restored.moves);
+    setSeconds(restored.seconds);
+    setWon(restored.won);
+    setFlippingCard(null);
+    setLandingCard(null);
+    setDealingCards([]);
+  }, [game, history, moves, seconds, selection, won]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
+        event.preventDefault();
+        handleUndo();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleUndo]);
 
   const triggerVictoryConfetti = useCallback(() => {
     const duration = 3 * 1000;
@@ -165,6 +201,7 @@ export default function SolitaireGame() {
 
   const newGame = useCallback(() => {
     const newGameState = deal();
+    setHistory([]);
     setGame(newGameState);
     setSelection(null);
     setMoves(0);
@@ -237,6 +274,7 @@ export default function SolitaireGame() {
 
   function handleStockClick() {
     if (won) return;
+    pushHistorySnapshot();
     setSelection(null);
     setGame((g) => {
       if (g.stock.length === 0) {
@@ -266,6 +304,7 @@ export default function SolitaireGame() {
       setSelection(null);
       return;
     }
+    pushHistorySnapshot();
     setGame((g) => {
       const tableau = g.tableau.map((c) => [...c]);
       const foundations = g.foundations.map((f) => [...f]);
@@ -307,6 +346,7 @@ export default function SolitaireGame() {
       setSelection(null);
       return;
     }
+    pushHistorySnapshot();
     setGame((g) => {
       const tableau = g.tableau.map((c) => [...c]);
       const foundations = g.foundations.map((f) => [...f]);
@@ -370,6 +410,7 @@ export default function SolitaireGame() {
     // Prioridad 1: Ir a foundation
     for (let f = 0; f < 4; f++) {
       if (canPlaceOnFoundation(card, g.foundations[f])) {
+        pushHistorySnapshot();
         setGame((prev) => {
           const tableau = prev.tableau.map((c) => [...c]);
           const foundations = prev.foundations.map((ff) => [...ff]);
@@ -415,6 +456,7 @@ export default function SolitaireGame() {
 
     if (bestCol >= 0) {
       const destCol = bestCol;
+      pushHistorySnapshot();
       setGame((prev) => {
         const tableau = prev.tableau.map((c) => [...c]);
         const waste = [...prev.waste];
@@ -656,6 +698,7 @@ const startDrag = (e, card, source) => {
       }
 
       if (cardToMove) {
+        pushHistorySnapshot();
         setGame((g) => {
           const tableau = g.tableau.map((c) => [...c]);
           const foundations = g.foundations.map((f) => [...f]);
@@ -712,6 +755,7 @@ const startDrag = (e, card, source) => {
       }
 
       if (cardToMove) {
+        pushHistorySnapshot();
         setGame((g) => {
           const tableau = g.tableau.map((c) => [...c]);
           const waste = [...g.waste];
@@ -799,6 +843,7 @@ const startDrag = (e, card, source) => {
     // Si la carta está boca abajo y es la última, voltearla
     if (!card.faceUp) {
       if (cardIndex === game.tableau[col].length - 1) {
+        pushHistorySnapshot();
         setGame((g) => {
           const tableau = g.tableau.map((c) => [...c]);
           tableau[col][cardIndex] = { ...tableau[col][cardIndex], faceUp: true };
@@ -869,6 +914,7 @@ if (!isValidGroup) {
     if (isLastCard) {
       for (let f = 0; f < 4; f++) {
         if (canPlaceOnFoundation(card, game.foundations[f])) {
+          pushHistorySnapshot();
           setGame((g) => {
             const tableau = g.tableau.map((c) => [...c]);
             const foundations = g.foundations.map((ff) => [...ff]);
@@ -903,6 +949,7 @@ if (!isValidGroup) {
       }
     }
     if (bestCol >= 0) {
+      pushHistorySnapshot();
       setGame((g) => {
         const tableau = g.tableau.map((c) => [...c]);
         const moving = tableau[col].splice(cardIndex);
@@ -1092,7 +1139,18 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
             {isMuted ? <VolumeX className="w-7 h-7" aria-hidden="true" /> : <Volume2 className="w-7 h-7" aria-hidden="true" />}
           </button>
 
-<button
+          <button
+            onClick={handleUndo}
+            disabled={!history.length}
+            aria-label={t('game.undo', 'Undo')}
+            title={t('game.undo', 'Undo')}
+            className="inline-flex items-center justify-center rounded-2xl w-[52px] h-[52px] sm:w-auto sm:min-h-[64px] sm:px-4 gap-2 bg-slate-600/70 hover:bg-slate-500/80 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-base sm:text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+          >
+            <RotateCcw className="w-6 h-6 sm:w-5 sm:h-5" aria-hidden="true" />
+            <span className="hidden sm:inline">{t('game.undo', 'Undo')}</span>
+          </button>
+
+          <button
             onClick={newGame}
             aria-label={t('game.ariaNewGame')}
             title={t('game.newGame')}
@@ -1238,6 +1296,7 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
                               // Foundation primero
                               for (let f = 0; f < 4; f++) {
                                 if (canPlaceOnFoundation(cardToMove, game.foundations[f])) {
+                                  pushHistorySnapshot();
                                   setGame((g) => {
                                     const tableau = g.tableau.map((c) => [...c]);
                                     const foundations = g.foundations.map((ff) => [...ff]);
@@ -1269,6 +1328,7 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
                                 }
                               }
                               if (bestCol >= 0) {
+                                pushHistorySnapshot();
                                 setGame((g) => {
                                   const tableau = g.tableau.map((c) => [...c]);
                                   const removed = tableau[col].pop();
