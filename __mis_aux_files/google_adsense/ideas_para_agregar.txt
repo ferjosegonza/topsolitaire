@@ -1,0 +1,81 @@
+Formulario pa q la gente pueda opinar y q las opciones se queden cargadas en una sección especial de "sugerencias" pero cuando programe el formulario prepararlo para q las sugerencias queden sujetas a revisión así las apruebo y desp se publican, no sea cosa q escriban insultos o cosas así, ver cómo persistir esos msj.
+
+¿Agregar más juegos? (ver otros sitios de solitario que tengan publicidad de google, qué tienen)
+
+Pestaña con contenido hablando sobre los beneficios de jugar solitario (puede ser un análisis de la IA).
+
+
+--- COSAS PARA VER ---
+
+- Para solucionar el problema de querer monetarizar AdSense:
+```
+Google-served ads on screens without publisher-content
+We do not allow Google-served ads on screens:
+without content or with low value content,
+that are under construction,
+that are used for alerts, navigation or other behavioral purposes.
+Learn more about Google-served ads on screens without publisher-content.
+For more information, review the following resources:
+Policy tips for creating high quality sites (part 1)
+Policy tips for creating high quality sites (part 2)
+Webmaster quality guidelines
+AdSense Program policies
+AdMob policies and restrictions
+
+Solutions that you should follow:-
+1) You should atleast have 25 Posts in your Blog.
+2) 1000 words Per Post. Write something interesting that is more then 1000 words in each post.
+3) Remove any Adsense Ads if you had added in your blog.
+4) Ask Google to crawl and index your blog (i.e. Adding your Site / Blog to Google Search Console.)
+```
+no entiendo la parte de "3) Remove any Adsense Ads if you had added in your blog." y de "4) Ask Google to crawl and index your blog (i.e. Adding your Site / Blog to Google Search Console.)" ¿a qué se refiere?
+
+- cómo me aseguro de que todas las páginas tipo aviso legal y políticas, y de Contacto no se muestren con google adsense, IMPORTANTE PARA MI CASO es q mi proyecto está programado (creo) con react y de una forma en q las pestañas se navegan dinámicamente entre las secciones entonces pueeede q (no estoy seguro) las estructuras del sitio web se vayan armando una a una y cuando el usuario hace clic en políticas o contacto cosas así en realidad se quite sólo la sección de juegos y se agregue la sección de políticas y también se mantenga la estructura q mostraría los anuncios entonces google entiende q tb estoy mostrando anuncios cuando muestro las poltícas, ver si está pasando eso así como está organizado actualmente mi proyecto.
+
+- supuestamente se dice q "En la web de Adsense puedes configurar las páginas en las que no quieras que aparezcan anuncios." ver si es así y cómo configuraría eso si mi sitio web se presenta dinámico (capaz q tengo q mandar la ubicación y nombre de los archivos como privacy.html etc).
+
+- evitaría los enlaces que no llevan a ningún lado o vacíos (#) que se ve en los iconos de las redes sociales (revisar si el sitio web tiene eso, y programar en todo caso en el TODO.md para agregar cuando tenga links que tengan info activa aunq 1ro ver si puedo prescindir de eso y ya).
+
+- Excluye páginas no aptas: Puedes configurar en tu cuenta de AdSense la opción de "Páginas excluidas" para evitar que se muestren anuncios automáticos en páginas como "Política de Privacidad" o "Contacto"
+https://forobeta.com/temas/como-solucionar-el-rechazo-de-google-adsense-en-paginas-con-contenido-propio.882439/#post-7723473
+
+- ¿Cómo puedo solucionar "Anuncios servidos por Google en pantallas sin contenido del editor"?
+https://support.google.com/adsense/thread/175352359/%C2%BFc%C3%B3mo-puedo-solucionar-anuncios-servidos-por-google-en-pantallas-sin-contenido-del-editor?hl=es
+
+- We do not allow Google-served ads on screens
+https://support.google.com/adsense/thread/293010342/we-do-not-allow-google-served-ads-on-screens?hl=en
+
+- Ad targeting - Targeting the ads by keywords
+https://support.google.com/adsense/answer/32844?hl=en&ref_topic=1628432&sjid=2519265810021727868-SA
+
+- Ad targeting - About the ad auction
+https://support.google.com/adsense/answer/160525?hl=en&ref_topic=1628432&sjid=2519265810021727868-SA
+
+- Ad targeting - How ads are targeted to your site
+https://support.google.com/adsense/answer/9713?sjid=2519265810021727868-SA
+
+- How AdSense works
+https://support.google.com/adsense/answer/6242051?hl=en&sjid=2519265810021727868-SA
+
+- Anuncios servidos por Google en pantallas sin contenido del editor
+https://support.google.com/publisherpolicies/answer/11112688?hl=es&ref_topic=11189638
+
+- How to address 'insufficient content' disapprovals on your AdSense application
+https://blog.google/products/adsense/how-to-address-insufficient-content/?hl=zh_TW
+
+
+
+---
+
+Pestaña con:
+- explicando cómo se juega
+- historia del solitario
+- comparaciones de distintos tipos de solitario
+- comparaciones con otros sitio web de juego de solitario
+- blog personal (¿hablando de qué?)
+TENER EN CTA QUE tengo q agregar contenido q sea así:
+- 800+word text articles
+- se aconseja esto "Asegura contenido de calidad: Cada página donde quieras anuncios debe tener, al menos, unas 1000 palabras de texto original, útil y bien estructurado" entonces debería ver si para q google lo detecte mejor tengo q agregar texto pero q esté en el index ppal.
+- Artículos extensos y de calidad: Textos originales, bien redactados y con información sustancial. El texto es el rey, las imágenes y videos, por sí solos, no cuentan como contenido suficiente
+- Contenido único: No se permite contenido copiado, parafraseado o traducido de otros sitios, incluyendo el generado masivamente por IAs, que no haya sido revisado.
+- Páginas que resuelven una intención de búsqueda: Tu contenido debe responder a lo que un usuario está buscando.

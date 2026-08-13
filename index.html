@@ -1,12 +1,9 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta name="google-adsense-account" content="ca-pub-2204003132702383" />
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2204003132702383"
-     crossorigin="anonymous"></script>
+    <meta name="2575b4d855f85abdeac49b8c5990dee15c37ed5e" content="2575b4d855f85abdeac49b8c5990dee15c37ed5e" />
     
-<meta charset="UTF-8" />
+    <meta charset="UTF-8" />
 
     <!-- ============================================================ -->
     <!-- 🆕 TIPOGRAFÍA NUNITO (Google Fonts) - display=swap para buen LCP -->
@@ -156,101 +153,28 @@
         }
       }
 
-      /* Hacer que los contenedores colapsen elegantes cuando no hay anuncio
-         (AdSense aún no llena el espacio): el <ins> vacío se oculta. */
-      .ad-container:has(ins.adsbygoogle:empty) {
-        min-height: 0;
-        margin: 0;
-        padding: 0;
-      }
-      .ad-container:has(ins.adsbygoogle:empty)::before {
-        content: '';
-        display: none;
-      }
+      /* Mantener contenedores de anuncios con una altura útil y sin depender
+         de scripts de AdSense. HilltopAds se inyecta con su snippet propio. */
     </style>
   </head>
   <body>
     <!-- ============================================================ -->
-    <!-- 🆕 ANUNCIO SUPERIOR (HORIZONTAL / RESPONSIVO) -->
+    <!-- HILLTOPADS: slots reservados para banners -->
+    <!-- Pega aquí el snippet que te dé HilltopAds para cada posición -->
     <!-- ============================================================ -->
     <div class="ad-container ad-top">
-      <!-- anuncio grafico horizontal -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-2204003132702383"
-           data-ad-slot="2778338000"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+      <div id="hilltop-ad-top"></div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- 🆕 ANUNCIO LATERAL (VERTICAL) - SOLO ESCRITORIO -->
-    <!-- ============================================================ -->
     <div class="ad-container ad-side">
-
-      <!-- lo q sugirio deepseek -->
-      <!-- <ins class="adsbygoogle"
-           style="display:inline-block;width:160px;height:600px"
-           data-ad-client="ca-pub-2204003132702383"
-           data-ad-slot="1348751976"
-           data-ad-format="vertical"></ins> -->
-
-      <!-- codigo de google, tiene de diferente el display con el codigo de deepseek -->
-      <!-- anuncio vertical lateral -->
-      <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-pub-2204003132702383"
-          data-ad-slot="1348751976"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
+      <div id="hilltop-ad-side"></div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
-    <!-- ============================================================ -->
     <div id="root"></div>
 
-    <!-- ============================================================ -->
-    <!-- 🆕 ANUNCIO INFERIOR (HORIZONTAL / RESPONSIVO) -->
-    <!-- ============================================================ -->
     <div class="ad-container ad-bottom">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-2204003132702383"
-           data-ad-slot="5866581486"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+      <div id="hilltop-ad-bottom"></div>
     </div>
-
-    <!-- ============================================================ -->
-    <!-- 🆕 SCRIPT PARA CARGAR ANUNCIOS -->
-    <!-- ============================================================ -->
-    <script>
-      // Función para cargar todos los anuncios
-      function loadAllAds() {
-        try {
-          // Verificar que el script de AdSense esté cargado
-          if (typeof window.adsbygoogle !== 'undefined') {
-            // Esto carga todos los <ins class="adsbygoogle"> de la página
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          } else {
-            console.warn('AdSense script not loaded yet');
-          }
-        } catch (e) {
-          console.warn('AdSense error:', e);
-        }
-      }
-
-      // Cargar cuando el DOM esté listo
-      if (document.readyState === 'complete') {
-        loadAllAds();
-      } else {
-        window.addEventListener('load', loadAllAds);
-      }
-
-      // Cargar después de que React renderice (con retraso)
-      setTimeout(loadAllAds, 1500);
-    </script>
 
     <!-- React entry point -->
     <script type="module" src="/src/main.jsx"></script>

@@ -22,8 +22,8 @@ function App() {
         <ScrollToTop />
         
         {/* ============================================================ */}
-        {/* ANUNCIOS: se renderizan en index.html (estáticos) para evitar */}
-        {/* duplicación de slots de AdSense. AdBanner de React ya no se usa. */}
+        {/* PUBLICIDAD: usa el snippet que te dé HilltopAds o un bloque HTML */}
+        {/* personalizado. No se usa AdSense en este proyecto. */}
         {/* ============================================================ */}
         
         <Routes>
