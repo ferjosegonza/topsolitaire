@@ -1,0 +1,41 @@
+mail de google :
+12 ago 2026, 10:09 p.m
+
+desde adsense-noreply@google.com
+
+Como razones (o principales razones, ver si hay más) en https://adsense.google.com/adsense/u/0/pub-2204003132702383/sites/list dice en "Detalles del estado":
+"Anuncios publicados por Google en pantallas sin contenido de publicadores, Contenido de bajo valor"
+
+Para averiguar:
+1. ¿a qué se refiere con "Anuncios publicados por Google en pantallas sin contenido de publicadores"?
+
+
+El estado es "requiere atención". Al hacer clic en el sitio web me muestra un detalle en otra pestaña:
+"""
+Detectamos algunos incumplimientos de política
+
+Asegúrese de que su sitio siga las Políticas del Programa de AdSense. Tras corregir el incumplimiento, podrá solicitar una revisión de su sitio.
+Anuncios publicados por Google en pantallas sin contenido de publicadores
+No permitimos anuncios publicados por Google en los siguientes tipos de pantallas:
+
+pantallas sin contenido o con contenido de bajo valor
+pantallas que estén en construcción
+pantallas que se usen para alertas, navegación o cualquier otro fin de comportamiento
+Obtenga más información acerca de los anuncios publicados por Google en pantallas sin contenido de publicadores.
+
+Para obtener más información, consulte los siguientes recursos:
+
+Sugerencias sobre las políticas para crear sitios de alta calidad (parte 1)
+Sugerencias sobre las políticas para crear sitios de alta calidad (parte 2)
+Lineamientos de calidad para webmasters
+Políticas del Programa de AdSense
+Políticas y restricciones de AdMob
+
+Contenido de bajo valor
+Su sitio aún no cumple con los criterios de uso de la red de publicadores de Google. Para obtener más información, consulte los siguientes recursos:
+
+Requisitos de contenido mínimo
+Cómo comprobar que su sitio web ofrezca contenido original de alta calidad y una buena experiencia de usuario
+Lineamientos de calidad para webmasters acerca del contenido con poco o ningún valor agregado
+Lineamientos de calidad para webmasters
+"""
