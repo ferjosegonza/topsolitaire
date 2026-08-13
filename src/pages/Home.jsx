@@ -1,18 +1,27 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Footer from '@/components/Footer';
+import AdBanner from '@/components/AdBanner';
 import SolitaireGame from '@/components/solitaire/SolitaireGame';
+
+const HILLTOP_BANNER_SRC = "\/\/unfoldedtrade.com\/b-XrV.sfdIGhlq0bYHWUcg\/BeMm\/9SuNZAUyl\/kNPeTGcpzvMiT\/Yq2zOzDiktthN\/z\/MAxMNnjfYg5kM\/w-";
 
 export default function Home() {
   const { t } = useTranslation();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-app)' }}>
+      <AdBanner
+        slotId="hilltop-top"
+        scriptSrc={HILLTOP_BANNER_SRC}
+        className="ad-top"
+      />
 
-      {/* ============================================================ */}
-      {/* ANUNCIOS: se renderizan en index.html (estáticos) para evitar */}
-      {/* duplicación de slots de AdSense. */}
-      {/* ============================================================ */}
+      <AdBanner
+        slotId="hilltop-side"
+        scriptSrc={HILLTOP_BANNER_SRC}
+        className="ad-side"
+      />
 
       <main className="flex-1 w-full">
         <div className="mx-auto max-w-[1100px] px-3 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
@@ -33,6 +42,12 @@ export default function Home() {
           </section>
         </div>
       </main>
+
+      <AdBanner
+        slotId="hilltop-bottom"
+        scriptSrc={HILLTOP_BANNER_SRC}
+        className="ad-bottom"
+      />
 
       <Footer />
     </div>
