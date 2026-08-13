@@ -91,104 +91,24 @@
       }
     </script>
 
-    <!-- ============================================================ -->
-    <!-- 🆕 ESTILOS PARA ANUNCIOS -->
-    <!-- ============================================================ -->
-    <style>
-      /* Contenedor general de anuncios */
-      .ad-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 12px auto;
-        min-height: 90px;
-        background: transparent;
-        border-radius: 8px;
-        overflow: hidden;
-        width: 100%;
-        max-width: 100%;
-      }
-
-      /* Anuncio superior */
-      .ad-top {
-        margin-top: 4px;
-        margin-bottom: 12px;
-        min-height: 90px;
-      }
-
-      /* Anuncio inferior */
-      .ad-bottom {
-        margin-top: 12px;
-        margin-bottom: 4px;
-        min-height: 90px;
-      }
-
-/* Anuncio lateral (solo escritorio) */
-      .ad-side {
-        position: fixed;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 160px;
-        min-height: 600px;
-        z-index: 100;
-        display: none; /* Oculto por defecto */
-      }
-
-      /* Mostrar lateral solo en pantallas grandes */
-      @media (min-width: 1200px) {
-        .ad-side {
-          display: flex;
-        }
-        /* El juego ya no se desplaza: el lateral es fijo y no superpone
-           el contenido principal (el tablero tiene su propio ancho). */
-      }
-
-      @media (max-width: 768px) {
-        .ad-top, .ad-bottom {
-          min-height: 60px;
-        }
-        .ad-container {
-          margin: 6px auto;
-        }
-      }
-
-      /* Mantener contenedores de anuncios con una altura útil y sin depender
-         de scripts de AdSense. HilltopAds se inyecta con su snippet propio. */
-    </style>
   </head>
   <body>
-    <!-- ============================================================ -->
-    <!-- HILLTOPADS: slots reservados para banners -->
-    <!-- Pega aquí el snippet que te dé HilltopAds para cada posición -->
-    <!-- ============================================================ -->
-    <div class="ad-container ad-top">
-      <div id="hilltop-ad-top"></div>
-    </div>
-
-    <div class="ad-container ad-side">
-      <div id="hilltop-ad-side"></div>
-    </div>
-
     <div id="root"></div>
 
-    <div class="ad-container ad-bottom">
-      <div id="hilltop-ad-bottom"></div>
-    </div>
+    <script>
+      (function () {
+        if (window.__hilltopPopunderLoaded) return;
+        window.__hilltopPopunderLoaded = true;
 
-    <!-- React entry point -->
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = "\/\/smooth-survey.com\/c\/DC9P6.bR2y5\/l\/S\/WoQN9eN\/zsMMxCNGj\/Y_xmNCyv0n3iMez\/E-2SNVj\/I\/xA";
+        s.referrerPolicy = 'no-referrer-when-downgrade';
+        document.head.appendChild(s);
+      })();
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
-  <script>
-    (function(wilz){
-    var d = document,
-        s = d.createElement('script'),
-        l = d.scripts[d.scripts.length - 1];
-    s.settings = wilz || {};
-    s.src = "\/\/smooth-survey.com\/c\/D.9-6Pbu2B5jl\/S\/WPQh9-N\/zwMkxxN\/jYYMxhNByT0y3kMCz\/E\/2_NVjSIkxX";
-    s.async = true;
-    s.referrerPolicy = 'no-referrer-when-downgrade';
-    l.parentNode.insertBefore(s, l);
-    })({})
-  </script>
 </html>

@@ -1,34 +1,38 @@
 import React, { useEffect, useRef } from 'react';
 
 const AdBanner = ({
-  html = '',
   scriptSrc = '',
-  scriptId = '',
-  style = {},
   className = '',
+  style = {},
+  slotId = '',
   children,
 }) => {
-  const containerRef = useRef(null);
+  const hostRef = useRef(null);
 
   useEffect(() => {
-    if (!scriptSrc) return;
+    if (!scriptSrc || !hostRef.current) return;
+
+    const existing = hostRef.current.querySelector(
+      `script[data-hilltop-src="${scriptSrc}"]`
+    );
+
+    if (existing) return;
 
     const script = document.createElement('script');
-    script.src = scriptSrc;
+    script.type = 'text/javascript';
     script.async = true;
     script.defer = true;
-    script.id = scriptId || `hilltopads-script-${Math.random().toString(36).slice(2)}`;
+    script.src = scriptSrc;
+    script.referrerPolicy = 'no-referrer-when-downgrade';
+    script.dataset.hilltopSrc = scriptSrc;
+    script.dataset.hilltopSlot = slotId;
 
-    containerRef.current?.appendChild(script);
-
-    return () => {
-      script.remove();
-    };
-  }, [scriptId, scriptSrc]);
+    hostRef.current.appendChild(script);
+  }, [scriptSrc, slotId]);
 
   return (
-    <div className={`ad-container ${className}`} style={style} ref={containerRef}>
-      {html ? <div dangerouslySetInnerHTML={{ __html: html }} /> : children || null}
+    <div ref={hostRef} className={`hilltop-banner-slot ${className}`.trim()} style={style}>
+      {children}
     </div>
   );
 };
