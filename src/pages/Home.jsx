@@ -4,25 +4,13 @@ import Footer from '@/components/Footer';
 import AdBanner from '@/components/AdBanner';
 import SolitaireGame from '@/components/solitaire/SolitaireGame';
 
-const HILLTOP_BANNER_SRC = "\/\/unfoldedtrade.com\/b-XrV.sfdIGhlq0bYHWUcg\/BeMm\/9SuNZAUyl\/kNPeTGcpzvMiT\/Yq2zOzDiktthN\/z\/MAxMNnjfYg5kM\/w-";
+const HILLTOP_BANNER_SRC = "\/\/unfoldedtrade.com\/bBX.VesPdZG\/lm0AYCW\/cq\/Je\/mS9\/uQZ\/UBlRk\/P_TGc\/zIMcTlYM2XOvDwkBteNGznM\/xiN\/jTYc5QMTwR";
 
 export default function Home() {
   const { t } = useTranslation();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-app)' }}>
-      <AdBanner
-        slotId="hilltop-top"
-        scriptSrc={HILLTOP_BANNER_SRC}
-        className="ad-top"
-      />
-
-      <AdBanner
-        slotId="hilltop-side"
-        scriptSrc={HILLTOP_BANNER_SRC}
-        className="ad-side"
-      />
-
       <main className="flex-1 w-full">
         <div className="mx-auto max-w-[1100px] px-3 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
           <section className="flex-1 min-w-0">
