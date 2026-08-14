@@ -1,0 +1,42 @@
+Para el proyecto topsolitaire:
+Quiero que tengas en cuenta para qué áreas de un sitio web son idealmente estas opciones de "zona" de hilltopads.com porque en base a eso debajo te voy a pedir algo:
+```
+- popunder
+- multitag: banner 300 x 100 (compatible solo con móvil)
+- multitag: banner 300 x 250 (compatible con escritorio y móvil)
+- multitag: In-Page Push
+- multitag: Video Slider
+- Video: VAST 3.0
+```
+Ahora que sabes para qué áreas de un sitio web son idealmente estas opciones de "zona" de hilltopads.com quiero que me ayudes a verificar si los códigos que obtuve de hilltopads.com para "popunder" y "multitag: banner 300 x 250 (compatible con escritorio y móvil)" se copiaron bien, si están correctamente implementados y en el área en la que corresondería en el sitio web o deberían estar ubicados en otro lugar:
+código que me dio hilltopads.com para "popunder":
+```javascript
+<script>
+(function(kba){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = kba || {};
+s.src = "\/\/smooth-survey.com\/cRD.9o6\/bi2e5Yl\/SuWhQr9nN\/zbMyxONWj\/YEx_N\/yn0o3zMwzqED2\/N\/j\/ILx-";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({})
+</script>
+```
+código que me dio hilltopads.com para "multitag: banner 300 x 250 (compatible con escritorio y móvil)":
+```javascript
+<script>
+(function(kba){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = kba || {};
+s.src = "\/\/unfoldedtrade.com\/bBX.VesPdZG\/lm0AYCW\/cq\/Je\/mS9\/uQZ\/UBlRk\/P_TGc\/zIMcTlYM2XOvDwkBteNGznM\/xiN\/jTYc5QMTwR";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({})
+</script>
+```
+Quiero que revises cómo interactúan los archivos del proyecto para decirme si hace falta modificaciones para qu se muestren correctamente ambos códigos. IMPORTANTE: ayudame a ver por qué no se ve en pantalla en el navegador la publicidad en el espacio inferior aunque pero si el usuario hace clic lo lleva a una publicidad eso me hace pensar que la publicidad está ahí pero por alguna cuestión de estilos el diseño del sitio web lo está tapando con un fondo azul, dime si es así y cómo corregirlo. Dime el popunder y el banner de 300 x 250 dónde deberían ir realmente cada uno en el sitio web.
