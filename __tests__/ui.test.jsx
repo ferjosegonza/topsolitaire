@@ -5,6 +5,7 @@ import React from 'react';
 import SolitaireGame from '../src/components/solitaire/SolitaireGame';
 import Home from '../src/pages/Home';
 import Footer from '../src/components/Footer';
+import AdBanner from '../src/components/AdBanner';
 import { BrowserRouter } from 'react-router-dom';
 
 // Mock de sonidos
@@ -148,6 +149,16 @@ describe('Tests de Home', () => {
     renderWithRouter(<Home />);
     const gameContainer = document.querySelector('.min-h-screen');
     expect(gameContainer).toBeDefined();
+  });
+
+  it('muestra el anuncio en un iframe aislado y no inyecta el script global en la página principal', async () => {
+    render(<AdBanner scriptSrc="https://example.com/ad.js" />);
+
+    expect(document.querySelector('script[data-hilltop-src="https://example.com/ad.js"]')).toBeNull();
+
+    const iframe = document.querySelector('iframe[title="Publicidad"]');
+    expect(iframe).not.toBeNull();
+    expect(iframe.getAttribute('srcdoc')).toContain('https://example.com/ad.js');
   });
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 const AdBanner = ({
   scriptSrc = '',
@@ -9,29 +9,45 @@ const AdBanner = ({
 }) => {
   const hostRef = useRef(null);
 
-  useEffect(() => {
-    if (!scriptSrc || !hostRef.current) return;
+  const iframeSrcDoc = useMemo(() => {
+    if (!scriptSrc) return '';
 
-    const existing = hostRef.current.querySelector(
-      `script[data-hilltop-src="${scriptSrc}"]`
-    );
-
-    if (existing) return;
-
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.defer = true;
-    script.src = scriptSrc;
-    script.referrerPolicy = 'no-referrer-when-downgrade';
-    script.dataset.hilltopSrc = scriptSrc;
-    script.dataset.hilltopSlot = slotId;
-
-    hostRef.current.appendChild(script);
+    return `<!doctype html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <style>
+            html, body {
+              margin: 0;
+              width: 100%;
+              height: 100%;
+              background: transparent;
+              overflow: hidden;
+              font-family: sans-serif;
+            }
+            body {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          </style>
+        </head>
+        <body>
+          <script type="text/javascript" src="${scriptSrc}" defer data-hilltop-src="${scriptSrc}" data-hilltop-slot="${slotId}"></script>
+        </body>
+      </html>`;
   }, [scriptSrc, slotId]);
 
   return (
     <div ref={hostRef} className={`hilltop-banner-slot ${className}`.trim()} style={style}>
+      {scriptSrc ? (
+        <iframe
+          title="Publicidad"
+          referrerPolicy="no-referrer-when-downgrade"
+          srcDoc={iframeSrcDoc}
+          className="hilltop-banner-iframe"
+        />
+      ) : null}
       {children}
     </div>
   );
