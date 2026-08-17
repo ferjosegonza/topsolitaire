@@ -188,6 +188,7 @@ body * {
   min-height: 250px;
   position: relative;
   margin: 0 auto;
+  cursor: default;
 }
 
 .hilltop-banner-slot script {
@@ -200,6 +201,14 @@ body * {
 .hilltop-banner-slot > div {
   max-width: 100%;
   margin: 0 auto;
+}
+
+.hilltop-banner-iframe {
+  width: min(100%, 970px);
+  min-height: 250px;
+  border: 0;
+  background: transparent;
+  pointer-events: auto;
 }
 
 .ad-bottom {
