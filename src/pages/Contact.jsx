@@ -17,10 +17,7 @@ export default function Contact() {
           <p>
             Email: <a href="mailto:fer.jose.gonza@gmail.com" className="text-slate-900 underline">fer.jose.gonza@gmail.com</a>
           </p>
-          <p>
-            This is a placeholder contact page. Update it with your real contact details before
-            applying for Google AdSense.
-          </p>
+
         </div>
       </div>
     </div>

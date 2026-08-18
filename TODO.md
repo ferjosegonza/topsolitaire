@@ -1,6 +1,8 @@
 # TODO — TopSolitaire
 
-> 📜 **Historial cronológico completo** → `__mis_aux_files/TODO_HISTORICO.md`
+> 📜 **Historial cronológico completo** → `__mis_aux_files/TODO_HISTORICO(...).md`
+
+> 🎯 **Objetivo general**: TopSolitaire es un juego de Solitaire online enfocado en aumentar discoverability, tráfico orgánico, experiencia internacional y retención de usuarios.
 
 ---
 
@@ -53,47 +55,180 @@
 ### Recursos de idioma CJK — ✅ COMPLETADO
 - `index.html` ahora incluye la importación de `Noto Sans SC` desde Google Fonts.
 - `src/index.css` aplica `Noto Sans SC` mediante variables CSS cuando `html[data-lang="zh"]` o `html[data-lang="zh-TW"]` están activos.
+
 > *(nada en progreso activo; los objetivos pendientes están abajo)*
 
 ---
 
-## 🔵 PENDIENTE
+## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
 
-### Que se pueda deshacer una jugada
-- [ ] Que se pueda volver atrás las jugadas (ver si conviene integrar el botón en el tablero del juego o dónde para que se entienda qué hace y para qué sirve).
-### P1-A: Eliminar archivos de auth no utilizados
+### P1: Limpieza de código — Eliminar archivos auth no utilizados
 - [ ] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
 - [ ] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
 - [ ] Eliminar lib: `AuthContext.jsx`, `app-params.js`, `PageNotFound.jsx`
 - [ ] Eliminar api: `topsolitaireClient.js`
 - [ ] Eliminar config: `User.jsonc`
-- [ ] Verificar: tests de `app-routing` pasan sin auth (ya probado)
+- [ ] Verificar: tests de `app-routing` pasan sin auth
 
-### O5: Rediseño visual (finalizar)
-- [ ] **O5-C1**: Pulido final del tablero (bordes, sombras suaves, border-radius) — clases `game-board`/`game-slot` ya aplicadas
-- [ ] **O5-C3**: Jerarquía del header en `Home.jsx` (pill de marca con ícono SVG Spade + identidad "Klondike", título/subtítulo) — hoy AÚN usa emoji ☕
-- [ ] **O5-V**: Verificación final (tests + `npm run build`)
+### P2: Migración de Router — HashRouter → URLs reales
+**Objetivo**: Cambiar de `https://topsolitaire.online/#/privacy-policy` a `https://topsolitaire.online/privacy-policy`
 
-### O8: Accesibilidad
-- [ ] **O8-C1**: `onKeyDown` (Enter/Espacio) en cartas para navegación por teclado
-- [ ] **O8-C2**: Corregir contraste de texto (`text-slate-500` → WCAG AA), verificar slots vacíos
-- [ ] **O8-C3**: `aria-label` en cartas/botones faltantes
-- [ ] **O8-C4**: `prefers-reduced-motion` global (ya implementado parcialmente en index.css)
+- [ ] Auditar `App.jsx`: verificar que utiliza `HashRouter`
+- [ ] Reemplazar `HashRouter` por `BrowserRouter`
+- [ ] Verificar impacto en `useDocumentMeta()` y actualización de metas
+- [ ] Revisar canonical URLs
+- [ ] Ajustar `base` en `vite.config.js` si es necesario
+- [ ] Verificar que no se rompan rutas existentes
+- [ ] Tests de routing actualizados
+- [ ] Verificar en build: `npm run build`
 
-### O9: Sonido ambiental de lluvia (ligero)
-- [ ] **O9-C1**: Hook `useRainSound` (Howler/useSound) con loop, activo solo en modo rainy
-- [ ] **O9-C2**: Bajo volumen, sin romper `useSoundEffects` existente
-- [ ] **O9-C3**: Sonido gratuito corto (loopable) tipo "lluvia suave"
+### P3: SEO Técnico — Arquitectura de URLs y verificaciones
+- [ ] Auditar `sitemap.xml`: verificar que existe, es válido y contiene URLs correctas
+- [ ] Auditar `robots.txt`: verificar que apunta al sitemap y directivas correctas
+- [ ] Auditar canonical URLs: verificar que están presentes y son correctas en todas las páginas
+- [ ] Revisar soft 404: evitar que rutas inexistentes rendericen Home (`<Route path="*" element={<Home />} />`)
+- [ ] Implementar verdadera página 404 con respuesta HTTP 404 cuando sea posible
+- [ ] Auditar redirects: verificar no hay cadenas de redirects
+- [ ] Revisar trailing slash: verificar consistencia
+- [ ] Auditar URLs duplicadas: `www` vs no-www, protocolo HTTP vs HTTPS, etc.
+- [ ] Verificar enlaces internos: navío correcto entre páginas
 
-### O10: Responsive final + Core Web Vitals + limpieza
-- [ ] **O10-C1**: Revisión integral de todas las resoluciones (360px → ultrawide)
-- [ ] **O10-C2**: Verificar LCP, CLS, INP (evitar animaciones costosas)
-- [ ] **O10-C3**: Correr batería completa de tests
-- [ ] **O10-C4**: Build final (`npm run build`) y verificar compilación
+### P4: SEO Multiidioma — URLs diferenciadas por idioma
+**Objetivo**: Crear URLs separadas como `/de/`, `/pl/`, `/fr/`, `/es/`, etc. en lugar de usar solo `navigator.language` en la misma URL.
+
+- [ ] Definir arquitectura de URLs por idioma: `/de/`, `/pl/`, `/fr/`, `/es/`, `/it/`, `/en/`, `/zh/`, `/zh-TW/`
+- [ ] Investigar cómo implementar rutas dinámicas con prefijo de idioma sin migrar a Next.js
+- [ ] Modificar router para aceptar parámetro de idioma: `/:lang/*`
+- [ ] Actualizar `useDocumentMeta()` para generar metas únicas por idioma
+- [ ] Configurar hreflang correctamente: reciprocidad, URLs válidas, x-default
+- [ ] Verificar que cada URL localizada tenga:
+  - [ ] Title propio
+  - [ ] Meta description propia
+  - [ ] H1 en idioma correcto
+  - [ ] Contenido completamente localizado
+  - [ ] Canonical correcto
+  - [ ] hreflang al sitio completo
+  - [ ] Open Graph localizado
+  - [ ] Atributo `lang` en `<html>` correcto
+  - [ ] Enlaces internos apunten a versión del mismo idioma
+- [ ] Actualizar `sitemap.xml` para incluir todas las variantes de idioma
+- [ ] Actualizar `robots.txt` si es necesario
+
+### P5: Meta Tags y Document Head — Auditoría y mejora
+- [ ] Verificar `<title>` dinámico por página y por idioma
+- [ ] Verificar `meta description` dinámico por página y por idioma
+- [ ] Verificar `canonical` correcto y coherente con arquitectura de URLs
+- [ ] Verificar `robots` meta tag: `index, follow` en páginas indexables
+- [ ] Verificar `hreflang` implementado correctamente (ver P4)
+- [ ] Verificar Open Graph: `og:title`, `og:description`, `og:image`, `og:type`, `og:url`, `og:site_name`
+- [ ] Verificar Twitter Card: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+- [ ] Verificar `<html lang="...">` correcto según idioma actual
+- [ ] Verificar favicon y manifest correctos
+- [ ] Verificar `theme-color` y `viewport` correctos
+- [ ] Revisar si títulos y descriptions se modifican correctamente vía JavaScript (SSR/prerendering si es necesario)
+
+### P6: H1 y estructura de headings — Auditoría
+- [ ] Inspeccionar DOM real en Home: verificar que existe exactamente un H1
+- [ ] Verificar que H1 es semánticamente correcto y relacionado con contenido
+- [ ] Revisar estructura H2/H3 en todas las páginas
+- [ ] NO duplicar H1 innecesariamente
+- [ ] Verificar que H1 actual mantiene intención SEO (ej: "Play Solitaire Online Free")
+
+### P7: Text-to-HTML Ratio — Investigación
+- [ ] Analizar si realmente es problema SEO en este proyecto (es una SPA + juego, no solo blog)
+- [ ] Revisar cantidad de contenido semántico vs JavaScript/CSS
+- [ ] NO aumentar artificialmente texto si no es necesario
+- [ ] Si se requiere más contenido, hacerlo de forma natural
+
+### P8: Homepage SEO — Auditoría y mejora
+- [ ] Auditar `Home.jsx` completamente
+- [ ] Verificar H1 claro y único
+- [ ] Verificar propuesta de valor visible
+- [ ] Verificar juego visible inmediatamente sin scroll excesivo
+- [ ] Agregar contenido útil: How to Play, Solitaire Rules, información relevante
+- [ ] Agregar FAQ si tiene sentido
+- [ ] Verificar enlaces internos a páginas de contenido
+- [ ] Optimizar para usuarios y buscadores (NO keyword stuffing)
+
+### P9: Páginas de contenido SEO — Crear nuevas páginas
+**Objetivo**: Crear páginas temáticas alrededor de Solitaire con intención de búsqueda clara.
+
+**Candidatas iniciales (prioridad):**
+- [ ] `/how-to-play-solitaire` — How to Play Solitaire (guía completa)
+- [ ] `/solitaire-rules` — Solitaire Rules (reglas oficiales de Klondike)
+- [ ] `/solitaire-strategy` — Solitaire Strategy (estrategias y tips)
+- [ ] `/solitaire-scoring` — Solitaire Scoring (sistema de puntuación)
+
+**Para cada página:**
+- [ ] Title único y atractivo
+- [ ] Meta description única
+- [ ] Canonical correcto
+- [ ] H1 único
+- [ ] Estructura H2/H3 clara
+- [ ] Contenido útil y bien escrito (NO relleno)
+- [ ] Enlaces internos a otras páginas relevantes
+- [ ] Enlace hacia el juego
+- [ ] Open Graph
+- [ ] Idioma correcto
+- [ ] Schema si es apropiado (ej: HowTo)
+- [ ] Traductor a todos los idiomas soportados (si existe contenido real en ese idioma)
+
+**Consideraciones de contenido:**
+- [ ] NO crear 100 artículos automáticos
+- [ ] Cada página debe tener razón real para existir
+- [ ] Contenido compatible con el juego real (no mentir sobre funcionalidades)
+- [ ] Calidad sobre cantidad
+- [ ] Enfoque temático: Solitaire/Klondike (no expandir a Sudoku, Chess, etc.)
+
+### P10: Marca y consistencia — Auditoría
+- [ ] Verificar consistencia de "Top Solitaire" en: title, og:site_name, schema, navbar, footer, manifest, favicon, textos
+- [ ] Estandarizar variaciones: "Top Solitaire", "Play Solitaire Online", "top solitaire", "topsolitaire.online"
+- [ ] Revisar textos de páginas legales (Privacy, Contact, etc.)
+
+### P11: Revisión de producción — Auditoría y limpieza
+- [ ] Buscar y eliminar TODO el contenido que NO debería estar en producción:
+  - [ ] Placeholder text
+  - [ ] Comentarios de debug
+  - [ ] Código muerto
+  - [ ] Archivos temporales
+  - [ ] Variables de desarrollo
+  - [ ] Console.log innecesarios
+  - [ ] Credenciales o tokens (verificar .env)
+  - [ ] URLs de localhost o desarrollo
+  - [ ] Archivos de testing intermedio
+  - [ ] Rutas de API de desarrollo
+- [ ] Revisar archivos `__mis_aux_files/` — evaluar si deben seguir en producción
+- [ ] Verificar que `package.json` contiene solo dependencias necesarias
+
+### P12: UX y visual — Mejoras finales
+- [ ] **Rediseño visual (O5)**: Pulido del tablero, jerarquía del header con ícono SVG
+- [ ] **Accesibilidad (O8)**:
+  - [ ] Navegación por teclado: `onKeyDown` (Enter/Espacio) en cartas
+  - [ ] Contraste de texto WCAG AA
+  - [ ] `aria-label` en cartas/botones
+  - [ ] `prefers-reduced-motion` global
+- [ ] **Sonido ambiental (O9)**: Hook `useRainSound` con loop en modo rainy
+- [ ] **Undo jugadas**: Evaluar si agregar botón "Undo" en el tablero
+
+### P13: Responsive y Core Web Vitals — Auditoría integral
+- [ ] **O10-C1**: Revisar integral todas las resoluciones (360px → ultrawide 1920px+)
+  - [ ] Footer y páginas legales en 360px–390px
+  - [ ] Ultrawide: evaluar si `max-w-[1100px]` es apropiado
+  - [ ] Anuncio lateral fijo (160px) en 1200–1400px
+  - [ ] Fila de botones en 360px
+- [ ] **O10-C2**: Verificar Core Web Vitals
+  - [ ] LCP (Largest Contentful Paint)
+  - [ ] CLS (Cumulative Layout Shift) — evitar animaciones costosas
+  - [ ] INP (Interaction to Next Paint)
+- [ ] **O10-C3**: Batería completa de tests
+  - [ ] `npm test`
+  - [ ] Verificar cobertura
+- [ ] **O10-C4**: Build final y verificación
+  - [ ] `npm run build`
+  - [ ] Verificar salida sin errores
+  - [ ] Verificar build size
 
 ### 📱 Auditoría Responsive — Estado por elemento
-
-> Identifica qué ya tiene comportamiento responsive adecuado y qué falta mejorar.
 
 | Elemento | Estado | Detalle |
 |----------|--------|---------|
@@ -110,14 +245,10 @@
 | Overlay de victoria | ✅ | `px-4`, texto responsivo |
 | Details "How to play" | ✅ | `text-sm`, lista fluida |
 | Anuncios (top/bottom/side) | ✅ | `ad-container` responsive, lateral solo ≥1200px, colapso con `:has()` |
-| Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de O10-C1 |
-| Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar que no se vea "perdido" ni se dispare el lateral |
+| Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de P13 |
+| Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar como parte de P13 |
 
-**Pendiente de mejora responsive (para O10):**
-- [ ] Revisar footer y páginas administrativas (Privacy/Contact) en 360px–390px
-- [ ] Validar composición en ultrawide (1920px+): el tablero centrado a 1100px puede sentirse pequeño; evaluar `max-w` mayor o fondo decorativo
-- [ ] Confirmar que el anuncio lateral fijo (160px) no genere solapamiento con el contenido en 1200–1400px
-- [ ] Verificación visual de la fila de botones en 360px (que no queden 2 botones partidos de forma fea)
+
 
 ---
 
@@ -161,3 +292,20 @@ Cuando el usuario hace clic en una carta boca arriba en el tableau:
 | 10 | Alto de columna fijo → escapes de recuadro verde | ✅ |
 | 11 | Test flaky visual-effects (isWon restaurado tarde) | ✅ |
 | 12 | Test app-routing buscaba texto incorrecto | ✅ |
+
+---
+
+## 📌 NOTAS IMPORTANTES
+
+### Consideraciones para implementación de SEO
+- **NO migrar a Next.js** salvo que sea absolutamente necesario. Evaluar SSG/prerendering con Vite si es viable.
+- **Verificar antes de asumir**: No suponer que algo está mal; inspeccionar el código real primero.
+- **Mantener funcionalidad existente**: No romper el juego al hacer cambios arquitectónicos.
+- **Evitar contenido artificial**: No aumentar artificialmente texto o crear páginas innecesarias solo para métricas.
+- **Priorizar calidad**: Enfocarse en contenido útil de verdad, especialmente en idiomas alemán, polaco y francés.
+
+### Dependencias de tareas
+- P2 (Migración de Router) puede afectar P3, P4 y P5 (URLs, canonical, hreflang)
+- P4 (URLs multiidioma) requiere completar P2
+- P8 (Homepage) y P9 (Páginas de contenido) son independientes pero deben considerar P4
+- P13 (Responsive + Core Web Vitals) debería ser la fase final, después de completar el resto

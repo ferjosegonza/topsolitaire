@@ -1,0 +1,2077 @@
+Quiero que tomes todo el texto a continuacón y actualices el TODO.md (que se encuentra en D:\xampp\htdocs\topsolitaire\TODO.md) en consecuencia teniendo en cuenta el actual contenido de TODO.md si coinciden algunos puntos usa tu criterio para considerar cómo debería quedar redactado de ahora en más. Quiero que el TODO.md incluya todo el plan de acción que se propone en el siguiente prompt para poder tomar como guía para continuar con los trabajos:
+
+Quiero que trabajes directamente sobre este proyecto web y actúes simultáneamente como:
+
+1. Senior React/Vite developer.
+2. Senior frontend engineer.
+3. Technical SEO specialist.
+4. International SEO specialist.
+5. UX/UI specialist especializado en juegos web.
+6. Mobile UX specialist.
+7. PWA specialist.
+8. Web performance specialist.
+9. Product designer para juegos casuales.
+10. QA engineer.
+11. Production-readiness reviewer.
+
+NO quiero solamente recomendaciones.
+
+Quiero que inspecciones TODO el proyecto, determines qué cosas de este listado ya están implementadas, cuáles están parcialmente implementadas, cuáles están mal implementadas y cuáles faltan, y luego IMPLEMENTES TODO lo que corresponda.
+
+No dejes deliberadamente ninguna tarea para "una segunda etapa".
+
+Si una tarea ya está correctamente implementada, no la rehagas innecesariamente: verifícala y déjala como está.
+
+Si está parcialmente implementada, complétala.
+
+Si está mal implementada, corrígela.
+
+Si no existe, créala.
+
+Al finalizar, vuelve a revisar TODO el listado punto por punto y demuestra qué quedó implementado.
+
+IMPORTANTE:
+- No quiero que simplemente me expliques qué debería hacer.
+- Quiero que hagas los cambios en el código.
+- Antes de modificar algo, inspecciona el código real.
+- No inventes archivos, funciones o arquitectura que no hayas comprobado.
+- No supongas que algo está mal solamente porque aparece en este prompt: verifica primero.
+- No elimines funcionalidades existentes que funcionen correctamente.
+- No rompas el juego existente.
+- Mantén la funcionalidad actual salvo que alguna parte deba modificarse para cumplir los objetivos de este prompt.
+- Si una modificación estructural es necesaria, hazla.
+- Después de modificarla, revisa sus dependencias y efectos secundarios.
+- Si tienes acceso a ejecutar el proyecto, hazlo.
+- Si tienes acceso a build, lint, tests, Lighthouse, inspección del DOM o herramientas similares, utilízalas.
+- Si no puedes ejecutar alguna comprobación, dilo explícitamente.
+- No afirmes que algo fue verificado si realmente no pudiste verificarlo.
+
+==================================================
+CONTEXTO DEL PROYECTO
+==================================================
+
+El sitio es:
+
+https://topsolitaire.online/
+
+Es un sitio para jugar Solitaire/Klondike online.
+
+El objetivo principal es aumentar significativamente:
+
+- discoverability
+- tráfico orgánico
+- indexación
+- presencia internacional
+- experiencia de usuario
+- retención
+- posibilidades de obtener backlinks
+- posibilidades de compartir el juego
+- calidad general del producto
+
+El proyecto actualmente utiliza React/Vite y tiene un juego de Klondike Solitaire.
+
+El proyecto ya tiene soporte para varios idiomas mediante i18n.
+
+Los idiomas actualmente contemplados incluyen:
+
+- English
+- Spanish
+- French
+- Italian
+- Polish
+- German
+- Chinese
+- Traditional Chinese
+
+Sin embargo, debes verificar el código real y no asumir que esta descripción sigue siendo exactamente correcta.
+
+==================================================
+IMPORTANTE SOBRE SITEMAP.XML
+==================================================
+
+NO crees un sitemap.xml nuevo desde cero.
+
+El proyecto YA tiene sitemap.xml.
+
+Debes:
+
+1. localizarlo;
+2. inspeccionarlo;
+3. verificar que sea correcto;
+4. verificar que incluya las URLs importantes;
+5. verificar que sea coherente con la nueva arquitectura de URLs;
+6. corregirlo si es necesario.
+
+Pero NO reemplazarlo innecesariamente ni asumir que no existe.
+
+También verifica que robots.txt apunte correctamente al sitemap existente.
+
+==================================================
+OBJETIVO ARQUITECTÓNICO PRINCIPAL
+==================================================
+
+El proyecto actualmente utiliza HashRouter.
+
+Debes verificar si efectivamente sigue utilizando:
+
+HashRouter
+
+o alguna arquitectura equivalente basada en URLs con #.
+
+Si es así, migrar a URLs reales y rastreables.
+
+Queremos evitar URLs como:
+
+https://topsolitaire.online/#/privacy-policy
+
+y utilizar URLs reales como:
+
+https://topsolitaire.online/privacy-policy
+
+La arquitectura debe permitir posteriormente páginas como:
+
+/
+ /de/
+ /pl/
+ /fr/
+ /es/
+ /it/
+ etc.
+
+Y páginas de contenido reales.
+
+No rompas el juego al cambiar el routing.
+
+==================================================
+1. SEO TÉCNICO Y ARQUITECTURA DE URLs
+==================================================
+
+Audita e implementa todo lo necesario para que el sitio tenga una arquitectura SEO correcta.
+
+Verifica:
+
+- Router.
+- URLs.
+- Canonical.
+- hreflang.
+- sitemap.
+- robots.txt.
+- 404.
+- enlaces internos.
+- URLs indexables.
+- URLs duplicadas.
+- URLs con #.
+- URLs que devuelven contenido incorrecto.
+- soft 404.
+- redirects.
+- trailing slash.
+- URLs inconsistentes.
+- canonical incorrecta.
+- páginas que no deberían indexarse.
+
+IMPORTANTE:
+
+No quiero que una URL inexistente termine simplemente renderizando Home.
+
+Si actualmente existe algo equivalente a:
+
+<Route path="*" element={<Home />} />
+
+determina si eso puede provocar problemas de soft 404.
+
+Implementa una verdadera página 404 y, cuando la plataforma lo permita, asegúrate de que las URLs inexistentes tengan respuesta HTTP 404 real.
+
+==================================================
+2. INTERNACIONALIZACIÓN SEO
+==================================================
+
+Actualmente el proyecto tiene traducciones mediante i18n.
+
+Eso NO significa automáticamente que tenga internacionalización SEO correcta.
+
+Verifica cómo funciona realmente.
+
+Queremos URLs diferenciadas por idioma.
+
+Como mínimo estudia e implementa correctamente:
+
+/
+/de/
+/pl/
+/fr/
+
+y los demás idiomas que realmente tengan sentido según las traducciones existentes.
+
+No quiero simplemente detectar:
+
+navigator.language
+
+y cambiar el texto de la misma URL.
+
+Eso puede mantenerse para UX si es útil, pero debe existir una arquitectura de URLs diferenciadas para SEO.
+
+Cada versión localizada debe tener, cuando corresponda:
+
+- URL propia.
+- title propio.
+- meta description propia.
+- H1 propio.
+- contenido localizado.
+- canonical propio.
+- hreflang correcto.
+- Open Graph localizado.
+- idioma HTML correcto cuando corresponda.
+- enlaces internos apropiados.
+
+Implementa hreflang correctamente.
+
+Debe existir:
+
+- reciprocidad;
+- URLs válidas;
+- x-default cuando corresponda.
+
+No generes páginas traducidas artificialmente si no existe contenido real.
+
+Aprovecha las traducciones existentes.
+
+Prioriza especialmente:
+
+- German
+- Polish
+- French
+
+pero verifica también los demás idiomas.
+
+==================================================
+3. META TAGS Y DOCUMENT HEAD
+==================================================
+
+Audita:
+
+- title
+- meta description
+- canonical
+- robots
+- hreflang
+- Open Graph
+- Twitter/X cards
+- lang
+- favicon
+- manifest
+- theme-color
+- viewport
+
+Verifica si actualmente title y meta description se modifican exclusivamente mediante JavaScript.
+
+Si esto ocurre, determina si la arquitectura actual permite que Google reciba correctamente esos valores.
+
+Si es necesario para SEO, implementa una arquitectura que permita que cada URL tenga metadata correcta e identificable sin depender exclusivamente de una modificación posterior del DOM mediante JavaScript.
+
+No hagas una migración tecnológica grande solamente por moda.
+
+Si React/Vite actual puede resolverlo correctamente mediante prerendering/SSG u otra solución apropiada, utiliza la alternativa más simple y robusta.
+
+No migres a Next.js salvo que realmente sea necesario y puedas justificarlo.
+
+==================================================
+4. H1: VERIFICAR EL SUPUESTO PROBLEMA
+==================================================
+
+Existe una auditoría SEO que podría indicar:
+
+"doesn't have an h1 heading"
+
+Debes verificar esto directamente.
+
+NO asumas que el aviso es correcto.
+
+Comprueba:
+
+1. HTML inicial.
+2. DOM después de JavaScript.
+3. Renderizado real.
+4. Qué ve un crawler.
+5. Qué ve un usuario.
+6. Si existe exactamente un H1 en las páginas importantes.
+7. Si el H1 está realmente relacionado con el contenido de la página.
+
+En particular verifica Home.
+
+Si el H1 ya existe correctamente, NO lo dupliques simplemente para satisfacer una herramienta SEO.
+
+Si falta o está implementado incorrectamente, corrígelo.
+
+El H1 principal de Home debería mantener una intención cercana a:
+
+"Play Solitaire Online Free"
+
+o una variante mejorada que sea natural y útil.
+
+No hagas keyword stuffing.
+
+==================================================
+5. TEXT-TO-HTML RATIO
+==================================================
+
+Existe también una alerta:
+
+"has low text-HTML ratio"
+
+Quiero que investigues si realmente constituye un problema SEO en este proyecto.
+
+NO quiero que aumentes artificialmente el texto solamente para mejorar una métrica de una herramienta.
+
+Analiza:
+
+- cantidad de texto visible;
+- HTML generado;
+- JavaScript;
+- CSS;
+- estructura del DOM;
+- contenido principal;
+- contenido semántico;
+- tamaño real del HTML;
+- relación entre aplicación/juego y contenido editorial.
+
+Determina si el ratio bajo es realmente relevante o si es una métrica poco útil en este contexto.
+
+Si el sitio realmente necesita más contenido semántico, mejora el contenido de forma natural.
+
+NO rellenes la página con texto inútil.
+
+==================================================
+6. HOMEPAGE SEO
+==================================================
+
+Audita completamente Home.
+
+Debe seguir siendo principalmente una página para JUGAR.
+
+NO conviertas la homepage en un artículo gigantesco.
+
+Debe contener:
+
+- H1 claro.
+- propuesta de valor.
+- juego inmediatamente visible.
+- contenido breve y útil.
+- How to Play.
+- Solitaire Rules.
+- información relevante.
+- FAQ cuando tenga sentido.
+- enlaces internos a contenido específico.
+
+El contenido debe estar diseñado tanto para usuarios como para buscadores.
+
+No hagas keyword stuffing.
+
+==================================================
+7. CREAR PÁGINAS SEO REALES
+==================================================
+
+Crea páginas independientes cuando tengan intención de búsqueda claramente diferenciada.
+
+Como mínimo estudia e implementa:
+
+/how-to-play-solitaire
+
+/solitaire-rules
+
+/solitaire-strategy
+
+/solitaire-scoring
+
+No quiero artículos superficiales.
+
+Cada página debe tener:
+
+- title único;
+- meta description única;
+- canonical;
+- H1;
+- estructura H2/H3;
+- contenido útil;
+- enlaces internos;
+- navegación hacia el juego;
+- enlaces hacia otras páginas relevantes;
+- Open Graph;
+- idioma correcto;
+- schema únicamente cuando sea apropiado.
+
+El contenido debe estar realmente escrito para el usuario.
+
+NO produzcas contenido de relleno.
+
+==================================================
+8. CONTENIDO
+==================================================
+
+El objetivo NO es crear 100 artículos generados automáticamente.
+
+Prioriza calidad.
+
+Como mínimo considera contenido sobre:
+
+- How to Play Solitaire
+- Solitaire Rules
+- How to Win Solitaire
+- Solitaire Strategy
+- Solitaire Scoring
+- Klondike Solitaire
+- Solitaire vs Klondike
+- Solitaire tips for beginners
+- Is every Solitaire game winnable?
+- historia de Solitaire si realmente aporta valor
+
+Pero no crees páginas solamente porque una keyword parezca interesante.
+
+Cada página debe tener una razón real para existir.
+
+El contenido debe ser compatible con el producto real.
+
+No hagas afirmaciones sobre funcionalidades que el juego no tenga.
+
+==================================================
+9. BLOG Y ARQUITECTURA DE CONTENIDO
+==================================================
+
+No quiero crear contenido masivo por crear contenido.
+
+Construye una arquitectura temática alrededor de:
+
+SOLITAIRE / KLONDIKE
+
+No expandas innecesariamente hacia:
+
+- Sudoku
+- Go
+- Chess
+- Minesweeper
+- otros juegos
+
+El sitio debe desarrollar autoridad temática alrededor de Solitaire.
+
+==================================================
+10. MARCA Y CONSISTENCIA
+==================================================
+
+Audita todas las apariciones de:
+
+- Top Solitaire
+- Play Solitaire Online
+- top solitaire
+- topsolitaire.online
+
+Verifica si el branding es consistente.
+
+La marca principal debe ser:
+
+Top Solitaire
+
+Puedes utilizar:
+
+Top Solitaire — Free Solitaire Online
+
+o una variante natural.
+
+No dejes inconsistencias innecesarias entre:
+
+- title
+- og:site_name
+- schema
+- navbar
+- footer
+- manifest
+- favicon
+- textos
+- páginas legales.
+
+==================================================
+11. REVISIÓN COMPLETA DE PRODUCCIÓN
+==================================================
+
+REVISA TODO EL CÓDIGO Y TODO EL TEXTO DEL SITIO para detectar cualquier cosa que NO debería estar en producción.
+
+Esto es obligatorio.
+
+Busca específicamente:
+
+- placeholder text;
+- textos de desarrollo;
+- TODO;
+- FIXME;
+- lorem ipsum;
+- URLs de prueba;
+- emails de ejemplo;
+- contactos falsos;
+- dominios incorrectos;
+- datos de ejemplo;
+- comentarios que indiquen funcionalidades incompletas;
+- enlaces rotos;
+- enlaces incompletos;
+- href truncados;
+- errores ortográficos;
+- textos contradictorios;
+- nombres de proyectos anteriores;
+- nombres de repositorios;
+- referencias a herramientas internas;
+- referencias a localhost;
+- console.log innecesarios;
+- debugging;
+- claves expuestas;
+- IDs innecesarios;
+- variables sin utilizar;
+- imports sin utilizar;
+- dependencias innecesarias;
+- código muerto;
+- funcionalidades parcialmente implementadas;
+- botones que no funcionan;
+- textos que prometen algo que el producto no hace;
+- mensajes de "placeholder";
+- páginas legales incompletas.
+
+Presta especial atención a:
+
+Privacy Policy
+
+Contact
+
+About, si existe.
+
+Si actualmente aparece algo como:
+
+"This is a placeholder contact page"
+
+o similar:
+
+ELIMÍNALO Y COMPLETA LA PÁGINA CORRECTAMENTE.
+
+Revisa también que la Privacy Policy sea coherente con:
+
+- Google Analytics/Vercel Analytics;
+- anuncios;
+- cookies;
+- almacenamiento local;
+- cualquier third-party script;
+- funcionalidades reales del sitio.
+
+No inventes información legal.
+
+Si falta información que solo el propietario puede proporcionar, déjalo claramente identificado como un dato que debe completar el propietario, pero no dejes textos de desarrollo visibles en producción.
+
+==================================================
+12. GOOGLE ADS / THIRD PARTY SCRIPTS
+==================================================
+
+Audita todos los scripts externos.
+
+Especialmente:
+
+- publicidad;
+- analytics;
+- fonts;
+- librerías externas;
+- scripts de terceros.
+
+Determina:
+
+- qué cargan;
+- cuándo cargan;
+- si afectan performance;
+- si afectan CLS;
+- si afectan INP;
+- si bloquean el render;
+- si son necesarios;
+- si tienen comportamiento inesperado;
+- si producen redirects o popups;
+- si afectan mobile.
+
+No elimines funcionalidades de monetización sin justificarlo.
+
+Pero optimízalas cuando sea posible.
+
+==================================================
+13. PERFORMANCE
+==================================================
+
+Audita el rendimiento real.
+
+Si puedes ejecutar Lighthouse, hazlo.
+
+Comprueba:
+
+- LCP
+- INP
+- CLS
+- TTFB si puede medirse
+- JS bundle
+- CSS
+- imágenes
+- fuentes
+- third-party scripts
+- anuncios
+- animaciones
+- React rendering
+- Framer Motion
+- canvas-confetti
+- icon libraries
+- PWA
+
+No elimines animaciones simplemente para conseguir una métrica.
+
+El juego debe seguir sintiéndose bien.
+
+Prioriza mejoras que no perjudiquen la UX.
+
+==================================================
+14. TAILWIND.CONFIG.JS
+==================================================
+
+REVISA EXPLÍCITAMENTE tailwind.config.js.
+
+Actualmente existe algo equivalente a:
+
+content: ["./index.html", "./src*.{ts,tsx,js,jsx}"]
+
+Quiero que determines si esa configuración:
+
+1. es correcta;
+2. realmente detecta todas las clases Tailwind utilizadas;
+3. funciona correctamente con la estructura actual del proyecto;
+4. detecta archivos dentro de src y sus subdirectorios.
+
+Si está mal, corrígela.
+
+Una configuración típica podría parecerse a:
+
+content: [
+  "./index.html",
+  "./src/**/*.{js,ts,jsx,tsx}",
+]
+
+PERO NO COPIES ESTO CIEGAMENTE.
+
+Primero verifica la estructura real del proyecto.
+
+Después corrige lo que corresponda.
+
+Verifica también que el build final incluya las clases necesarias.
+
+==================================================
+15. KLONDIKE: 1 CARTA / 3 CARTAS
+==================================================
+
+Implementa modos:
+
+- 1-card draw
+- 3-card draw
+
+Debe existir una forma clara y fácil de cambiar entre ellos.
+
+Analiza cómo funcionan estos modos en otros Solitaire importantes y utiliza patrones UX conocidos.
+
+El usuario debe entender claramente:
+
+- qué modo está jugando;
+- cómo cambiarlo;
+- qué cambia entre ambos.
+
+No cambies innecesariamente las reglas fundamentales de Klondike.
+
+Verifica que:
+
+- stock;
+- waste;
+- recycle;
+- scoring;
+- victory;
+- undo;
+- hint
+
+funcionen correctamente en ambos modos.
+
+==================================================
+16. DOS NIVELES: EASY / HARD
+==================================================
+
+Quiero dos niveles:
+
+- Easy
+- Hard
+
+Investiga primero cómo implementan esta idea:
+
+- Google Solitaire;
+- otros sitios importantes de Solitaire.
+
+NO copies código.
+
+Analiza la lógica y la UX.
+
+Determina qué significa realmente "Easy" y "Hard" en este tipo de juego.
+
+Por ejemplo, estudia si se diferencia mediante:
+
+- reglas;
+- opciones de draw;
+- deals;
+- posibilidad de movimientos;
+- ayudas;
+- generación de partidas;
+- frecuencia de partidas ganables;
+- otros mecanismos.
+
+No quiero simplemente cambiar el texto del botón y que ambos niveles sean iguales.
+
+Debe existir una diferencia funcional real y explicable.
+
+Implementa la alternativa que consideres más apropiada para este producto.
+
+Documenta brevemente la decisión.
+
+IMPORTANTE:
+
+NO implementar Daily Solitaire.
+
+NO implementar Daily Challenge.
+
+NO crear páginas diarias.
+
+NO agregar ninguna funcionalidad relacionada con desafíos diarios.
+
+==================================================
+17. HINT / PISTAS
+==================================================
+
+Agrega un botón:
+
+Hint
+
+o:
+
+Pista
+
+según el idioma.
+
+Debe ayudar al usuario a encontrar un movimiento posible.
+
+La implementación debe analizar el estado actual del tablero.
+
+No quiero un botón que simplemente muestre un mensaje genérico.
+
+Idealmente:
+
+- detectar movimientos legales;
+- priorizar movimientos útiles;
+- indicar visualmente las cartas implicadas;
+- no realizar automáticamente el movimiento;
+- permitir al usuario ejecutar el movimiento;
+- funcionar con 1-card y 3-card;
+- funcionar en Easy y Hard;
+- no romper Undo.
+
+Diseña una UX clara.
+
+Si no existe un movimiento evidente, mostrar un mensaje apropiado.
+
+No inventes pistas incorrectas.
+
+==================================================
+18. ESTADÍSTICAS
+==================================================
+
+Agrega estadísticas.
+
+IMPORTANTE:
+
+NO quiero backend.
+
+NO quiero base de datos.
+
+NO quiero usuarios.
+
+NO quiero login.
+
+NO quiero cuentas.
+
+NO quiero API para estadísticas.
+
+Utiliza exclusivamente:
+
+localStorage
+
+Las estadísticas pueden incluir:
+
+- games played
+- games won
+- win rate
+- best time
+- best moves
+- current streak
+- best streak
+
+si tiene sentido.
+
+Diferencia correctamente entre:
+
+- 1-card;
+- 3-card;
+- Easy;
+- Hard.
+
+No mezcles estadísticas incompatibles.
+
+Por ejemplo, si tiene sentido:
+
+Easy / 1-card
+Easy / 3-card
+Hard / 1-card
+Hard / 3-card
+
+o una estructura equivalente.
+
+Implementa una UX clara para consultar las estadísticas.
+
+No almacenes información personal.
+
+Maneja correctamente:
+
+- localStorage inexistente;
+- datos corruptos;
+- versiones futuras del formato;
+- reset statistics.
+
+==================================================
+19. COMPARTIR RESULTADO
+==================================================
+
+Cuando el usuario gana una partida, permite compartir el resultado en redes.
+
+Debe funcionar sin backend.
+
+Utiliza preferentemente:
+
+Web Share API
+
+cuando esté disponible.
+
+También debe existir un fallback apropiado para navegadores que no soporten Web Share API.
+
+El mensaje podría incluir:
+
+- resultado;
+- tiempo;
+- movimientos;
+- modo;
+- dificultad;
+- URL del juego.
+
+No compartas información personal.
+
+Considera:
+
+- Facebook;
+- X/Twitter;
+- WhatsApp;
+- copiar al portapapeles;
+- Web Share.
+
+No llenes la pantalla con botones innecesarios.
+
+La UX debe ser simple.
+
+==================================================
+20. EMBED SOLITAIRE
+==================================================
+
+Quiero implementar una funcionalidad:
+
+"Embed Solitaire"
+
+con una página específica para esto.
+
+La propuesta debe estar orientada a webmasters.
+
+La página debe explicar:
+
+"Add Free Solitaire to Your Website"
+
+o un texto equivalente.
+
+Debe explicar que otros sitios pueden agregar el juego gratuitamente.
+
+Debe proporcionar un código iframe funcional.
+
+Por ejemplo conceptualmente:
+
+<iframe ...></iframe>
+
+PERO no copies este ejemplo sin verificar la arquitectura real.
+
+Debes crear una URL específica para el embed.
+
+Por ejemplo:
+
+/embed
+
+El embed debe:
+
+- cargar correctamente;
+- ser responsive;
+- no depender de navegación interna innecesaria;
+- no mostrar elementos que no correspondan dentro de un iframe;
+- permitir jugar;
+- funcionar en mobile;
+- ser visualmente adecuado.
+
+Investiga buenas prácticas actuales para embeddable games.
+
+La página /embed debe estar optimizada para SEO y link building.
+
+Debe explicar claramente:
+
+- qué es;
+- cómo agregarlo;
+- código;
+- características;
+- gratuidad si realmente corresponde;
+- requisitos.
+
+El objetivo estratégico es que otros sitios web puedan incorporar Top Solitaire y enlazar hacia:
+
+https://topsolitaire.online/
+
+o la página correspondiente.
+
+No implementes un sistema de API/backend para esto.
+
+==================================================
+21. "ADD SOLITAIRE TO YOUR HOME SCREEN"
+==================================================
+
+El proyecto ya tiene PWA/manifest si esto sigue siendo cierto.
+
+Audita completamente la implementación.
+
+Quiero una funcionalidad o explicación UX clara:
+
+"Add Solitaire to your home screen"
+
+o su traducción correspondiente.
+
+Debe funcionar como una Progressive Web App cuando el navegador lo permita.
+
+Investiga e implementa correctamente:
+
+- manifest;
+- icons;
+- display;
+- start_url;
+- scope;
+- theme_color;
+- background_color;
+- service worker si es necesario;
+- installability.
+
+No muestres un botón de instalación si el navegador no lo permite.
+
+Cuando corresponda:
+
+- detectar beforeinstallprompt;
+- guardar el evento;
+- mostrar una invitación apropiada;
+- permitir instalar;
+- ocultar el botón cuando ya esté instalada.
+
+En iOS/Safari, si no existe instalación automática equivalente, muestra instrucciones apropiadas solamente cuando corresponda.
+
+La funcionalidad debe ser opcional y no molesta.
+
+==================================================
+22. COMPARACIÓN VISUAL Y UX DEL TABLERO
+==================================================
+
+Quiero una auditoría visual seria del juego.
+
+NO te limites a revisar el código CSS.
+
+Debes analizar:
+
+- proporción general del tablero;
+- ancho y alto de las cartas;
+- relación carta/ancho de pantalla;
+- separación entre columnas;
+- separación entre filas;
+- separación entre stock/waste/foundation;
+- margen lateral;
+- espacio superior;
+- espacio inferior;
+- tamaño de botones;
+- tamaño de iconos;
+- tamaño de texto;
+- legibilidad;
+- zonas táctiles;
+- densidad visual;
+- scroll;
+- espacio desperdiciado;
+- área efectiva de juego.
+
+Compara específicamente:
+
+Top Solitaire
+
+contra versiones MOBILE de otros sitios importantes de Solitaire.
+
+Estudia visualmente, cuando sea posible:
+
+- Google Solitaire;
+- Solitaire.com;
+- Solitaired;
+- World of Solitaire;
+- otros competidores relevantes.
+
+No copies diseños.
+
+Quiero un análisis comparativo.
+
+Especialmente verifica:
+
+1. ¿Las cartas de Top Solitaire son demasiado grandes?
+2. ¿Son demasiado pequeñas?
+3. ¿Hay demasiado espacio entre columnas?
+4. ¿Hay poco espacio?
+5. ¿El tableau ocupa demasiado o demasiado poco?
+6. ¿Stock/foundation tienen una distribución óptima?
+7. ¿Hay espacio desperdiciado?
+8. ¿Los botones ocupan demasiado?
+9. ¿El usuario puede jugar cómodamente con un dedo?
+10. ¿La interfaz es comparable o mejor que la de competidores?
+
+Presta especial atención a smartphones estrechos.
+
+Por ejemplo:
+
+320px
+360px
+375px
+390px
+414px
+
+y tamaños modernos mayores.
+
+No optimices solamente para desktop.
+
+Si encuentras oportunidades reales, modifica el CSS/layout.
+
+Pero no cambies dimensiones arbitrariamente.
+
+Quiero que las decisiones estén basadas en:
+
+- comparación;
+- usabilidad;
+- touch targets;
+- proporciones;
+- disponibilidad de espacio;
+- pruebas reales.
+
+==================================================
+23. MOBILE UX
+==================================================
+
+Audita el juego en mobile.
+
+Verifica:
+
+- viewport;
+- orientation;
+- touch;
+- drag;
+- tap;
+- doble tap;
+- botones;
+- scrolling;
+- selección de cartas;
+- undo;
+- hint;
+- new game;
+- difficulty;
+- draw mode;
+- statistics;
+- share;
+- ads.
+
+Comprueba que ninguna nueva funcionalidad empeore la experiencia móvil.
+
+==================================================
+24. TOUCH TARGETS
+==================================================
+
+Verifica que:
+
+- botones;
+- iconos;
+- controles;
+- cartas;
+- close buttons;
+
+tengan tamaños táctiles razonables.
+
+No hagas que los botones sean gigantes simplemente por cumplir una regla.
+
+Optimiza para uso real con el dedo.
+
+==================================================
+25. ACCESIBILIDAD
+==================================================
+
+Audita:
+
+- aria-label;
+- botones;
+- navegación;
+- focus;
+- keyboard;
+- contraste;
+- alt;
+- semántica;
+- headings;
+- labels;
+- dialogs;
+- modals.
+
+Especialmente:
+
+- Hint;
+- Statistics;
+- Settings;
+- Share;
+- Difficulty;
+- Draw mode.
+
+Los botones que actualmente sean solamente iconos deben tener accesibilidad adecuada.
+
+==================================================
+26. INTERNAL LINKING
+==================================================
+
+Construye una arquitectura de enlaces internos lógica.
+
+Home debe poder llevar a:
+
+- How to Play
+- Rules
+- Strategy
+- Scoring
+- Embed
+- Privacy
+- Contact
+- Statistics/funciones relevantes cuando corresponda
+
+Las páginas de contenido deben llevar al juego.
+
+Por ejemplo:
+
+How to Play
+→ Play Solitaire
+
+Rules
+→ Play Solitaire
+
+Strategy
+→ Play Solitaire
+
+Embed
+→ Play Solitaire
+
+No abuses de enlaces.
+
+Los enlaces deben tener anchor text descriptivo.
+
+==================================================
+27. SCHEMA / STRUCTURED DATA
+==================================================
+
+Audita el structured data existente.
+
+Determina qué schema realmente corresponde.
+
+No agregues schema simplemente para tener más schema.
+
+Verifica:
+
+- WebSite;
+- WebPage;
+- BreadcrumbList cuando corresponda;
+- otros tipos solamente si realmente representan el contenido.
+
+No inventes:
+
+- reviews;
+- ratings;
+- prices;
+- organization data;
+- FAQs falsos;
+- datos que no existen.
+
+Si se utiliza FAQ schema, asegúrate de que el contenido realmente sea visible y cumpla las políticas actuales.
+
+==================================================
+28. LLMS.TXT
+==================================================
+
+Crea:
+
+/llms.txt
+
+con contenido adecuado para este proyecto.
+
+Debe describir de forma clara:
+
+- qué es Top Solitaire;
+- URL principal;
+- propósito del sitio;
+- que permite jugar Klondike Solitaire online;
+- funcionalidades reales;
+- páginas importantes;
+- guías disponibles;
+- embed;
+- información relevante para sistemas de IA/LLMs.
+
+No inventes páginas.
+
+Cuando termines las nuevas páginas, incluye las URLs reales.
+
+Mantén el archivo conciso y útil.
+
+IMPORTANTE:
+
+No presentes llms.txt como una garantía de SEO ni como algo que Google necesariamente utilice para ranking.
+
+Es simplemente una interfaz/documentación útil para sistemas que puedan consumirla.
+
+==================================================
+29. ROBOTS.TXT
+==================================================
+
+Audita robots.txt.
+
+Verifica:
+
+- sintaxis;
+- sitemap;
+- URLs que deben rastrearse;
+- recursos necesarios para renderizar;
+- no bloquear CSS/JS necesarios;
+- no bloquear páginas importantes.
+
+No bloquees React, CSS o JS necesarios para renderizar el contenido.
+
+==================================================
+30. SITEMAP EXISTENTE
+==================================================
+
+Como ya existe sitemap.xml:
+
+- inspecciónalo;
+- corrígelo si es necesario;
+- agrega las nuevas URLs reales;
+- elimina URLs inexistentes;
+- verifica idiomas;
+- verifica canonical;
+- verifica consistencia.
+
+No generes una segunda versión.
+
+==================================================
+31. GOOGLE SEARCH CONSOLE
+==================================================
+
+Si tienes acceso al proyecto/entorno, analiza cómo verificar:
+
+- indexing;
+- coverage;
+- sitemap;
+- pages;
+- queries;
+- countries;
+- impressions;
+- CTR;
+- positions.
+
+No inventes resultados si no tienes acceso.
+
+Si puedes acceder a Search Console, úsalo.
+
+Si no puedes, indica claramente qué debería verificarse manualmente.
+
+==================================================
+32. SEO INTERNACIONAL
+==================================================
+
+La estrategia inicial debe prestar especial atención a:
+
+Germany
+Poland
+France
+
+pero sin romper:
+
+English
+Spanish
+Italian
+Chinese
+Traditional Chinese
+
+si ya existen correctamente.
+
+Investiga keywords locales de manera natural.
+
+Por ejemplo, verifica términos relacionados con:
+
+German:
+- solitär spielen
+- solitär spielen kostenlos
+- solitär kostenlos spielen
+
+Polish:
+- pasjans
+- darmowy pasjans
+- pasjans online
+- pasjans klasyczny
+
+French:
+- solitaire
+- solitaire gratuit
+- solitaire classique
+- solitaire en ligne
+
+NO hagas keyword stuffing.
+
+Verifica ortografía y volumen/intención si tienes acceso a herramientas SEO.
+
+No copies las keywords directamente a cada página sin analizar intención.
+
+==================================================
+33. LINK BUILDING
+==================================================
+
+No hagas spam.
+
+No crees cuentas falsas.
+
+No hagas PBNs.
+
+No hagas comentarios automatizados.
+
+No hagas cientos de enlaces basura.
+
+Diseña activos que naturalmente puedan recibir enlaces:
+
+- Embed Solitaire
+- How to Play
+- Solitaire Rules
+- Strategy
+- Scoring
+- estadísticas si realmente aportan valor
+
+Analiza oportunidades especialmente en:
+
+- sitios de juegos;
+- sitios de cartas;
+- sitios de Solitaire;
+- sitios de casual games;
+- sitios alemanes;
+- sitios polacos;
+- sitios franceses.
+
+Reddit puede formar parte de la estrategia, pero:
+
+- no spam;
+- no múltiples cuentas;
+- no autopromoción repetitiva;
+- no manipulación;
+- participación genuina.
+
+==================================================
+34. REDDIT
+==================================================
+
+NO implementes ninguna automatización para Reddit.
+
+NO crees cuentas.
+
+NO publiques automáticamente.
+
+Simplemente asegúrate de que el producto tenga características/activos que puedan ser compartidos legítimamente.
+
+Por ejemplo:
+
+- "I built a free Solitaire game"
+- "I improved mobile Solitaire UX"
+- "Here's an embeddable Solitaire game"
+- etc.
+
+La eventual promoción debe ser auténtica y transparente.
+
+==================================================
+35. PRODUCT HUNT
+==================================================
+
+No es necesario implementar ninguna funcionalidad de Product Hunt en el código.
+
+Pero prepara el producto para poder presentarlo posteriormente.
+
+No agregues código inútil relacionado con Product Hunt.
+
+==================================================
+36. APPSUMO
+==================================================
+
+NO implementes nada relacionado con AppSumo.
+
+NO gastes tiempo en crear una estrategia técnica para AppSumo.
+
+No es una prioridad para este producto.
+
+==================================================
+37. TRUSTPILOT
+==================================================
+
+No implementes ningún sistema artificial para generar reviews.
+
+No agregues widgets innecesarios solamente por SEO.
+
+Si existe alguna integración actual, audítala.
+
+==================================================
+38. NO DAILY CHALLENGE
+==================================================
+
+ESTO ES IMPORTANTE:
+
+NO IMPLEMENTAR:
+
+- Daily Solitaire
+- Daily Challenge
+- desafíos diarios
+- páginas diarias
+- URLs por fecha
+- leaderboard diario
+- estadísticas diarias
+
+Queda explícitamente fuera del proyecto.
+
+==================================================
+39. NO BACKEND
+==================================================
+
+El objetivo de esta etapa es mantener el proyecto sin backend adicional.
+
+NO agregar:
+
+- database;
+- authentication;
+- login;
+- API propia;
+- Node backend;
+- Laravel;
+- Supabase;
+- Firebase;
+- servidores para estadísticas.
+
+Las nuevas funcionalidades deben funcionar client-side cuando sea posible.
+
+Especialmente:
+
+- statistics → localStorage;
+- share → Web Share API / clipboard / URLs;
+- settings → localStorage;
+- PWA → frontend;
+- hint → algoritmo local;
+- draw mode → frontend;
+- difficulty → frontend;
+- embed → frontend.
+
+==================================================
+40. SEGURIDAD
+==================================================
+
+Audita:
+
+- secretos;
+- API keys;
+- environment variables;
+- tokens;
+- analytics IDs;
+- third-party scripts;
+- iframe;
+- XSS;
+- dangerouslySetInnerHTML;
+- URL parameters;
+- localStorage.
+
+No expongas secretos en frontend.
+
+No agregues secretos.
+
+==================================================
+41. BUILD
+==================================================
+
+Ejecuta, si tienes acceso:
+
+"npm install"
+"npm run build"
+o "npm run dev"
+
+y cualquier otro comando real definido por package.json.
+
+No asumas que los comandos anteriores existen.
+
+Primero inspecciona package.json.
+
+Corrige errores de build.
+
+No consideres terminada la tarea si el build falla por cambios realizados.
+
+==================================================
+42. LINT / TESTS
+==================================================
+
+Inspecciona package.json para determinar si existen:
+
+- lint;
+- test;
+- typecheck;
+- format.
+
+Ejecuta lo que exista.
+
+Corrige errores introducidos por tus modificaciones.
+
+Revisa todo el test suite y verifica si hay cosas que no se están testeando en el proyecto y permanentemente para cada cambio que introduzcas crea o actualiza los tests correspondientes.
+
+==================================================
+43. NO ROMPER FUNCIONALIDADES EXISTENTES
+==================================================
+
+Antes de terminar verifica al menos:
+
+- New Game
+- Undo
+- drag & drop
+- click/tap
+- victory detection
+- timer
+- moves
+- sound
+- theme
+- settings
+- language
+- responsive
+- PWA
+- ads
+- privacy
+- contact
+
+Y las nuevas:
+
+- 1-card
+- 3-card
+- Easy
+- Hard
+- Hint
+- Statistics
+- Share
+- Embed
+- Add to Home Screen
+
+==================================================
+44. PRUEBA DE LOS MODOS DE JUEGO
+==================================================
+
+Prueba:
+
+Easy + 1-card
+Easy + 3-card
+Hard + 1-card
+Hard + 3-card
+
+Verifica:
+
+- deal;
+- stock;
+- waste;
+- tableau;
+- foundations;
+- legal moves;
+- win;
+- undo;
+- hint;
+- statistics;
+- share.
+
+==================================================
+45. SHARE
+==================================================
+
+Verifica al menos:
+
+- Web Share API disponible;
+- Web Share API no disponible;
+- clipboard;
+- mobile;
+- desktop.
+
+No dejes botones que no hagan nada.
+
+==================================================
+46. EMBED
+==================================================
+
+Prueba /embed en:
+
+- desktop;
+- mobile;
+- iframe;
+- diferentes anchos.
+
+Verifica que el iframe no genere:
+
+- scroll innecesario;
+- layout roto;
+- botones inaccesibles;
+- problemas de touch.
+
+==================================================
+47. PWA
+==================================================
+
+Verifica:
+
+- manifest;
+- icons;
+- installability;
+- start_url;
+- scope;
+- service worker si corresponde.
+
+No afirmes que una PWA es instalable si realmente no cumple los requisitos.
+
+==================================================
+48. VISUAL QA
+==================================================
+
+Si tienes capacidad de screenshots/browser automation:
+
+toma screenshots de:
+
+- desktop;
+- 320px;
+- 360px;
+- 375px;
+- 390px;
+- 414px.
+
+Analiza visualmente.
+
+Especialmente:
+
+- cartas;
+- columnas;
+- stock;
+- waste;
+- foundations;
+- botones;
+- header;
+- footer;
+- ad;
+- espacio vertical;
+- espacio horizontal.
+
+Compara con competidores actuales cuando tengas acceso web.
+
+No copies sus diseños.
+
+==================================================
+49. INVESTIGACIÓN EXTERNA
+==================================================
+
+Cuando una decisión dependa de cómo lo hacen otros productos, realiza investigación actual.
+
+Especialmente:
+
+- Google Solitaire;
+- Solitaire.com;
+- Solitaired;
+- World of Solitaire;
+- otros competidores importantes.
+
+Investiga específicamente:
+
+- 1-card vs 3-card;
+- dificultad Easy/Hard;
+- Hint;
+- estadísticas;
+- compartir resultados;
+- mobile layout;
+- tamaño de cartas;
+- separación;
+- PWA/install;
+- UX.
+
+Distingue claramente:
+
+A) lo que encontraste en sitios externos;
+
+B) lo que encontraste en el código de Top Solitaire;
+
+C) tu recomendación.
+
+No inventes que Google Solitaire hace algo si no lo verificaste.
+
+==================================================
+50. SEO CONTENT QUALITY
+==================================================
+
+Todo texto nuevo debe cumplir:
+
+- útil;
+- natural;
+- original;
+- relacionado con el producto;
+- escrito para personas;
+- buena estructura;
+- no keyword stuffing;
+- no contenido generado masivamente;
+- no páginas casi idénticas;
+- no contenido creado solamente para rankings.
+
+==================================================
+51. ACCESSIBILITY Y SEMÁNTICA
+==================================================
+
+Asegúrate de que:
+
+- exista H1;
+- los headings tengan jerarquía;
+- buttons sean buttons;
+- links sean links;
+- imágenes tengan alt cuando corresponda;
+- icon-only buttons tengan aria-label;
+- dialogs sean accesibles;
+- focus sea visible;
+- keyboard navigation funcione razonablemente.
+
+==================================================
+52. ANALYTICS
+==================================================
+
+Audita las implementaciones actuales de analytics.
+
+No elimines analytics si son correctos.
+
+Pero verifica que:
+
+- no haya duplicación;
+- no haya eventos rotos;
+- no haya errores;
+- no haya datos sensibles;
+- no haya scripts innecesarios.
+
+Si agregas nuevas métricas, hazlo sin backend.
+
+==================================================
+53. LOCALSTORAGE
+==================================================
+
+Si vas a agregar estadísticas/settings:
+
+crea una estructura organizada.
+
+Por ejemplo conceptualmente:
+
+topsolitaire:stats:v1
+
+pero primero inspecciona cómo utiliza localStorage el proyecto actualmente.
+
+No sobrescribas datos existentes.
+
+Implementa versionado si resulta apropiado.
+
+Maneja datos corruptos.
+
+==================================================
+54. CÓDIGO LIMPIO
+==================================================
+
+Durante la implementación:
+
+- elimina imports no utilizados;
+- elimina variables no utilizadas;
+- elimina funciones muertas;
+- elimina código duplicado;
+- evita duplicación de lógica;
+- no agregues dependencias innecesarias;
+- reutiliza componentes existentes cuando sea correcto;
+- mantén componentes razonablemente pequeños;
+- evita sobreingeniería.
+
+==================================================
+55. ARCHIVOS IMPORTANTES A REVISAR
+==================================================
+
+Busca y revisa todos los archivos del proyecto.
+
+Presta especial atención, si existen, a:
+
+- index.html
+- package.json
+- vite.config.*
+- tailwind.config.*
+- App.*
+- Home.*
+- i18n.*
+- routing
+- SEO/meta hooks
+- manifest.json
+- robots.txt
+- sitemap.xml
+- privacy policy
+- contact
+- CSS
+- componentes del juego
+- componentes de settings
+- componentes de anuncios
+- analytics
+- assets
+- service worker
+
+Pero NO te limites a estos archivos.
+
+Busca todo el proyecto.
+
+==================================================
+56. CRITERIO DE TERMINACIÓN
+==================================================
+
+NO consideres terminada la tarea simplemente porque el código compila.
+
+La tarea solamente está terminada cuando hayas:
+
+1. inspeccionado el proyecto;
+2. auditado el listado completo;
+3. implementado los cambios necesarios;
+4. ejecutado build si es posible;
+5. ejecutado tests/lint si existen;
+6. revisado SEO;
+7. revisado mobile;
+8. revisado UX;
+9. revisado producción;
+10. vuelto a auditar todo el checklist.
+
+==================================================
+57. CHECKLIST FINAL OBLIGATORIO
+==================================================
+
+Al terminar, genera una tabla exactamente con estas columnas:
+
+| # | Requisito | Estado inicial | Acción realizada | Estado final | Archivos modificados | Verificación |
+
+Los requisitos deben incluir AL MENOS:
+
+1. Router / URLs reales
+2. 404 real
+3. Canonical
+4. hreflang
+5. URLs por idioma
+6. Sitemap existente revisado
+7. robots.txt
+8. H1
+9. Text/HTML ratio
+10. Titles
+11. Meta descriptions
+12. Open Graph
+13. Twitter/X
+14. Branding
+15. Homepage SEO
+16. How to Play
+17. Solitaire Rules
+18. Solitaire Strategy
+19. Solitaire Scoring
+20. Internal linking
+21. llms.txt
+22. Production text audit
+23. Privacy Policy
+24. Contact
+25. Third-party scripts
+26. Performance
+27. Tailwind config
+28. 1-card
+29. 3-card
+30. Easy
+31. Hard
+32. Hint
+33. Statistics
+34. localStorage
+35. Share
+36. Embed
+37. Add Free Solitaire to Your Website
+38. PWA
+39. Add Solitaire to Your Home Screen
+40. Mobile UX
+41. Visual proportions
+42. Card dimensions
+43. Tableau spacing
+44. Touch targets
+45. Accessibility
+46. Structured data
+47. Security
+48. Build
+49. Tests/lint
+50. Existing functionality regression
+51. No Daily Challenge implemented
+52. No backend added
+
+==================================================
+58. INFORME FINAL
+==================================================
+
+Después del checklist, genera:
+
+A. RESUMEN EJECUTIVO
+- qué problemas principales encontraste;
+- qué cambios hiciste;
+- qué impacto esperas.
+
+B. CAMBIOS TÉCNICOS
+Lista de archivos modificados y qué cambió en cada uno.
+
+C. SEO
+Explica:
+- nueva arquitectura;
+- URLs;
+- canonical;
+- hreflang;
+- sitemap;
+- robots;
+- metadata;
+- contenido;
+- internal linking.
+
+D. PRODUCTO
+Explica:
+- 1-card;
+- 3-card;
+- Easy;
+- Hard;
+- Hint;
+- Statistics;
+- Share;
+- Embed;
+- PWA/Home Screen.
+
+E. MOBILE/UX
+Explica qué cambiaste en:
+- cartas;
+- spacing;
+- tablero;
+- controles;
+- touch.
+
+F. PRODUCCIÓN
+Lista cualquier:
+- placeholder;
+- error;
+- link roto;
+- texto inconsistente;
+- problema legal;
+- problema técnico;
+que hayas encontrado y corregido.
+
+G. VERIFICACIÓN
+Indica exactamente:
+- build;
+- lint;
+- tests;
+- browser checks;
+- mobile checks;
+- SEO checks;
+que pudiste ejecutar.
+
+H. PENDIENTES REALES
+Solamente incluye cosas que realmente NO pudiste completar por falta de acceso, información o limitaciones técnicas.
+
+NO llames "pendiente" a algo que simplemente decidiste no hacer.
+
+==================================================
+59. REGLA FUNDAMENTAL
+==================================================
+
+NO quiero una respuesta del tipo:
+
+"Te recomiendo hacer X, Y y Z."
+
+Quiero:
+
+"Inspeccioné X. Encontré Y. Lo modifiqué de esta manera. Verifiqué Z."
+
+Si tienes acceso al filesystem y herramientas de edición, modifica directamente los archivos.
+
+Si tienes acceso al navegador, prueba el sitio.
+
+Si tienes acceso a internet, investiga los competidores y las implementaciones actuales que te indiqué.
+
+Si una recomendación del prompt resulta técnicamente incorrecta después de inspeccionar el proyecto, NO la implementes ciegamente: explica por qué y aplica la solución técnicamente correcta.
+
+Pero no uses esto como excusa para dejar trabajo sin hacer.
+
+==================================================
+60. REGLA SOBRE DAILY CHALLENGE
+==================================================
+
+REITERO:
+
+NO implementar Daily Solitaire.
+
+NO implementar Daily Challenge.
+
+NO crear URLs diarias.
+
+NO crear leaderboard diario.
+
+NO crear contenido diario.
+
+NO incluirlo en la arquitectura.
+
+==================================================
+61. RESULTADO ESPERADO
+==================================================
+
+El resultado final debe ser un TopSolitaire que:
+
+- sea técnicamente sólido;
+- tenga URLs SEO reales;
+- sea internacionalizable correctamente;
+- sea rastreable;
+- tenga contenido útil;
+- tenga buena arquitectura interna;
+- mantenga el juego como elemento principal;
+- tenga excelente UX mobile;
+- permita jugar 1-card y 3-card;
+- tenga Easy y Hard reales;
+- tenga Hint;
+- tenga estadísticas locales;
+- permita compartir resultados;
+- permita embeber el juego;
+- permita instalarlo como PWA;
+- tenga "Add Solitaire to Your Home Screen";
+- tenga llms.txt;
+- esté limpio de placeholders y textos de desarrollo;
+- tenga buena performance;
+- no requiera backend;
+- no implemente Daily Challenge;
+- y esté preparado para una estrategia posterior de SEO, backlinks, Reddit, Product Hunt y outreach.
+
+NO termines hasta volver a auditar todo este prompt contra el proyecto final.
