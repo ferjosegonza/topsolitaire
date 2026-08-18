@@ -62,13 +62,15 @@
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
 
-### P1: Limpieza de código — Eliminar archivos auth no utilizados
-- [ ] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
-- [ ] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
-- [ ] Eliminar lib: `AuthContext.jsx`, `app-params.js`, `PageNotFound.jsx`
-- [ ] Eliminar api: `topsolitaireClient.js`
-- [ ] Eliminar config: `User.jsonc`
-- [ ] Verificar: tests de `app-routing` pasan sin auth
+### P1: Limpieza de código — Eliminar archivos auth no utilizados ✅ COMPLETADO
+- [x] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
+- [x] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
+- [x] Eliminar lib: `AuthContext.jsx`, `app-params.js`, `PageNotFound.jsx`
+- [x] Eliminar api: `topsolitaireClient.js`
+- [x] Eliminar config: `User.jsonc`
+- [x] Verificar: `App.jsx` y `main.jsx` sin dependencias a archivos removidos
+
+**Rama git**: `cleanup/remove-auth-files` | **Commit**: `f5dd7b5`
 
 ### P2: Migración de Router — HashRouter → URLs reales
 **Objetivo**: Cambiar de `https://topsolitaire.online/#/privacy-policy` a `https://topsolitaire.online/privacy-policy`
