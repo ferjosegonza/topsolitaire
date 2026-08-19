@@ -22,18 +22,18 @@ vi.mock('../src/hooks/useSoundEffects', () => ({
 
 import App from '../src/App';
 
-const setHash = (hash) => {
-  window.location.hash = hash;
+const navigateTo = (path) => {
+  window.history.pushState({}, '', path);
 };
 
-describe('App - rutas y navegación del sitio', () => {
+describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
   afterEach(() => {
     cleanup();
-    window.location.hash = '#/';
+    window.history.pushState({}, '', '/');
   });
 
   it('renderiza el Home con el juego en la ruta raíz', () => {
-    setHash('#/');
+    navigateTo('/');
     render(<App />);
     expect(screen.getAllByText(/Play Solitaire Online Free/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/New Game/i)).toBeDefined();
@@ -42,39 +42,40 @@ describe('App - rutas y navegación del sitio', () => {
   });
 
   it('renderiza la página de Privacy Policy en /privacy-policy', () => {
-    setHash('#/privacy-policy');
+    navigateTo('/privacy-policy');
     render(<App />);
     expect(screen.getAllByText(/Privacy Policy/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText((content) => content.includes('without registration or login')).length).toBeGreaterThan(0);
   });
 
   it('renderiza la página de Contact en /contact', () => {
-    setHash('#/contact');
+    navigateTo('/contact');
     render(<App />);
     expect(screen.getAllByText(/Contact/i).length).toBeGreaterThan(0);
   });
 
   it('una ruta desconocida cae en el Home (juego)', () => {
-    setHash('#/ruta-que-no-existe');
+    navigateTo('/ruta-que-no-existe');
     render(<App />);
     expect(screen.getAllByText(/Play Solitaire Online Free/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/New Game/i)).toBeDefined();
   });
 
-  it('el footer contiene enlaces a Privacy Policy y Contact', () => {
-    setHash('#/');
+  it('el footer contiene enlaces a Privacy Policy y Contact con rutas limpias', () => {
+    navigateTo('/');
     render(<App />);
     const privacyLink = screen.getByText('Privacy Policy').closest('a');
-    expect(privacyLink).toHaveAttribute('href', '#/privacy-policy');
+    expect(privacyLink).toHaveAttribute('href', '/privacy-policy');
     const contactLink = screen.getByText('Contact').closest('a');
-    expect(contactLink).toHaveAttribute('href', '#/contact');
+    expect(contactLink).toHaveAttribute('href', '/contact');
   });
 
   it('el sitio no depende de autenticación: no hay ruta de login', () => {
-    setHash('#/');
+    navigateTo('/');
     render(<App />);
     // La app no expone ningún enlace/ruta de login/registro en el footer ni en la página principal
     expect(screen.queryByText(/Log in/i)).toBeNull();
     expect(screen.queryByText(/Create your account/i)).toBeNull();
   });
 });
+

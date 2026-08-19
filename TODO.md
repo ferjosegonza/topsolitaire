@@ -66,22 +66,25 @@
 
 **Rama git**: `cleanup/remove-auth-files` | **Commit**: `f5dd7b5`
 
+### P2: Migración de Router — HashRouter → URLs reales ✅ COMPLETADO
+**Objetivo**: Cambiar de `https://topsolitaire.online/#/privacy-policy` a `https://topsolitaire.online/privacy-policy`
+
+- [x] Auditar `App.jsx`: verificar que utiliza `HashRouter`
+- [x] Reemplazar `HashRouter` por `BrowserRouter`
+- [x] Verificar impacto en `useDocumentMeta()` y actualización de metas
+- [x] Revisar canonical URLs
+- [x] Ajustar `base` en `vite.config.js` si es necesario
+- [x] Verificar que no se rompan rutas existentes
+- [x] Verificar: routing, canonical, hreflang, sitemap, URLs, metadata.
+- [x] Tests de routing actualizados
+- [x] Configuración SPA rewrites (`vercel.json`)
+- [x] Verificar en build: `npm run build`
+
+**Rama git**: `migration/hashrouter-to-browserrouter`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
-### P2: Migración de Router — HashRouter → URLs reales
-**Objetivo**: Cambiar de `https://topsolitaire.online/#/privacy-policy` a `https://topsolitaire.online/privacy-policy`
-
-- [ ] Auditar `App.jsx`: verificar que utiliza `HashRouter`
-- [ ] Reemplazar `HashRouter` por `BrowserRouter`
-- [ ] Verificar impacto en `useDocumentMeta()` y actualización de metas
-- [ ] Revisar canonical URLs
-- [ ] Ajustar `base` en `vite.config.js` si es necesario
-- [ ] Verificar que no se rompan rutas existentes
-- [ ] Verificar: routing, canonical, hreflang, sitemap, URLs, metadata.
-- [ ] Tests de routing actualizados
-- [ ] Verificar en build: `npm run build`
 
 ### P3: SEO Técnico — Arquitectura de URLs y verificaciones
 - [ ] Auditar `sitemap.xml`: verificar que existe, es válido y contiene URLs correctas
