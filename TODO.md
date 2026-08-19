@@ -56,12 +56,6 @@
 - `index.html` ahora incluye la importación de `Noto Sans SC` desde Google Fonts.
 - `src/index.css` aplica `Noto Sans SC` mediante variables CSS cuando `html[data-lang="zh"]` o `html[data-lang="zh-TW"]` están activos.
 
-> *(nada en progreso activo; los objetivos pendientes están abajo)*
-
----
-
-## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
 ### P1: Limpieza de código — Eliminar archivos auth no utilizados ✅ COMPLETADO
 - [x] Eliminar páginas: `Login.jsx`, `Register.jsx`, `ForgotPassword.jsx`, `ResetPassword.jsx`
 - [x] Eliminar componentes: `AuthLayout.jsx`, `ProtectedRoute.jsx`, `UserNotRegisteredError.jsx`, `GoogleIcon.jsx`
@@ -72,6 +66,10 @@
 
 **Rama git**: `cleanup/remove-auth-files` | **Commit**: `f5dd7b5`
 
+---
+
+## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
+
 ### P2: Migración de Router — HashRouter → URLs reales
 **Objetivo**: Cambiar de `https://topsolitaire.online/#/privacy-policy` a `https://topsolitaire.online/privacy-policy`
 
@@ -81,6 +79,7 @@
 - [ ] Revisar canonical URLs
 - [ ] Ajustar `base` en `vite.config.js` si es necesario
 - [ ] Verificar que no se rompan rutas existentes
+- [ ] Verificar: routing, canonical, hreflang, sitemap, URLs, metadata.
 - [ ] Tests de routing actualizados
 - [ ] Verificar en build: `npm run build`
 
