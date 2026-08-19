@@ -1,6 +1,8 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
 import React from 'react';
+import i18n from '../src/i18n';
 
 // Mock de Analytics de Vercel (evita dependencia de red)
 vi.mock('@vercel/analytics/react', () => ({
@@ -25,6 +27,8 @@ import App from '../src/App';
 const navigateTo = (path) => {
   window.history.pushState({}, '', path);
 };
+
+const readProjectFile = (relativePath) => readFileSync(new URL(relativePath, import.meta.url), 'utf8');
 
 describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
   afterEach(() => {
@@ -134,5 +138,128 @@ describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
   });
 });
 
+describe('App - P5: Meta Tags y Document Head', () => {
+  beforeEach(async () => {
+    // Resetear idioma a inglés para evitar bleeding entre tests
+    await i18n.changeLanguage('en');
+  });
+  afterEach(() => {
+    cleanup();
+    window.history.pushState({}, '', '/');
+  });
 
+  it('og:site_name es "Top Solitaire" en la home', () => {
+    navigateTo('/');
+    render(<App />);
+    const ogSiteName = document.querySelector('meta[property="og:site_name"]');
+    expect(ogSiteName?.getAttribute('content')).toBe('Top Solitaire');
+  });
 
+  it('og:image apunta a la imagen correcta en todas las páginas', () => {
+    navigateTo('/');
+    render(<App />);
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    expect(ogImage?.getAttribute('content')).toBe('https://topsolitaire.online/images/og-image.jpg');
+  });
+
+  it('og:locale es "en_US" por defecto en la home (idioma inglés)', () => {
+    navigateTo('/');
+    render(<App />);
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    expect(ogLocale?.getAttribute('content')).toBe('en_US');
+  });
+
+  it('og:locale es "es_ES" en la ruta /es', () => {
+    navigateTo('/es');
+    render(<App />);
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    expect(ogLocale?.getAttribute('content')).toBe('es_ES');
+  });
+
+  it('og:locale es "fr_FR" en la ruta /fr', () => {
+    navigateTo('/fr');
+    render(<App />);
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    expect(ogLocale?.getAttribute('content')).toBe('fr_FR');
+  });
+
+  it('og:title en privacy-policy (en inglés) contiene "Privacy Policy"', () => {
+    // idioma reseteado a 'en' en beforeEach
+    navigateTo('/privacy-policy');
+    render(<App />);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    // En inglés: t('footer.privacy') = "Privacy Policy"
+    expect(ogTitle?.getAttribute('content')).toContain('Privacy');
+  });
+
+  it('sincroniza title and description for a localized internal page', () => {
+    navigateTo('/es/privacy-policy');
+    render(<App />);
+    const description = document.querySelector('meta[name="description"]');
+
+    expect(document.title).toBe('Política de Privacidad - Top Solitaire');
+    expect(description?.getAttribute('content')).toContain('Política de Privacidad');
+    expect(description?.getAttribute('content')).toContain('Juega al clásico Klondike Solitario');
+  });
+
+  it('og:url coincide con la canonical URL de la página actual', () => {
+    navigateTo('/contact');
+    render(<App />);
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    expect(ogUrl?.getAttribute('content')).toBe('https://topsolitaire.online/contact');
+  });
+
+  it('twitter:card está presente y es summary_large_image', () => {
+    navigateTo('/');
+    render(<App />);
+    const twCard = document.querySelector('meta[name="twitter:card"]');
+    expect(twCard?.getAttribute('content')).toBe('summary_large_image');
+  });
+
+  it('twitter:title se sincroniza con el título de la página', () => {
+    navigateTo('/');
+    render(<App />);
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    expect(twTitle?.getAttribute('content')).toBeTruthy();
+    expect(twTitle?.getAttribute('content')).toContain('Solitaire');
+  });
+
+  it('twitter:image apunta a la imagen correcta', () => {
+    navigateTo('/');
+    render(<App />);
+    const twImage = document.querySelector('meta[name="twitter:image"]');
+    expect(twImage?.getAttribute('content')).toBe('https://topsolitaire.online/images/og-image.jpg');
+  });
+
+  it('conserva los metadatos estáticos de plataforma requeridos', () => {
+    const indexHtml = readProjectFile('../index.html');
+    const manifest = JSON.parse(readProjectFile('../public/manifest.json'));
+
+    expect(indexHtml).toContain('<meta name="viewport" content="width=device-width, initial-scale=1.0" />');
+    expect(indexHtml).toContain('<meta name="theme-color" content="#065f46" />');
+    expect(indexHtml).toContain('<link rel="manifest" href="/manifest.json" />');
+    expect(indexHtml).toContain('<link rel="icon" type="image/x-icon" href="/favicon.ico" />');
+    expect(manifest.name).toBe('Top Solitaire');
+    expect(manifest.short_name).toBe('Top Solitaire');
+  });
+
+  it('Schema.org JSON-LD es inyectado dinámicamente con "Top Solitaire"', () => {
+    navigateTo('/');
+    render(<App />);
+    // El JSON-LD es inyectado por useDocumentMeta en el head del documento
+    const ldJsonAll = document.querySelectorAll('script[type="application/ld+json"]');
+    expect(ldJsonAll.length).toBeGreaterThan(0);
+    const combinedContent = Array.from(ldJsonAll).map(s => s.textContent).join('');
+    expect(combinedContent).toContain('Top Solitaire');
+    expect(combinedContent).toContain('topsolitaire.online');
+  });
+
+  it('Schema.org incluye WebApplication con applicationCategory GameApplication', () => {
+    navigateTo('/');
+    render(<App />);
+    const ldJsonAll = document.querySelectorAll('script[type="application/ld+json"]');
+    const combinedContent = Array.from(ldJsonAll).map(s => s.textContent).join('');
+    expect(combinedContent).toContain('WebApplication');
+    expect(combinedContent).toContain('GameApplication');
+  });
+});

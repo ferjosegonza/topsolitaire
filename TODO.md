@@ -118,22 +118,17 @@
 
 **Rama git**: `seo/multilingual-urls-hreflang-p4`
 
+### P5: Meta Tags and Document Head - Audit and improvement ✅ COMPLETED
+- [x] Dynamic title and meta description verified per route and language.
+- [x] Canonical, indexability robots tag, hreflang, Open Graph, and Twitter Card verified.
+- [x] HTML language attributes, favicon, manifest, theme color, and viewport verified.
+- [x] JavaScript update reviewed: the static SPA shell keeps English fallback metadata; React updates localized routes after load. Add prerendering only if localized social previews become a priority.
+
+**Git branch**: `seo/meta-tags-head-audit-p5`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
-### P5: Meta Tags y Document Head — Auditoría y mejora
-- [ ] Verificar `<title>` dinámico por página y por idioma
-- [ ] Verificar `meta description` dinámico por página y por idioma
-- [ ] Verificar `canonical` correcto y coherente con arquitectura de URLs
-- [ ] Verificar `robots` meta tag: `index, follow` en páginas indexables
-- [ ] Verificar `hreflang` implementado correctamente (ver P4)
-- [ ] Verificar Open Graph: `og:title`, `og:description`, `og:image`, `og:type`, `og:url`, `og:site_name`
-- [ ] Verificar Twitter Card: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
-- [ ] Verificar `<html lang="...">` correcto según idioma actual
-- [ ] Verificar favicon y manifest correctos
-- [ ] Verificar `theme-color` y `viewport` correctos
-- [ ] Revisar si títulos y descriptions se modifican correctamente vía JavaScript (SSR/prerendering si es necesario)
 
 ### P6: H1 y estructura de headings — Auditoría
 - [ ] Inspeccionar DOM real en Home: verificar que existe exactamente un H1
