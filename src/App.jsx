@@ -7,16 +7,21 @@ import RainyBackground from './components/RainyBackground';
 import Home from './pages/Home';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 import { Analytics } from '@vercel/analytics/react';
 import useDocumentMeta from './lib/useDocumentMeta';
 
-function App() {
-  // Actualiza <title> y metas SEO según el idioma actual
+function MetaUpdater() {
+  // Actualiza <title>, canonical y metas SEO según ruta e idioma actual
   useDocumentMeta();
+  return null;
+}
 
+function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>
+        <MetaUpdater />
         {/* 🌧️ Fondo animado del Modo Lluvioso (solo visible en theme=rainy) */}
         <RainyBackground />
         <ScrollToTop />
@@ -30,7 +35,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         
       </Router>
