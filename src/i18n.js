@@ -20,6 +20,13 @@ export const LANG_META = {
   'zh-TW': { flag: '🇹🇼', label: '繁體中文' },
 };
 
+// Mapea un string/código de idioma a uno soportado normalizado (case-insensitive)
+export function normalizeLang(lang) {
+  if (!lang) return null;
+  const match = SUPPORTED_LANGS.find((l) => l.toLowerCase() === lang.toLowerCase());
+  return match || null;
+}
+
 // Mapea un código de idioma del navegador a uno soportado.
 export function resolveLanguage(browserLang) {
   if (!browserLang) return 'en';

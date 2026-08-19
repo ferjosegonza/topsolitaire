@@ -1,16 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Globe, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { LANG_META, SUPPORTED_LANGS } from '@/i18n';
+import { useInRouterContext, useLocation, useNavigate } from 'react-router-dom';
+import { LANG_META, SUPPORTED_LANGS, normalizeLang } from '@/i18n';
 
-/**
- * Selector de idioma.
- * - Desktop: botón con bandera + nombre del idioma actual.
- * - Móvil: botón compacto con solo el ícono de mundo 🌐.
- * - Al hacer clic abre un menú desplegable con bandera + nombre nativo de cada idioma.
- * - Persistencia en localStorage gestionada en i18n.js.
- */
-export default function LanguageSelector() {
+function LanguageSelectorView({ currentPath, onNavigate }) {
   const { i18n, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
@@ -18,7 +12,6 @@ export default function LanguageSelector() {
   const currentLang = i18n.language === 'zh-TW' ? 'zh-TW' : i18n.language;
   const currentMeta = LANG_META[currentLang] || LANG_META.en;
 
-  // Cerrar menú al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(e) {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -32,11 +25,27 @@ export default function LanguageSelector() {
   const selectLang = (lng) => {
     i18n.changeLanguage(lng);
     setOpen(false);
+
+    if (onNavigate) {
+      const pathname = currentPath || '/';
+      const segments = pathname.split('/').filter(Boolean);
+      let targetSubpath = '';
+
+      if (segments.length > 0 && normalizeLang(segments[0])) {
+        const rest = segments.slice(1).join('/');
+        targetSubpath = rest ? `/${rest}` : '';
+      } else {
+        targetSubpath = pathname === '/' ? '' : pathname;
+      }
+
+      const langCode = lng.toLowerCase();
+      const nextPath = `/${langCode}${targetSubpath}`;
+      onNavigate(nextPath);
+    }
   };
 
   return (
     <div ref={containerRef} className="relative inline-flex">
-      {/* Botón principal */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={t('lang.select')}
@@ -49,16 +58,13 @@ export default function LanguageSelector() {
           borderColor: 'rgba(148, 163, 184, 0.5)',
         }}
       >
-        {/* Móvil: solo ícono de mundo */}
         <Globe className="w-7 h-7 sm:hidden" aria-hidden="true" />
-        {/* Desktop: bandera + nombre */}
         <span className="hidden sm:inline-flex items-center gap-2">
           <span aria-hidden="true">{currentMeta.flag}</span>
           <span>{currentMeta.label}</span>
         </span>
       </button>
 
-      {/* Menú desplegable */}
       {open && (
         <div
           role="listbox"
@@ -100,4 +106,32 @@ export default function LanguageSelector() {
       )}
     </div>
   );
+}
+
+function LanguageSelectorInRouter(props) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  return <LanguageSelectorView {...props} currentPath={location.pathname} onNavigate={navigate} />;
+}
+
+function LanguageSelectorStandalone(props) {
+  return (
+    <LanguageSelectorView
+      {...props}
+      currentPath={typeof window !== 'undefined' ? window.location.pathname : '/'}
+      onNavigate={(path) => {
+        if (typeof window !== 'undefined' && window.history?.pushState) {
+          window.history.pushState({}, '', path);
+        }
+      }}
+    />
+  );
+}
+
+export default function LanguageSelector(props) {
+  const inRouter = useInRouterContext();
+  if (inRouter) {
+    return <LanguageSelectorInRouter {...props} />;
+  }
+  return <LanguageSelectorStandalone {...props} />;
 }

@@ -95,30 +95,32 @@
 
 **Rama git**: `seo/technical-url-architecture-p3`
 
+### P4: SEO Multiidioma — URLs diferenciadas por idioma ✅ COMPLETADO
+**Objetivo**: Crear URLs separadas como `/de/`, `/pl/`, `/fr/`, `/es/`, etc. en lugar de usar solo `navigator.language` en la misma URL.
+
+- [x] Definir arquitectura de URLs por idioma: `/de/`, `/pl/`, `/fr/`, `/es/`, `/it/`, `/en/`, `/zh/`, `/zh-tw/`
+- [x] Investigar cómo implementar rutas dinámicas con prefijo de idioma sin migrar a Next.js
+- [x] Modificar router para aceptar rutas con prefijo de idioma: `/:lang` y subpáginas con `LocaleLayout`
+- [x] Actualizar `useDocumentMeta()` para generar metas únicas por idioma
+- [x] Configurar hreflang correctamente: reciprocidad, URLs válidas, x-default
+- [x] Verificar que cada URL localizada tenga:
+  - [x] Title propio
+  - [x] Meta description propia
+  - [x] H1 en idioma correcto
+  - [x] Contenido completamente localizado
+  - [x] Canonical correcto
+  - [x] hreflang al sitio completo
+  - [x] Open Graph localizado
+  - [x] Atributo `lang` y `data-lang` en `<html>` correcto
+  - [x] Enlaces internos apunten a versión del mismo idioma
+- [x] Actualizar `sitemap.xml` para incluir todas las variantes de idioma y anotaciones `xhtml:link`
+- [x] Actualizar `robots.txt`
+
+**Rama git**: `seo/multilingual-urls-hreflang-p4`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
-### P4: SEO Multiidioma — URLs diferenciadas por idioma
-**Objetivo**: Crear URLs separadas como `/de/`, `/pl/`, `/fr/`, `/es/`, etc. en lugar de usar solo `navigator.language` en la misma URL.
-
-- [ ] Definir arquitectura de URLs por idioma: `/de/`, `/pl/`, `/fr/`, `/es/`, `/it/`, `/en/`, `/zh/`, `/zh-TW/`
-- [ ] Investigar cómo implementar rutas dinámicas con prefijo de idioma sin migrar a Next.js
-- [ ] Modificar router para aceptar parámetro de idioma: `/:lang/*`
-- [ ] Actualizar `useDocumentMeta()` para generar metas únicas por idioma
-- [ ] Configurar hreflang correctamente: reciprocidad, URLs válidas, x-default
-- [ ] Verificar que cada URL localizada tenga:
-  - [ ] Title propio
-  - [ ] Meta description propia
-  - [ ] H1 en idioma correcto
-  - [ ] Contenido completamente localizado
-  - [ ] Canonical correcto
-  - [ ] hreflang al sitio completo
-  - [ ] Open Graph localizado
-  - [ ] Atributo `lang` en `<html>` correcto
-  - [ ] Enlaces internos apunten a versión del mismo idioma
-- [ ] Actualizar `sitemap.xml` para incluir todas las variantes de idioma
-- [ ] Actualizar `robots.txt` si es necesario
 
 ### P5: Meta Tags y Document Head — Auditoría y mejora
 - [ ] Verificar `<title>` dinámico por página y por idioma

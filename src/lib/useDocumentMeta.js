@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { SUPPORTED_LANGS, normalizeLang } from '@/i18n';
 
 /**
- * Actualiza dinámicamente el <title>, canonical URL, robots y metas SEO (description, og, twitter)
- * según el idioma y la ruta actual.
+ * Actualiza dinámicamente el <title>, canonical URL, hreflangs, robots,
+ * atributo html lang y metas SEO (description, og, twitter) según el idioma y la ruta actual.
  */
 export default function useDocumentMeta() {
   const { t, i18n } = useTranslation();
@@ -17,17 +18,58 @@ export default function useDocumentMeta() {
   }
 
   useEffect(() => {
+    const currentLang = i18n.language || 'en';
+
+    // Sincronizar atributo lang y data-lang en <html>
+    document.documentElement.lang = currentLang;
+    document.documentElement.setAttribute('data-lang', currentLang);
+
+    // Analizar la ruta para determinar tipo de página y subruta base
+    const segments = pathname.split('/').filter(Boolean);
+    let pageType = 'home';
+    let subpath = '';
+
+    if (segments.length === 0) {
+      pageType = 'home';
+      subpath = '';
+    } else if (segments.length === 1) {
+      if (normalizeLang(segments[0])) {
+        pageType = 'home';
+        subpath = '';
+      } else if (segments[0] === 'privacy-policy') {
+        pageType = 'privacy';
+        subpath = '/privacy-policy';
+      } else if (segments[0] === 'contact') {
+        pageType = 'contact';
+        subpath = '/contact';
+      } else {
+        pageType = '404';
+      }
+    } else if (segments.length === 2 && normalizeLang(segments[0])) {
+      if (segments[1] === 'privacy-policy') {
+        pageType = 'privacy';
+        subpath = '/privacy-policy';
+      } else if (segments[1] === 'contact') {
+        pageType = 'contact';
+        subpath = '/contact';
+      } else {
+        pageType = '404';
+      }
+    } else {
+      pageType = '404';
+    }
+
     let title = t('meta.title');
     let description = t('meta.description');
     let noindex = false;
 
-    if (pathname === '/privacy-policy') {
+    if (pageType === 'privacy') {
       title = `${t('footer.privacy')} - TopSolitaire`;
       description = 'Privacy Policy for TopSolitaire - Play Solitaire Online Free without signup or download.';
-    } else if (pathname === '/contact') {
+    } else if (pageType === 'contact') {
       title = `${t('footer.contact')} - TopSolitaire`;
       description = 'Contact TopSolitaire support and feedback.';
-    } else if (pathname !== '/') {
+    } else if (pageType === '404') {
       title = '404 - Page Not Found | TopSolitaire';
       description = 'The page you requested could not be found.';
       noindex = true;
@@ -52,8 +94,26 @@ export default function useDocumentMeta() {
       document.head.appendChild(canonicalLink);
     }
     const cleanPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
-    const canonicalUrl = `https://topsolitaire.online${cleanPath}`;
+    const canonicalUrl = `https://topsolitaire.online${cleanPath === '' ? '/' : cleanPath}`;
     canonicalLink.setAttribute('href', canonicalUrl);
+
+    // Hreflang alternates
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+    if (!noindex) {
+      SUPPORTED_LANGS.forEach((lng) => {
+        const link = document.createElement('link');
+        link.setAttribute('rel', 'alternate');
+        link.setAttribute('hreflang', lng === 'zh-TW' ? 'zh-TW' : lng);
+        link.setAttribute('href', `https://topsolitaire.online/${lng.toLowerCase()}${subpath}`);
+        document.head.appendChild(link);
+      });
+
+      const xDefaultLink = document.createElement('link');
+      xDefaultLink.setAttribute('rel', 'alternate');
+      xDefaultLink.setAttribute('hreflang', 'x-default');
+      xDefaultLink.setAttribute('href', `https://topsolitaire.online${subpath || '/'}`);
+      document.head.appendChild(xDefaultLink);
+    }
 
     // meta description
     let metaDesc = document.querySelector('meta[name="description"]');

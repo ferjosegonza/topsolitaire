@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useInRouterContext, useLocation } from 'react-router-dom';
+import { normalizeLang } from '@/i18n';
 
-export default function NotFound() {
+function NotFoundView({ pathname }) {
+  const segments = (pathname || '').split('/').filter(Boolean);
+  const langPrefix = segments.length > 0 && normalizeLang(segments[0])
+    ? `/${segments[0].toLowerCase()}`
+    : '';
+
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
       <div className="mx-auto max-w-md w-full text-center bg-white p-8 sm:p-10 rounded-2xl shadow-sm border border-slate-100">
@@ -13,7 +19,7 @@ export default function NotFound() {
         </p>
         <div className="mt-6">
           <Link
-            to="/"
+            to={langPrefix || '/'}
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold transition-colors shadow-sm"
           >
             ← Back to Solitaire
@@ -22,4 +28,17 @@ export default function NotFound() {
       </div>
     </div>
   );
+}
+
+function NotFoundInRouter(props) {
+  const location = useLocation();
+  return <NotFoundView {...props} pathname={location.pathname} />;
+}
+
+export default function NotFound(props) {
+  const inRouter = useInRouterContext();
+  if (inRouter) {
+    return <NotFoundInRouter {...props} />;
+  }
+  return <NotFoundView {...props} pathname={typeof window !== 'undefined' ? window.location.pathname : '/'} />;
 }

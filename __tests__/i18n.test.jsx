@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
-import i18n, { resolveLanguage, SUPPORTED_LANGS, LANG_META } from '../src/i18n';
+import i18n, { resolveLanguage, normalizeLang, SUPPORTED_LANGS, LANG_META } from '../src/i18n';
 import LanguageSelector from '../src/components/ui/LanguageSelector';
+import { BrowserRouter } from 'react-router-dom';
 
 // Keys de UI que deben existir en TODOS los idiomas (namespace "translation")
 const REQUIRED_KEYS = [
@@ -163,6 +164,24 @@ describe('i18n cambio de idioma en vivo', () => {
   });
 });
 
+describe('i18n normalizeLang()', () => {
+  it('normaliza idiomas soportados case-insensitively', () => {
+    expect(normalizeLang('es')).toBe('es');
+    expect(normalizeLang('ES')).toBe('es');
+    expect(normalizeLang('fr')).toBe('fr');
+    expect(normalizeLang('de')).toBe('de');
+    expect(normalizeLang('zh-tw')).toBe('zh-TW');
+    expect(normalizeLang('ZH-TW')).toBe('zh-TW');
+  });
+
+  it('retorna null para idiomas no soportados', () => {
+    expect(normalizeLang('invalid')).toBeNull();
+    expect(normalizeLang('pt')).toBeNull();
+    expect(normalizeLang('')).toBeNull();
+    expect(normalizeLang(null)).toBeNull();
+  });
+});
+
 describe('LanguageSelector (componente)', () => {
   // Usamos el i18n REAL ya configurado en src/i18n.js (no mockeamos react-i18next)
   // para evitar romper el import de @/i18n que depende de initReactI18next.
@@ -171,14 +190,20 @@ describe('LanguageSelector (componente)', () => {
     i18n.changeLanguage('en');
   });
 
+  const renderSelector = () => render(
+    <BrowserRouter>
+      <LanguageSelector />
+    </BrowserRouter>
+  );
+
   it('muestra el botón con aria-label de "Choose language"', () => {
-    render(<LanguageSelector />);
+    renderSelector();
     const btn = screen.getByRole('button', { name: 'Choose language' });
     expect(btn).toBeDefined();
   });
 
-it('abre el menú con todas las opciones al hacer clic', () => {
-    render(<LanguageSelector />);
+  it('abre el menú con todas las opciones al hacer clic', () => {
+    renderSelector();
     fireEvent.click(screen.getByRole('button', { name: 'Choose language' }));
     // Cada opción del menú debe tener role="option"
     for (const lng of SUPPORTED_LANGS) {
@@ -188,7 +213,7 @@ it('abre el menú con todas las opciones al hacer clic', () => {
   });
 
   it('cambia el idioma real al seleccionar una opción', () => {
-    render(<LanguageSelector />);
+    renderSelector();
     fireEvent.click(screen.getByRole('button', { name: 'Choose language' }));
     fireEvent.click(screen.getByText('Español'));
     expect(i18n.language).toBe('es');
@@ -196,8 +221,8 @@ it('abre el menú con todas las opciones al hacer clic', () => {
     expect(i18n.t('game.newGame')).toBe('Nuevo Juego');
   });
 
-it('marca la opción activa con aria-selected', () => {
-    render(<LanguageSelector />);
+  it('marca la opción activa con aria-selected', () => {
+    renderSelector();
     fireEvent.click(screen.getByRole('button', { name: 'Choose language' }));
     // En inglés, la opción activa es "English"
     const englishOption = screen.getByRole('option', { name: /English/ });

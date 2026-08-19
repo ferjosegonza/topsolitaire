@@ -94,6 +94,45 @@ describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
     const robots = document.querySelector('meta[name="robots"]');
     expect(robots?.getAttribute('content')).toBe('noindex, nofollow');
   });
+
+  it('renderiza rutas localizadas por idioma (ej: /es) y genera tags hreflang', () => {
+    navigateTo('/es');
+    render(<App />);
+    expect(document.documentElement.lang).toBe('es');
+    expect(document.documentElement.getAttribute('data-lang')).toBe('es');
+    const canonical = document.querySelector('link[rel="canonical"]');
+    expect(canonical?.getAttribute('href')).toBe('https://topsolitaire.online/es');
+    
+    // Verificar hreflang tags
+    const hreflangs = document.querySelectorAll('link[rel="alternate"][hreflang]');
+    expect(hreflangs.length).toBeGreaterThanOrEqual(9); // 8 idiomas + x-default
+    const xDefault = document.querySelector('link[rel="alternate"][hreflang="x-default"]');
+    expect(xDefault?.getAttribute('href')).toBe('https://topsolitaire.online/');
+  });
+
+  it('renderiza subpáginas localizadas (ej: /fr/privacy-policy) y actualiza enlace de retorno', () => {
+    navigateTo('/fr/privacy-policy');
+    render(<App />);
+    const backLink = screen.getByText('← Back to Solitaire').closest('a');
+    expect(backLink).toHaveAttribute('href', '/fr');
+  });
+
+  it('en la home localizada (ej: /fr) el footer contiene enlaces en el idioma activo', () => {
+    navigateTo('/fr');
+    render(<App />);
+    const privacyLink = screen.getByText('Politique de confidentialité').closest('a');
+    expect(privacyLink).toHaveAttribute('href', '/fr/privacy-policy');
+    const contactLink = screen.getByText('Contact').closest('a');
+    expect(contactLink).toHaveAttribute('href', '/fr/contact');
+  });
+
+  it('un prefijo de idioma inválido (ej: /invalido-lang/privacy-policy) cae en 404', () => {
+    navigateTo('/invalido-lang/privacy-policy');
+    render(<App />);
+    expect(screen.getByText('404')).toBeDefined();
+    expect(screen.getByText('Page Not Found')).toBeDefined();
+  });
 });
+
 
 
