@@ -82,20 +82,22 @@
 
 **Rama git**: `migration/hashrouter-to-browserrouter`
 
+### P3: SEO Técnico — Arquitectura de URLs y verificaciones ✅ COMPLETADO
+- [x] Auditar `sitemap.xml`: verificar que existe, es válido y contiene URLs correctas
+- [x] Auditar `robots.txt`: verificar que apunta al sitemap y directivas correctas
+- [x] Auditar canonical URLs: verificar que están presentes y son correctas en todas las páginas
+- [x] Revisar soft 404: evitar que rutas inexistentes rendericen Home (`<Route path="*" element={<Home />} />`)
+- [x] Implementar verdadera página 404 con respuesta HTTP 404 / componente NotFound con noindex
+- [x] Auditar redirects: verificar no hay cadenas de redirects
+- [x] Revisar trailing slash: verificar consistencia
+- [x] Auditar URLs duplicadas: `www` vs no-www, protocolo HTTP vs HTTPS, etc.
+- [x] Verificar enlaces internos: navío correcto entre páginas
+
+**Rama git**: `seo/technical-url-architecture-p3`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
-### P3: SEO Técnico — Arquitectura de URLs y verificaciones
-- [ ] Auditar `sitemap.xml`: verificar que existe, es válido y contiene URLs correctas
-- [ ] Auditar `robots.txt`: verificar que apunta al sitemap y directivas correctas
-- [ ] Auditar canonical URLs: verificar que están presentes y son correctas en todas las páginas
-- [ ] Revisar soft 404: evitar que rutas inexistentes rendericen Home (`<Route path="*" element={<Home />} />`)
-- [ ] Implementar verdadera página 404 con respuesta HTTP 404 cuando sea posible
-- [ ] Auditar redirects: verificar no hay cadenas de redirects
-- [ ] Revisar trailing slash: verificar consistencia
-- [ ] Auditar URLs duplicadas: `www` vs no-www, protocolo HTTP vs HTTPS, etc.
-- [ ] Verificar enlaces internos: navío correcto entre páginas
 
 ### P4: SEO Multiidioma — URLs diferenciadas por idioma
 **Objetivo**: Crear URLs separadas como `/de/`, `/pl/`, `/fr/`, `/es/`, etc. en lugar de usar solo `navigator.language` en la misma URL.

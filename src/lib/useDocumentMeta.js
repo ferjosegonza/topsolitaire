@@ -1,19 +1,59 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 
 /**
- * Actualiza dinámicamente el <title> y las metas SEO (description, og, twitter)
- * según el idioma actual. Se usa dentro del componente App para que se
- * sincronice con cada cambio de idioma.
+ * Actualiza dinámicamente el <title>, canonical URL, robots y metas SEO (description, og, twitter)
+ * según el idioma y la ruta actual.
  */
 export default function useDocumentMeta() {
   const { t, i18n } = useTranslation();
+  let pathname = '/';
+  try {
+    const location = useLocation();
+    pathname = location.pathname;
+  } catch {
+    pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+  }
 
   useEffect(() => {
-    const title = t('meta.title');
-    const description = t('meta.description');
+    let title = t('meta.title');
+    let description = t('meta.description');
+    let noindex = false;
+
+    if (pathname === '/privacy-policy') {
+      title = `${t('footer.privacy')} - TopSolitaire`;
+      description = 'Privacy Policy for TopSolitaire - Play Solitaire Online Free without signup or download.';
+    } else if (pathname === '/contact') {
+      title = `${t('footer.contact')} - TopSolitaire`;
+      description = 'Contact TopSolitaire support and feedback.';
+    } else if (pathname !== '/') {
+      title = '404 - Page Not Found | TopSolitaire';
+      description = 'The page you requested could not be found.';
+      noindex = true;
+    }
 
     document.title = title;
+
+    // robots meta
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (!metaRobots) {
+      metaRobots = document.createElement('meta');
+      metaRobots.setAttribute('name', 'robots');
+      document.head.appendChild(metaRobots);
+    }
+    metaRobots.setAttribute('content', noindex ? 'noindex, nofollow' : 'index, follow');
+
+    // canonical link
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    const cleanPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
+    const canonicalUrl = `https://topsolitaire.online${cleanPath}`;
+    canonicalLink.setAttribute('href', canonicalUrl);
 
     // meta description
     let metaDesc = document.querySelector('meta[name="description"]');
@@ -42,6 +82,15 @@ export default function useDocumentMeta() {
     }
     ogDesc.setAttribute('content', description);
 
+    // og:url
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', canonicalUrl);
+
     // twitter:title
     let twTitle = document.querySelector('meta[name="twitter:title"]');
     if (!twTitle) {
@@ -59,5 +108,5 @@ export default function useDocumentMeta() {
       document.head.appendChild(twDesc);
     }
     twDesc.setAttribute('content', description);
-  }, [t, i18n.language]);
+  }, [t, i18n.language, pathname]);
 }

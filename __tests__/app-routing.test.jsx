@@ -54,11 +54,12 @@ describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
     expect(screen.getAllByText(/Contact/i).length).toBeGreaterThan(0);
   });
 
-  it('una ruta desconocida cae en el Home (juego)', () => {
+  it('una ruta desconocida renderiza la página 404 (NotFound) con enlace de retorno', () => {
     navigateTo('/ruta-que-no-existe');
     render(<App />);
-    expect(screen.getAllByText(/Play Solitaire Online Free/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/New Game/i)).toBeDefined();
+    expect(screen.getByText('404')).toBeDefined();
+    expect(screen.getByText('Page Not Found')).toBeDefined();
+    expect(screen.getByText(/Back to Solitaire/i)).toBeDefined();
   });
 
   it('el footer contiene enlaces a Privacy Policy y Contact con rutas limpias', () => {
@@ -77,5 +78,22 @@ describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
     expect(screen.queryByText(/Log in/i)).toBeNull();
     expect(screen.queryByText(/Create your account/i)).toBeNull();
   });
+
+  it('actualiza canonical y robots correctamente en páginas indexables y 404', () => {
+    navigateTo('/privacy-policy');
+    render(<App />);
+    const canonical = document.querySelector('link[rel="canonical"]');
+    expect(canonical?.getAttribute('href')).toBe('https://topsolitaire.online/privacy-policy');
+    const robots = document.querySelector('meta[name="robots"]');
+    expect(robots?.getAttribute('content')).toBe('index, follow');
+  });
+
+  it('asigna noindex en rutas 404', () => {
+    navigateTo('/pagina-inexistente-xyz');
+    render(<App />);
+    const robots = document.querySelector('meta[name="robots"]');
+    expect(robots?.getAttribute('content')).toBe('noindex, nofollow');
+  });
 });
+
 
