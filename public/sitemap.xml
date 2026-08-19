@@ -1,31 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   
+  <!-- Homepage Default (x-default) -->
   <url>
     <loc>https://topsolitaire.online/</loc>
     <lastmod>2026-08-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
     <image:image>
       <image:loc>https://topsolitaire.online/images/og-image.jpg</image:loc>
       <image:title>Play Solitaire Online Free</image:title>
       <image:caption>Classic Klondike Solitaire game</image:caption>
     </image:image>
   </url>
-  
+
+  <!-- Homepage Language Variants -->
+  <url>
+    <loc>https://topsolitaire.online/en</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/es</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/fr</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/de</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/it</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/pl</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/zh</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <url>
+    <loc>https://topsolitaire.online/zh-tw</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw" />
+  </url>
+
+  <!-- Privacy Policy Default & Variants -->
   <url>
     <loc>https://topsolitaire.online/privacy-policy</loc>
     <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw/privacy-policy" />
   </url>
-  
+
+  <!-- Contact Default & Variants -->
   <url>
     <loc>https://topsolitaire.online/contact</loc>
     <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://topsolitaire.online/contact" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://topsolitaire.online/en/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://topsolitaire.online/es/contact" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://topsolitaire.online/fr/contact" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://topsolitaire.online/it/contact" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://topsolitaire.online/pl/contact" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://topsolitaire.online/de/contact" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://topsolitaire.online/zh/contact" />
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://topsolitaire.online/zh-tw/contact" />
   </url>
-  
+
 </urlset>

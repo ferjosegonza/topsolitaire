@@ -8,11 +8,12 @@ import Home from './pages/Home';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+import LocaleLayout from './components/LocaleLayout';
 import { Analytics } from '@vercel/analytics/react';
 import useDocumentMeta from './lib/useDocumentMeta';
 
 function MetaUpdater() {
-  // Actualiza <title>, canonical y metas SEO según ruta e idioma actual
+  // Actualiza <title>, canonical, hreflang y metas SEO según ruta e idioma actual
   useDocumentMeta();
   return null;
 }
@@ -32,9 +33,20 @@ function App() {
         {/* ============================================================ */}
         
         <Routes>
+          {/* Rutas directas / default */}
           <Route path="/" element={<Home />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* Rutas localizadas por idioma */}
+          <Route path="/:lang" element={<LocaleLayout />}>
+            <Route index element={<Home />} />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+
+          {/* Fallback global */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         
