@@ -138,6 +138,52 @@ describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
   });
 });
 
+describe('App - P6: estructura de headings', () => {
+  beforeEach(async () => {
+    await i18n.changeLanguage('en');
+  });
+
+  afterEach(async () => {
+    cleanup();
+    window.history.pushState({}, '', '/');
+    await i18n.changeLanguage('en');
+  });
+
+  it.each([
+    ['/', 'Play Solitaire Online Free'],
+    ['/privacy-policy', 'Privacy Policy'],
+    ['/contact', 'Contact'],
+    ['/ruta-que-no-existe', 'Page Not Found'],
+  ])('renderiza un único H1 semántico en %s', (path, expectedHeading) => {
+    navigateTo(path);
+    render(<App />);
+
+    const headings = document.querySelectorAll('h1');
+    expect(headings).toHaveLength(1);
+    expect(headings[0]).toHaveTextContent(expectedHeading);
+  });
+
+  it('mantiene el H1 de la home localizado y ligado a la intención de búsqueda', () => {
+    navigateTo('/es');
+    render(<App />);
+
+    const headings = document.querySelectorAll('h1');
+    expect(headings).toHaveLength(1);
+    expect(headings[0]).toHaveTextContent('Jugar Solitario Online Gratis');
+  });
+
+  it('usa H2 solo como subsecciones de Privacy Policy, después del H1', () => {
+    navigateTo('/privacy-policy');
+    render(<App />);
+
+    const headingLevels = Array.from(document.querySelectorAll('h1, h2, h3'))
+      .map((heading) => Number(heading.tagName.slice(1)));
+
+    expect(headingLevels[0]).toBe(1);
+    expect(headingLevels.slice(1)).toEqual(Array(7).fill(2));
+  });
+});
+
 describe('App - P5: Meta Tags y Document Head', () => {
   beforeEach(async () => {
     // Resetear idioma a inglés para evitar bleeding entre tests

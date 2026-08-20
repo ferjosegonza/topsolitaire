@@ -126,16 +126,19 @@
 
 **Git branch**: `seo/meta-tags-head-audit-p5`
 
+### P6: H1 y estructura de headings — Auditoría ✅ COMPLETADO
+- [x] Inspeccionar DOM real en Home: existe exactamente un H1 en las rutas principal y localizada.
+- [x] Verificar que el H1 es semánticamente correcto y relacionado con contenido: conserva la intención SEO de jugar Solitaire online gratis en inglés y español.
+- [x] Revisar estructura H2/H3 en todas las páginas: Privacy Policy usa H2 solo para sus siete subsecciones; Home y Contact no requieren subsecciones; 404 no salta de H1 a H2.
+- [x] NO duplicar H1 innecesariamente.
+- [x] Corregir 404: “Page Not Found” es el H1 y “404” queda como texto decorativo.
+- [x] Tests de estructura de headings actualizados para Home, rutas legales, 404 y Home localizada.
+
+**Rama git**: `seo/heading-structure-audit-p6`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
-### P6: H1 y estructura de headings — Auditoría
-- [ ] Inspeccionar DOM real en Home: verificar que existe exactamente un H1
-- [ ] Verificar que H1 es semánticamente correcto y relacionado con contenido
-- [ ] Revisar estructura H2/H3 en todas las páginas
-- [ ] NO duplicar H1 innecesariamente
-- [ ] Verificar que H1 actual mantiene intención SEO (ej: "Play Solitaire Online Free")
 
 ### P7: Text-to-HTML Ratio — Investigación
 - [ ] Analizar si realmente es problema SEO en este proyecto (es una SPA + juego, no solo blog)
