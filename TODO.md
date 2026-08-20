@@ -118,29 +118,27 @@
 
 **Rama git**: `seo/multilingual-urls-hreflang-p4`
 
+### P5: Meta Tags and Document Head - Audit and improvement ✅ COMPLETED
+- [x] Dynamic title and meta description verified per route and language.
+- [x] Canonical, indexability robots tag, hreflang, Open Graph, and Twitter Card verified.
+- [x] HTML language attributes, favicon, manifest, theme color, and viewport verified.
+- [x] JavaScript update reviewed: the static SPA shell keeps English fallback metadata; React updates localized routes after load. Add prerendering only if localized social previews become a priority.
+
+**Git branch**: `seo/meta-tags-head-audit-p5`
+
+### P6: H1 y estructura de headings — Auditoría ✅ COMPLETADO
+- [x] Inspeccionar DOM real en Home: existe exactamente un H1 en las rutas principal y localizada.
+- [x] Verificar que el H1 es semánticamente correcto y relacionado con contenido: conserva la intención SEO de jugar Solitaire online gratis en inglés y español.
+- [x] Revisar estructura H2/H3 en todas las páginas: Privacy Policy usa H2 solo para sus siete subsecciones; Home y Contact no requieren subsecciones; 404 no salta de H1 a H2.
+- [x] NO duplicar H1 innecesariamente.
+- [x] Corregir 404: “Page Not Found” es el H1 y “404” queda como texto decorativo.
+- [x] Tests de estructura de headings actualizados para Home, rutas legales, 404 y Home localizada.
+
+**Rama git**: `seo/heading-structure-audit-p6`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
-
-### P5: Meta Tags y Document Head — Auditoría y mejora
-- [ ] Verificar `<title>` dinámico por página y por idioma
-- [ ] Verificar `meta description` dinámico por página y por idioma
-- [ ] Verificar `canonical` correcto y coherente con arquitectura de URLs
-- [ ] Verificar `robots` meta tag: `index, follow` en páginas indexables
-- [ ] Verificar `hreflang` implementado correctamente (ver P4)
-- [ ] Verificar Open Graph: `og:title`, `og:description`, `og:image`, `og:type`, `og:url`, `og:site_name`
-- [ ] Verificar Twitter Card: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
-- [ ] Verificar `<html lang="...">` correcto según idioma actual
-- [ ] Verificar favicon y manifest correctos
-- [ ] Verificar `theme-color` y `viewport` correctos
-- [ ] Revisar si títulos y descriptions se modifican correctamente vía JavaScript (SSR/prerendering si es necesario)
-
-### P6: H1 y estructura de headings — Auditoría
-- [ ] Inspeccionar DOM real en Home: verificar que existe exactamente un H1
-- [ ] Verificar que H1 es semánticamente correcto y relacionado con contenido
-- [ ] Revisar estructura H2/H3 en todas las páginas
-- [ ] NO duplicar H1 innecesariamente
-- [ ] Verificar que H1 actual mantiene intención SEO (ej: "Play Solitaire Online Free")
 
 ### P7: Text-to-HTML Ratio — Investigación
 - [ ] Analizar si realmente es problema SEO en este proyecto (es una SPA + juego, no solo blog)

@@ -1,6 +1,6 @@
 {
-  "name": "Play Solitaire Online Free",
-  "short_name": "Solitaire",
+  "name": "Top Solitaire",
+  "short_name": "Top Solitaire",
   "description": "Play classic Klondike Solitaire online for free. No signup, no download.",
   "start_url": "/",
   "display": "standalone",

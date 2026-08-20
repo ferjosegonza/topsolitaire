@@ -7,6 +7,7 @@ import Home from '../src/pages/Home';
 import Footer from '../src/components/Footer';
 import AdBanner from '../src/components/AdBanner';
 import { BrowserRouter } from 'react-router-dom';
+import i18n from '../src/i18n';
 
 // Mock de sonidos
 vi.mock('../src/hooks/useSoundEffects', () => ({
@@ -20,6 +21,11 @@ vi.mock('../src/hooks/useSoundEffects', () => ({
     playClickSound: vi.fn(),
   }),
 }));
+
+beforeEach(async () => {
+  window.history.pushState({}, '', '/');
+  await i18n.changeLanguage('en');
+});
 
 describe('Tests de UI - Botones e Interacciones', () => {
   describe('Botón New Game', () => {
