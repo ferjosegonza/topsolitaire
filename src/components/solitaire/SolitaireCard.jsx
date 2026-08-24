@@ -23,7 +23,7 @@ export default function SolitaireCard({
     return (
       <motion.div
         style={style}
-        className="solitaire-card solitaire-card-back relative cursor-pointer rounded-[10px]"
+        className="solitaire-card solitaire-card-back relative cursor-pointer rounded-[var(--card-radius)]"
         initial={{ rotateY: 0, scale: 1 }}
         animate={{ rotateY: 180, scale: 1 }}
         transition={{ duration: 0.4, ease: 'easeInOut' }}
@@ -39,7 +39,7 @@ export default function SolitaireCard({
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         style={style}
-        className="solitaire-card solitaire-card-back relative cursor-pointer card-shine rounded-[10px]"
+        className="solitaire-card solitaire-card-back relative cursor-pointer card-shine rounded-[var(--card-radius)]"
         aria-hidden="true"
         whileHover={{ scale: 1.03, y: -2 }}
         transition={{ duration: 0.15 }}
@@ -65,7 +65,7 @@ export default function SolitaireCard({
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       style={style}
-      className={`solitaire-card relative bg-white rounded-[10px] shadow-md cursor-pointer select-none ${
+      className={`solitaire-card relative bg-white rounded-[var(--card-radius)] shadow-md cursor-pointer select-none ${
         selected ? 'ring-2 ring-sky-300 ring-offset-1 ring-offset-emerald-900' : ''
       } ${red ? 'text-rose-600' : 'text-slate-900'}`}
       role="button"
@@ -82,18 +82,29 @@ export default function SolitaireCard({
       } : {}}
     >
       {isLanding && (
-        <div className="absolute inset-0 rounded-[10px] overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 rounded-[var(--card-radius)] overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[card-shine_0.8s_ease-in-out]" />
         </div>
       )}
 
-      <div className="absolute top-0.5 left-1 leading-none font-bold" style={{ fontSize: 'var(--card-font)' }}>
+      {/* Número en esquina superior izquierda */}
+      <div className="absolute top-0.5 left-0.5 leading-none font-bold" style={{ fontSize: 'var(--card-font)' }}>
         <div>{rankLabel}</div>
-        <div style={{ fontSize: 'calc(var(--card-font) * 0.9)' }}>{symbol}</div>
       </div>
-      <div className="absolute inset-0 flex items-center justify-center" style={{ fontSize: 'var(--card-font-lg)' }}>
+
+      {/* Símbolo en esquina superior derecha */}
+      <div className="absolute top-0.5 right-0.5 leading-none font-bold" style={{ fontSize: 'calc(var(--card-font) * 1)' }}>
+        <div>{symbol}</div>
+      </div>
+
+      {/* Símbolo central - ahora centrado en el espacio restante */}
+      <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center" style={{ 
+        fontSize: 'var(--card-font-lg)',
+        top: 'calc(var(--card-font) * 1 )'
+      }}>
         {symbol}
       </div>
+
     </motion.div>
   );
 }

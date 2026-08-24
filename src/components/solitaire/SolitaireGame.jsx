@@ -21,13 +21,17 @@ import { useSoundEffects } from '@/hooks/useSoundEffects';
 const CARD_VARS = {
   '--card-w': 'clamp(36px, 11vw, 78px)',
   '--card-height': 'calc(var(--card-w) * 1.4)',
-  '--card-font': 'calc(var(--card-w) * 0.24)',
-  '--card-font-lg': 'calc(var(--card-w) * 0.5)',
+  '--card-font': 'calc(var(--card-w) * 0.48)',
+  '--card-font-lg': 'calc(var(--card-w) * 0.85)',
+  '--card-radius': 'clamp(4px, 1.2vw, 10px)',
 };
 
-// Offset vertical entre cartas boca arriba en tableau
-const FACE_UP_OFFSET = 30; // en pixels, aproximadamente 30px
-const FACE_DOWN_OFFSET = 20; // en pixels, cartas boca abajo se superponen menos
+
+// Separación responsiva entre cartas
+// - En móvil (360px): carta boca arriba ~22px, boca abajo ~15px
+// - En desktop (1200px+): carta boca arriba 30px, boca abajo 20px
+const FACE_UP_OFFSET = Math.max(18, Math.min(30, window.innerWidth * 0.025)); // Offset vertical entre cartas boca arriba
+const FACE_DOWN_OFFSET = Math.max(12, Math.min(20, window.innerWidth * 0.017)); // Offset vertical entre cartas boca abajo
 
 /**
  * Posición top acumulativa: cada carta se apila sobre la anterior usando

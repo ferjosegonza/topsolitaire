@@ -1,353 +1,65 @@
-# Actúa como un diseñador UX/UI Senior, experto en Frontend, React, Tailwind CSS y diseño emocional.
 
-## Contexto
 
-Tengo un juego de solitario llamado **TopSolitaire** (topsolitaire.online), desarrollado con **React + Vite + Tailwind CSS**.
-
-Mi público objetivo principal son personas que disfrutan de los días lluviosos, nublados, del otoño e invierno, introvertidos, sensibles, creativos, personas que utilizan el juego para relajarse mientras escuchan lluvia o música tranquila.
-
-Quiero que el sitio transmita calma, serenidad y confort sin perder simplicidad, rapidez ni rendimiento.
-
----
-
-# Objetivo general
-
-Principal: Todos los cambios que realices no deben afectar el funcionamiento del juego que hasta ahora funciona bien, no rompas nada.
-IMPORTANTE SALVEDAD: nada de lo que cambies debe afectar la funcionalidad de google adsense ni el código que permita su normal funcionamiento. El sitio web se encuentra actualmente en evaluación de parte de google y sujeto a aprobación para que pueda mostrar publicidad.
-
-Realizar una revisión integral del sitio web desde el punto de vista de UX, UI, accesibilidad, responsive design, rendimiento y diseño emocional.
-
-No quiero únicamente agregar un "Modo Lluvioso".
-
-Quiero que analices toda la interfaz y propongas mejoras que eleven el nivel visual del sitio hasta un estándar profesional comparable con productos modernos y minimalistas.
-
-Cada cambio propuesto debe cumplir simultáneamente estos objetivos:
-
-* mejorar la experiencia del usuario
-* mejorar la estética
-* mejorar la usabilidad
-* mantener la simplicidad
-* no afectar el rendimiento
-* no aumentar significativamente el tamaño del proyecto
-
-Quiero que separes todo lo que te pido en objetivos para que se vayan cumpliendo de a uno, los organices y actualices en TODO.md sin borrar lo existente sino adaptando o sea lo que propongas irá (según entiendo) a lo pendiente, no borres lo que figure en lo hecho, fijate si lo que ya estaba como pendiente continúa como pendiente o está hecho, así mantienes actualizado el TODO.md siempre. Todos los objetivos que platees los iremos realizando tomando como guía el TODO.md y actualizandolo a medida que avanzamos. La idea es que yo pueda preparar una nueva branch en github desktop para cada objetivo separado que hayas creado en el TODO.md y así tener un seguimiento claro.
-
----
-
-# Diseño emocional
-
-Quiero que el diseño transmita:
-
-* calma
-* serenidad
-* introspección
-* confort (hygge)
-* refugio
-* naturaleza
-* lluvia
-* niebla
-* tardes grises
-* madera
-* café
-* lectura
-* tranquilidad
-
-sin caer en un diseño oscuro o deprimente.
-Debe sentirse moderno, elegante y agradable.
-
----
-
-# Responsive Design (Muy importante)
-
-Analiza toda la interfaz pensando primero en dispositivos móviles.
-
-Quiero que TODO el sitio sea completamente responsive.
-
-No quiero únicamente que "entre" en la pantalla.
-
-Quiero que cada resolución tenga una composición agradable.
-
-Analiza especialmente:
-
-* distribución del tablero
-* dimensiones de las cartas
-* tamaño de las fuentes
-* tamaño de los botones
-* separación entre elementos
-* márgenes
-* espacios vacíos
-* proporciones generales
-* ubicación de la publicidad
-* ubicación del botón Cafecito
-* alineaciones
-
-El diseño debe verse excelente en:
-
-* celulares pequeños
-* celulares grandes
-* tablets
-* notebooks
-* pantallas Full HD
-* pantallas 2K
-* pantallas ultrawide
-
-No debe sentirse "estirado" ni "apretado" en ninguna resolución.
-
----
-
-# Botón Cafecito
-
-Actualmente el botón de Cafecito se adapta un poco a dispositivos móviles pero no del todo, creo que se puede mejorar, considera eso.
-
-Quiero que propongas una solución responsive profesional.
-
-Analiza cuál es la mejor alternativa considerando UX.
-
-Puedes decidir si conviene:
-
-* cambiar su posición
-* cambiar su tamaño
-* hacerlo flotante
-* ocultarlo parcialmente
-* convertirlo en FAB
-* integrarlo dentro del menú
-* mostrarlo diferente según el ancho disponible
-
-El criterio debe ser que:
-
-* nunca tape contenido importante (como el juego)
-* nunca moleste al usuario
-* siempre sea visible
-* mantenga buena conversión
-* sea consistente con el resto del diseño
-
----
-
-# Publicidad (Google AdSense)
-
-Analiza la ubicación de todos los espacios destinados a publicidad.
-
-Quiero mejorar:
-
-* CTR
-* experiencia del usuario
-* tiempo de permanencia
-* evitar clics accidentales
-
-Propón dimensiones y ubicaciones que sean agradables visualmente y compatibles con Google AdSense.
-
-Nunca sacrifiques la experiencia del juego para mostrar publicidad.
-
----
-
-# Rendimiento
-
-Toda mejora propuesta debe priorizar:
-
-* Core Web Vitals
-* LCP
-* CLS
-* INP
-
-Evita:
-
-* librerías pesadas
-* imágenes innecesarias
-* animaciones costosas
-* renders innecesarios
-
-Prefiere:
-
-* CSS puro
-* SVG
-* variables CSS
-* Tailwind
-* React Context
-* lazy loading cuando corresponda
-* memoización cuando corresponda
-
----
-
-# Accesibilidad
-
-Verifica que el sitio cumpla buenas prácticas de accesibilidad.
-
-Analiza:
-
-* contraste
-* tamaños mínimos
-* navegación por teclado
-* focus visible
-* aria-labels
-* lectores de pantalla
-
----
-
-# Modo Lluvioso
-
-Implementa un tema alternativo llamado **Modo Lluvioso**.
-
-Debe activarse mediante un toggle elegante y moderno. Puede estar activo por defecto al cargarse la página.
-
-Debe poder activarse sin recargar la página.
-
-Debe conservar el estado.
-
-El usuario podrá volver al diseño original cuando quiera.
-
----
-
-# Requerimientos técnicos
-
-El proyecto utiliza:
-
-* React
-* Vite
-* Tailwind CSS
-* Howler.js
-
-No quiero dependencias grandes.
-
-Todo debe ser ligero.
-
----
-
-# Quiero que entregues
-
-## 1. Auditoría UX/UI
-
-Detecta todos los problemas de la interfaz actual.
-
-Ordénalos por prioridad.
-
-Explica por qué afectan la experiencia.
-
----
-
-## 2. Paleta de colores
-
-Incluye:
-
-* fondo principal
-* fondos secundarios
-* superficies
-* colores de acento
-* colores para botones
-* colores para hover
-* colores para enlaces
-* texto principal
-* texto secundario
-
-Todo con códigos HEX.
-
----
-
-## 3. Tipografías
-
-Recomienda familias tipográficas.
-
-Explica por qué funcionan para transmitir calma.
-
----
-
-## 4. Diseño visual
-
-Propón mejoras para:
-
-* botones
-* cartas
-* tablero
-* paneles
-* modales
-* menús
-* iconografía
-* sombras
-* bordes
-* texturas
-
----
-
-## 5. Animaciones
-
-Diseña animaciones suaves para:
-
-* lluvia
-* niebla
-* nubes
-* hover
-* aparición de elementos
-* transición entre temas
-
-Todo con CSS puro cuando sea posible.
-
----
-
-## 6. Sonido
-
-Sugiere sonidos gratuitos compatibles con Howler.js.
-
-Explica cómo integrarlos.
-
-Quiero que se integre bien con los sonidos que ya existen, que no rompa nada de lo que actualmente funciona.
-
----
-
-## 7. Código
-
-Entrega código completo para:
-
-* toggle
-* contexto React
-* cambio de tema
-* fondo animado
-* integración de sonidos
-
----
-
-## 8. Estrategia de implementación
-
-Explica exactamente:
-
-* qué archivos crear
-* qué archivos modificar
-* qué carpetas utilizar
-* orden recomendado para implementar cada cambio
-
----
-
-## 9. Optimización visual
-
-Analiza toda la distribución de los espacios.
-
-Quiero que revises:
-
-* equilibrio visual
-* proporciones
-* alineaciones
-* espacios en blanco
-* jerarquía visual
-* consistencia
-
-El resultado debe sentirse moderno, limpio y profesional.
-
----
-
-## Objetivos generales
-
-* el sitio sea responsive
-* el botón Cafecito funcione correctamente en móviles
-* la publicidad no rompa el diseño
-* el rendimiento siga siendo excelente
-* el diseño sea consistente
-* el modo lluvioso pueda activarse y desactivarse correctamente (activado por defecto)
-* el sitio siga siendo rápido incluso en dispositivos de gama baja
-
----
-
-# Formato de respuesta
-
-* Prioriza cada decisión de diseño desde el punto de vista de UX, UI y rendimiento.
-* Prioriza soluciones simples, elegantes y eficientes.
-* Evita cualquier propuesta que incremente innecesariamente el peso del proyecto.
-* Si detectas oportunidades de mejora adicionales no contempladas en este prompt, inclúyelas y justifica por qué aportan valor.
-
+Plan de Implementación
+
+Branch 1: feature/O1-theme-context
+Crear src/lib/ThemeContext.jsx con React Context
+Temas: 'original' y 'rainy'
+Estado persistido en localStorage
+Default: 'rainy'
+Crear src/components/ui/ThemeToggle.jsx (toggle elegante con iconos SVG)
+Envolver app en ThemeProvider (main.jsx y App.jsx)
+Aplicar data-theme en <body> (para variables CSS)
+Test: verificar que toggle cambia estado y persiste en localStorage
+
+Branch 2: feature/O2-palette-css-vars
+Definir variables CSS en src/index.css para ambos temas:
+Original: fondos slate/emerald existentes
+Rainy: fondos grises azulados, acentos azul pizarra, texturas madera
+Aplicar data-theme selectors en CSS
+Transición suave transition: background-color 0.5s
+
+Branch 3: feature/O3-rainy-background
+Crear src/components/RainyBackground.jsx
+Lluvia: rayas SVG animadas con keyframes CSS
+Niebla: radial-gradient animado
+Nubes: pseudo-elementos con blur
+Integrar en App.jsx (fijo, pointer-events: none)
+Respetar prefers-reduced-motion
+
+Branch 4: feature/O4-typography-nunito
+Cargar Nunito en index.html (preconnect + Google Fonts, display=swap)
+Actualizar --font-heading y --font-body en index.css y tailwind.config.js
+
+Branch 5: feature/O5-visual-redesign
+Rediseñar tablero (bordes, sombras, border-radius)
+Dorso de carta con textura cálida (rainy) vs elegante (original)
+Header con identidad (título + subtítulo)
+Reemplazar emojis por iconos SVG de lucide-react (ya instalado)
+Estilos consistentes del details "How to play"
+Esto afectará tests de ui.test.jsx y visual-effects.test.jsx (cambian emojis por SVG)
+
+Branch 6: feature/O6-cafecito-responsive
+Convertir botón Cafecito en FAB flotante en móvil (abajo a la derecha, sin tapar juego)
+Inline en desktop (como está ahora)
+Ajustar tamaño según viewport
+
+Branch 7: feature/O8-accessibility
+onKeyDown (Enter/Espacio) en cartas para navegación por teclado
+Corregir contraste de texto (text-slate-500 en fondos claros)
+aria-label faltantes en cartas, botones, stock
+prefers-reduced-motion global
+Afecta tests de accesibilidad existentes
+
+Branch 8: feature/O9-rain-sound
+Hook useRainSound.js usando use-sound (ya instalado)
+Loop de lluvia suave, volumen bajo
+Ligado al Modo Lluvioso (se activa/desactiva con el tema)
+No rompe useSoundEffects actual
+
+Branch 9: feature/O10-responsive-final
+Revisión integral responsive (360px → ultrawide)
+Verificar LCP/CLS/INP
+Correr TODA la batería de tests
+Build final
+Actualizar README.md
