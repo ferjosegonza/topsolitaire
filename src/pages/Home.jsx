@@ -12,10 +12,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-app)' }}>
       <main className="flex-1 w-full">
-        <div className="mx-auto max-w-[1100px] px-3 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
+        <div className="mx-auto max-w-[1100px] px-1 py-5 sm:py-7 flex flex-col lg:flex-row gap-5">
           <section className="flex-1 min-w-0">
             <header className="mb-5 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium tracking-wide uppercase mb-2"
+              <div className="inline-flex items-center gap-2 rounded-full px-1 py-1 text-xs font-medium tracking-wide uppercase mb-2"
                 style={{ color: 'var(--accent)', backgroundColor: 'var(--accent-muted)', border: '1px solid var(--accent-hover)' }}>
                 {t('game.badge')}
               </div>

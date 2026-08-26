@@ -279,7 +279,7 @@ body * {
 /* Tablero del juego */
 .game-board {
   position: relative;
-  border-radius: 1.25rem;
+  border-radius: 0.8rem;
   border: 1px solid var(--board-border, rgba(255, 255, 255, 0.08));
   box-shadow:
     0 16px 40px -14px rgba(2, 6, 23, 0.45),

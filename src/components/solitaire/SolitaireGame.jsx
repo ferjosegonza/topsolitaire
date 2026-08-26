@@ -18,14 +18,33 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
 
-const CARD_VARS = {
+/*const CARD_VARS = {
   '--card-w': 'clamp(36px, 11vw, 78px)',
   '--card-height': 'calc(var(--card-w) * 1.4)',
   '--card-font': 'calc(var(--card-w) * 0.48)',
   '--card-font-lg': 'calc(var(--card-w) * 0.85)',
   '--card-radius': 'clamp(4px, 1.2vw, 10px)',
-};
+};*/
 
+const CARD_VARS = {
+  /*
+   * El tablero tiene 7 columnas.
+   *
+   * En móviles aprovechamos prácticamente todo el ancho disponible
+   * para que las cartas sean lo más grandes posible.
+   *
+   * El tamaño queda limitado por:
+   * - un mínimo para pantallas extremadamente pequeñas;
+   * - el ancho disponible del viewport;
+   * - un máximo para que las cartas no crezcan exageradamente
+   *   en tablets y escritorio.
+   */
+  '--card-w': 'clamp(37px, calc((100vw - 28px) / 7.25), 78px)',
+  '--card-height': 'calc(var(--card-w) * 1.4)',
+  '--card-font': 'calc(var(--card-w) * 0.48)',
+  '--card-font-lg': 'calc(var(--card-w) * 0.85)',
+  '--card-radius': 'clamp(4px, 1.2vw, 10px)',
+};
 
 // Separación responsiva entre cartas
 // - En móvil (360px): carta boca arriba ~22px, boca abajo ~15px
@@ -1167,7 +1186,7 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
       </div>
 
       <div
-        className="game-board p-2 sm:p-4"
+        className="game-board p-1 sm:p-4"
         style={{
           background: 'linear-gradient(135deg, var(--bg-board-2) 0%, var(--bg-board) 100%)',
         }}
