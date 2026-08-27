@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { RANK_LABELS, SUIT_SYMBOLS, isRed } from '@/lib/solitaire';
+import CourtFigure from './CourtFigure';
 
 export default function SolitaireCard({
   card,
@@ -97,13 +98,23 @@ export default function SolitaireCard({
         <div>{symbol}</div>
       </div>
 
-      {/* Símbolo central - ahora centrado en el espacio restante */}
-      <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center" style={{ 
-        fontSize: 'var(--card-font-lg)',
-        top: 'calc(var(--card-font) * 1 )'
-      }}>
-        {symbol}
-      </div>
+      {/* Figuras de corte (J/Q/K) o símbolo central */}
+      {card.rank >= 11 ? (
+        <div
+          className="absolute left-0 right-0 bottom-0 flex flex-col items-center justify-center gap-0.5 overflow-hidden rounded-[var(--card-radius)]"
+          style={{ top: 'calc(var(--card-font) * 1.1)' }}
+        >
+          <CourtFigure rank={card.rank} red={red} />
+          <div style={{ fontSize: 'calc(var(--card-font) * 0.8)', lineHeight: 1 }}>{symbol}</div>
+        </div>
+      ) : (
+        <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center" style={{
+          fontSize: 'var(--card-font-lg)',
+          top: 'calc(var(--card-font) * 1 )'
+        }}>
+          {symbol}
+        </div>
+      )}
 
     </motion.div>
   );

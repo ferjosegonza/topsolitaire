@@ -170,6 +170,19 @@
 
 **Rama git**: `seo/homepage-audit-p8` (P15 + P16)
 
+### P17: Figuras (J, Q, K) — Ilustraciones propias o libres de derechos ✅ COMPLETADO
+**Objetivo**: Dar a J/Q/K un diseño con representaciones humanas/figuras, usando **imágenes de acceso y uso gratuito** para NO tener problemas de derechos (copyright).
+
+- [x] ✅ **POLÍTICA DE LICENCIAS DOCUMENTADA** (en `CourtFigure.jsx`): TODO asset gráfico debe ser de acceso y uso gratuito (CC0/Dominio Público — p. ej. Wikimedia Commons o museos) o creado internamente; registrar autor + licencia + URL de origen de cada asset. Las licencias libres NO caducan ni se renuevan (son perpetuas), pero conviene re-verificar la fuente en cada lanzamiento.
+- [x] Assets: se usaron **ilustraciones 100% propias** generadas como **SVG inline** (`src/components/solitaire/CourtFigure.jsx`) — sin assets externos, sin riesgo de copyright, sin HTTP extra en el render.
+- [x] Rediseñada la cara de J, Q, K en `SolitaireCard.jsx`: las cartas con rank ≥ 11 muestran su figura central (`CourtFigure`) con el palo pequeño debajo; el resto mantiene el símbolo central amplio.
+- [x] Diseños por rango: **Jack** (gorra con pluma + espada), **Queen** (corona con remates + vestido), **King** (corona alta con cruz + barba); color rojo `#e11d48` (rose-600) o negro `#0f172a` (slate-900), consistentes con el texto de la carta.
+- [x] Legibilidad a tamaños pequeños: el SVG escala con `--card-w` (ancho ≈ 0.88×carta) y es `aria-hidden`; soporta los 4 palos.
+- [x] Rendimiento: sin imágenes pesadas ni peticiones externas (SVG inline); `vite build` sin cambios de peso relevantes.
+- [x] Tests (`__tests__/court-figure.test.jsx`, 5): J/Q/K renderizan `svg.court-figure` con color correcto (rojo/negro), carta numérica (10) no muestra figura, fallback seguro mantiene el palo, y soporte de los 4 palos.
+
+**Rama git**: `seo/homepage-audit-p8` (P17)
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
@@ -277,16 +290,6 @@
 | Anuncios (top/bottom/side) | ✅ | `ad-container` responsive, lateral solo ≥1200px, colapso con `:has()` |
 | Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de P13 |
 | Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar como parte de P13 |
-
-### P17: Figuras (J, Q, K) — Ilustraciones propias o libres de derechos
-**Objetivo**: Dar a J/Q/K un diseño con representaciones humanas/figuras, usando **imágenes de acceso y uso gratuito** para NO tener problemas de derechos (copyright).
-
-- [ ] Buscar/assets: usar SIEMPRE imágenes de acceso y uso gratuito — dominio público o licencias CC0 (p. ej. museos o Wikimedia Commons) — o generar ilustraciones propias; evitar libres de derechos (royalty-free) ambiguas y cualquier asset con copyright
-- [ ] ⚠️ **POLÍTICA DE LICENCIAS**: documentar en esta tarea que TODO asset gráfico debe ser de acceso y uso gratuito (CC0/Dominio Público) o creado internamente; registrar autor + licencia + URL de origen de cada asset. Las licencias libres NO caducan ni se renuevan (son perpetuas), pero conviene re-verificar la fuente en cada lanzamiento.
-- [ ] Rediseñar la cara de J, Q, K en `SolitaireCard.jsx` para mostrar la figura correspondiente según palo
-- [ ] Mantener legibilidad a tamaños pequeños (`--card-w` mín 36px) y soporte de los 4 palos
-- [ ] Verificar rendimiento (no usar imágenes pesadas/HTTP extra en el render de cartas)
-- [ ] Tests: J/Q/K renderizan su figura y el fallback es seguro si el asset no carga
 
 ---
 
