@@ -136,6 +136,18 @@
 
 **Rama git**: `seo/heading-structure-audit-p6`
 
+### P8: Homepage SEO — Auditoría y mejora ✅ COMPLETADO
+- [x] Auditar `Home.jsx` completamente
+- [x] Verificar H1 claro y único (sigue siendo `Play Solitaire Online Free`, único en la página)
+- [x] Verificar propuesta de valor visible (pill + subtítulo)
+- [x] Verificar juego visible inmediatamente sin scroll excesivo (el juego sigue arriba)
+- [x] Agregar contenido útil: secciones **How to Play Solitaire** (intro + pasos), **Solitaire Rules** (4 reglas) e información relevante localizadas en los 8 idiomas
+- [x] Agregar FAQ: sección **Solitaire FAQ** con 3 preguntas y respuestas (también localizada)
+- [x] Verificar enlaces internos: ancla `#game` de retorno al juego + enlaces del Footer (Privacy/Contact); enlaces a páginas de contenido llegarán con P9
+- [x] Optimizar para usuarios y buscadores (NO keyword stuffing)
+
+**Rama git**: `seo/homepage-audit-p8`
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
@@ -145,16 +157,6 @@
 - [ ] Revisar cantidad de contenido semántico vs JavaScript/CSS
 - [ ] NO aumentar artificialmente texto si no es necesario
 - [ ] Si se requiere más contenido, hacerlo de forma natural
-
-### P8: Homepage SEO — Auditoría y mejora
-- [ ] Auditar `Home.jsx` completamente
-- [ ] Verificar H1 claro y único
-- [ ] Verificar propuesta de valor visible
-- [ ] Verificar juego visible inmediatamente sin scroll excesivo
-- [ ] Agregar contenido útil: How to Play, Solitaire Rules, información relevante
-- [ ] Agregar FAQ si tiene sentido
-- [ ] Verificar enlaces internos a páginas de contenido
-- [ ] Optimizar para usuarios y buscadores (NO keyword stuffing)
 
 ### P9: Páginas de contenido SEO — Crear nuevas páginas
 **Objetivo**: Crear páginas temáticas alrededor de Solitaire con intención de búsqueda clara.
@@ -254,7 +256,35 @@
 | Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de P13 |
 | Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar como parte de P13 |
 
+### P15: Selección de reparto — Turn 1 / Turn 3 (dificultad)
+**Objetivo**: Permitir al jugador elegir cuántas cartas se sacan del stock en cada pasada (1 o 3), como en el Klondike clásico.
 
+- [ ] Definir modo por defecto (típicamente Turn 1) y persistencia de la preferencia (`localStorage`)
+- [ ] Ajustar la lógica de `handleStockClick` en `SolitaireGame.jsx`: sacar 1 o 3 cartas según el modo
+- [ ] Considerar si en Turn 3 se pueden jugar las cartas intermedias del waste o solo la última
+- [ ] Selector/control de "Turn 1 / Turn 3" en la barra de controles (accesible, con `aria-label`)
+- [ ] **i18n**: verificar la terminología correcta en cada idioma (ej: *"Draw 1" / "Draw 3"* en EN, *"Sacar 1" / "Sacar 3"* en ES, *"Tirage d'1 carte" / "Tirage de 3 cartes"* en FR, *"Pesca 1" / "Pesca 3"* en IT, *"Dobór 1" / "Dobór 3"* en PL, *"1 Karte" / "3 Karten"* en DE, *"抽 1 张" / "抽 3 张"* en ZH, *"抽 1 張" / "抽 3 張"* en ZH-TW)
+- [ ] Tests: alternar modo, persistencia, y comportamiento del stock (1 vs 3 cartas)
+
+### P16: Visual del dorso de carta — Diseño realista por tema
+**Objetivo**: Mejorar la carta boca abajo para que se parezca a una baraja real (borde redondeado, patrón con detalle), con un diseño distinto para cada tema (rainy, dark, light).
+
+- [ ] Diseñar 3 dorsos de carta (uno por modo: lluvia, noche y día) usando CSS/SVG propio
+- [ ] Aplicar según `data-theme` en `index.css` (variables por tema)
+- [ ] Igual calidad visual en stock, waste y columnas boca abajo
+- [ ] Mantener compatibilidad con la animación de volteo y el reparto
+- [ ] Verificar responsive y que no impacte el rendimiento (`prefers-reduced-motion`)
+- [ ] Tests visuales/smoke: el dorso aplica la clase/variable correcta según tema
+
+### P17: Figuras (J, Q, K) — Ilustraciones propias o libres de derechos
+**Objetivo**: Dar a J/Q/K un diseño con representaciones humanas/figuras, usando **imágenes de acceso y uso gratuito** para NO tener problemas de derechos (copyright).
+
+- [ ] Buscar/assets: usar SIEMPRE imágenes de acceso y uso gratuito — dominio público o licencias CC0 (p. ej. museos o Wikimedia Commons) — o generar ilustraciones propias; evitar libres de derechos (royalty-free) ambiguas y cualquier asset con copyright
+- [ ] ⚠️ **POLÍTICA DE LICENCIAS**: documentar en esta tarea que TODO asset gráfico debe ser de acceso y uso gratuito (CC0/Dominio Público) o creado internamente; registrar autor + licencia + URL de origen de cada asset. Las licencias libres NO caducan ni se renuevan (son perpetuas), pero conviene re-verificar la fuente en cada lanzamiento.
+- [ ] Rediseñar la cara de J, Q, K en `SolitaireCard.jsx` para mostrar la figura correspondiente según palo
+- [ ] Mantener legibilidad a tamaños pequeños (`--card-w` mín 36px) y soporte de los 4 palos
+- [ ] Verificar rendimiento (no usar imágenes pesadas/HTTP extra en el render de cartas)
+- [ ] Tests: J/Q/K renderizan su figura y el fallback es seguro si el asset no carga
 
 ---
 

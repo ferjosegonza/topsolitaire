@@ -138,6 +138,52 @@ describe('App - rutas y navegación del sitio (BrowserRouter)', () => {
   });
 });
 
+describe('App - P8: contenido SEO de la homepage', () => {
+  beforeEach(async () => {
+    await i18n.changeLanguage('en');
+  });
+
+  afterEach(() => {
+    cleanup();
+    window.history.pushState({}, '', '/');
+  });
+
+  it('muestra las secciones How to Play, Solitaire Rules y FAQ en la home', () => {
+    navigateTo('/');
+    render(<App />);
+    expect(screen.getByRole('heading', { level: 2, name: 'How to Play Solitaire' })).toBeDefined();
+    expect(screen.getByRole('heading', { level: 2, name: 'Solitaire Rules' })).toBeDefined();
+    expect(screen.getByRole('heading', { level: 2, name: 'Solitaire FAQ' })).toBeDefined();
+  });
+
+  it('mantiene exactamente un único H1 (el del juego) con las nuevas secciones', () => {
+    navigateTo('/');
+    render(<App />);
+    const headings = document.querySelectorAll('h1');
+    expect(headings).toHaveLength(1);
+    expect(headings[0]).toHaveTextContent('Play Solitaire Online Free');
+    // Los H2/H3 de contenido SEO existen sin saltarse niveles ni duplicar el H1
+    const hi = Array.from(document.querySelectorAll('h1, h2, h3')).map(h => Number(h.tagName.slice(1)));
+    expect(hi[0]).toBe(1);
+    expect(hi.slice(1).every(level => level >= 2)).toBe(true);
+  });
+
+  it('las reglas de la home están localizadas según el idioma activo', () => {
+    navigateTo('/es');
+    render(<App />);
+    expect(screen.getByRole('heading', { level: 2, name: 'Cómo jugar al Solitario' })).toBeDefined();
+    expect(screen.getByRole('heading', { level: 2, name: 'Reglas del Solitario' })).toBeDefined();
+    expect(screen.getByRole('heading', { level: 2, name: 'Preguntas frecuentes del Solitario' })).toBeDefined();
+  });
+
+  it('el botón de retorno al juego es un ancla interno a #game', () => {
+    navigateTo('/');
+    render(<App />);
+    const backLink = screen.getByText('Back to the game').closest('a');
+    expect(backLink).toHaveAttribute('href', '#game');
+  });
+});
+
 describe('App - P6: estructura de headings', () => {
   beforeEach(async () => {
     await i18n.changeLanguage('en');

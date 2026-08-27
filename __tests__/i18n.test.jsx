@@ -30,6 +30,21 @@ const REQUIRED_KEYS = [
   'footer.rights',
   'footer.privacy',
   'footer.contact',
+  'home.howToTitle',
+  'home.howToIntro',
+  'home.rulesTitle',
+  'home.rule1',
+  'home.rule2',
+  'home.rule3',
+  'home.rule4',
+  'home.faqTitle',
+  'home.faq1q',
+  'home.faq1a',
+  'home.faq2q',
+  'home.faq2a',
+  'home.faq3q',
+  'home.faq3a',
+  'home.backToGame',
 ];
 
 // Función auxiliar para obtener un valor anidado por dotted-path

@@ -9,7 +9,6 @@ import {
   canPlaceOnTableau,
   canPlaceOnFoundation,
   isWon,
-  SUIT_SYMBOLS,
   createGameSnapshot,
   restoreGameSnapshot,
 } from '@/lib/solitaire';

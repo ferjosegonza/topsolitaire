@@ -148,7 +148,9 @@ describe('Tests de Home', () => {
 
   it('Home muestra la descripción del juego', () => {
     renderWithRouter(<Home />);
-    expect(screen.getByText(/no signup, no download/i)).toBeDefined();
+    // Puede aparecer en el subtítulo y en el contenido SEO/FAQ
+    const elements = screen.getAllByText(/no signup, no download/i);
+    expect(elements.length).toBeGreaterThan(0);
   });
 
   it('Home contiene el componente SolitaireGame', () => {
