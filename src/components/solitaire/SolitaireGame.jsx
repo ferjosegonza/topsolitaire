@@ -96,6 +96,14 @@ export default function SolitaireGame() {
   const [seconds, setSeconds] = useState(0);
   const [won, setWon] = useState(false);
   const [history, setHistory] = useState([]);
+  const [drawMode, setDrawMode] = useState(() => {
+    try {
+      const stored = localStorage.getItem('topsolitaire-draw');
+      return stored === '3' ? 3 : 1;
+    } catch {
+      return 1;
+    }
+  });
   const timerRef = useRef(null);
 
   const [dealingCards, setDealingCards] = useState([]);
@@ -145,6 +153,14 @@ export default function SolitaireGame() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleUndo]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('topsolitaire-draw', String(drawMode));
+    } catch {
+      // localStorage no disponible
+    }
+  }, [drawMode]);
 
   const triggerVictoryConfetti = useCallback(() => {
     const duration = 3 * 1000;
@@ -308,11 +324,17 @@ export default function SolitaireGame() {
         return { ...g, stock: newStock, waste: [] };
       }
       const newStock = [...g.stock];
-      const card = newStock.pop();
-      setFlippingCard(card.id);
+      // Modo Turn 1/3 (P15): sacar 1 o 3 cartas del stock al waste
+      const cards = [];
+      const count = drawMode === 3 ? 3 : 1;
+      for (let i = 0; i < count && newStock.length > 0; i++) {
+        cards.push({ ...newStock.pop(), faceUp: true });
+      }
+      const dealt = cards[cards.length - 1];
+      setFlippingCard(dealt.id);
       setTimeout(() => setFlippingCard(null), 400);
       playFlipSound();
-      return { ...g, stock: newStock, waste: [...g.waste, { ...card, faceUp: true }] };
+      return { ...g, stock: newStock, waste: [...g.waste, ...cards] };
     });
   }
 
@@ -1146,6 +1168,36 @@ className="relative inline-flex flex-col items-center justify-center rounded-2xl
           </a>
 
 <ThemeToggle />
+
+          {/* Selector de reparto Turn 1/3 (P15) */}
+          <div
+            className="inline-flex items-center rounded-2xl border-2 bg-slate-600/70 text-white font-bold shadow-lg overflow-hidden"
+            role="group"
+            aria-label={t('game.drawMode')}
+            title={t('game.drawMode')}
+          >
+            {[1, 3].map((mode) => {
+              const active = drawMode === mode;
+              const label = mode === 1 ? t('game.drawOne') : t('game.drawThree');
+              const hint = mode === 1 ? t('game.drawOneHint') : t('game.drawThreeHint');
+              return (
+                <button
+                  key={mode}
+                  onClick={() => setDrawMode(mode)}
+                  aria-pressed={active}
+                  aria-label={label}
+                  title={hint}
+                  className={`px-2 sm:px-3 text-xs sm:text-base h-[52px] sm:h-[64px] transition-all duration-200 ${
+                    active
+                      ? 'bg-emerald-600/80'
+                      : 'bg-transparent hover:bg-slate-500/80'
+                  }`}
+                >
+                  {mode}
+                </button>
+              );
+            })}
+          </div>
 
           <LanguageSelector />
 

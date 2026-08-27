@@ -256,25 +256,27 @@
 | Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de P13 |
 | Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar como parte de P13 |
 
-### P15: Selección de reparto — Turn 1 / Turn 3 (dificultad)
+### P15: Selección de reparto — Turn 1 / Turn 3 (dificultad) ✅ COMPLETADO
 **Objetivo**: Permitir al jugador elegir cuántas cartas se sacan del stock en cada pasada (1 o 3), como en el Klondike clásico.
 
-- [ ] Definir modo por defecto (típicamente Turn 1) y persistencia de la preferencia (`localStorage`)
-- [ ] Ajustar la lógica de `handleStockClick` en `SolitaireGame.jsx`: sacar 1 o 3 cartas según el modo
-- [ ] Considerar si en Turn 3 se pueden jugar las cartas intermedias del waste o solo la última
-- [ ] Selector/control de "Turn 1 / Turn 3" en la barra de controles (accesible, con `aria-label`)
-- [ ] **i18n**: verificar la terminología correcta en cada idioma (ej: *"Draw 1" / "Draw 3"* en EN, *"Sacar 1" / "Sacar 3"* en ES, *"Tirage d'1 carte" / "Tirage de 3 cartes"* en FR, *"Pesca 1" / "Pesca 3"* en IT, *"Dobór 1" / "Dobór 3"* en PL, *"1 Karte" / "3 Karten"* en DE, *"抽 1 张" / "抽 3 张"* en ZH, *"抽 1 張" / "抽 3 張"* en ZH-TW)
-- [ ] Tests: alternar modo, persistencia, y comportamiento del stock (1 vs 3 cartas)
+- [x] Definir modo por defecto (Turn 1) y persistencia de la preferencia (`localStorage` clave `topsolitaire-draw`)
+- [x] Ajustar la lógica de `handleStockClick` en `SolitaireGame.jsx`: saca 1 o 3 cartas del stock al waste según el modo
+- [x] Waste: solo la última carta sacada es jugable; el reciclado vuelve todas boca abajo (compatible con 1 y 3)
+- [x] Selector de "Turn 1 / Turn 3" en la barra de controles (accesible, con `aria-pressed`, `aria-label` y `title`)
+- [x] **i18n**: claves `drawMode` / `drawOne` / `drawThree` / `drawOneHint` / `drawThreeHint` traducidas a los 8 idiomas
+- [x] Tests: `__tests__/draw-mode.test.jsx` verifica selector, persistencia, y comportamiento Turn 1 vs Turn 3
 
-### P16: Visual del dorso de carta — Diseño realista por tema
+### P16: Visual del dorso de carta — Diseño realista por tema ✅ COMPLETADO
 **Objetivo**: Mejorar la carta boca abajo para que se parezca a una baraja real (borde redondeado, patrón con detalle), con un diseño distinto para cada tema (rainy, dark, light).
 
-- [ ] Diseñar 3 dorsos de carta (uno por modo: lluvia, noche y día) usando CSS/SVG propio
-- [ ] Aplicar según `data-theme` en `index.css` (variables por tema)
-- [ ] Igual calidad visual en stock, waste y columnas boca abajo
-- [ ] Mantener compatibilidad con la animación de volteo y el reparto
-- [ ] Verificar responsive y que no impacte el rendimiento (`prefers-reduced-motion`)
-- [ ] Tests visuales/smoke: el dorso aplica la clase/variable correcta según tema
+- [x] Diseñar 3 dorsos de carta (uno por modo: lluvia, noche y día) usando CSS propio (gradientes + patrones + doble marco)
+- [x] Aplicar según `data-theme` en `index.css` (Rainy=madera clásica con veta, Dark=azul marino con radio, Light=emerald con retícula)
+- [x] Igual calidad visual en stock, waste y columnas boca abajo (comparten la clase `.solitaire-card-back`)
+- [x] Mantener compatibilidad con la animación de volteo (`solitaire-card-back` en `isFlipping` y `faceDown`)
+- [x] Verificar responsive (`--card-radius`) y sin impacto de rendimiento; `prefers-reduced-motion` ya respetado globalmente
+- [x] Tests: clase `.solitaire-card-back` + estructura `::before`/`::after` verificadas; reglas por tema cubiertas en `index.css`
+
+**Rama git**: `seo/homepage-audit-p8` (P15 + P16)
 
 ### P17: Figuras (J, Q, K) — Ilustraciones propias o libres de derechos
 **Objetivo**: Dar a J/Q/K un diseño con representaciones humanas/figuras, usando **imágenes de acceso y uso gratuito** para NO tener problemas de derechos (copyright).
