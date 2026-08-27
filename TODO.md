@@ -148,6 +148,28 @@
 
 **Rama git**: `seo/homepage-audit-p8`
 
+### P15: Selección de reparto — Turn 1 / Turn 3 (dificultad) ✅ COMPLETADO
+**Objetivo**: Permitir al jugador elegir cuántas cartas se sacan del stock en cada pasada (1 o 3), como en el Klondike clásico.
+
+- [x] Definir modo por defecto (Turn 1) y persistencia de la preferencia (`localStorage` clave `topsolitaire-draw`)
+- [x] Ajustar la lógica de `handleStockClick` en `SolitaireGame.jsx`: saca 1 o 3 cartas del stock al waste según el modo
+- [x] Waste: solo la última carta sacada es jugable; el reciclado vuelve todas boca abajo (compatible con 1 y 3)
+- [x] Selector de "Turn 1 / Turn 3" en la barra de controles (accesible, con `aria-pressed`, `aria-label` y `title`)
+- [x] **i18n**: claves `drawMode` / `drawOne` / `drawThree` / `drawOneHint` / `drawThreeHint` traducidas a los 8 idiomas
+- [x] Tests: `__tests__/draw-mode.test.jsx` verifica selector, persistencia, y comportamiento Turn 1 vs Turn 3
+
+### P16: Visual del dorso de carta — Diseño realista por tema ✅ COMPLETADO
+**Objetivo**: Mejorar la carta boca abajo para que se parezca a una baraja real (borde redondeado, patrón con detalle), con un diseño distinto para cada tema (rainy, dark, light).
+
+- [x] Diseñar 3 dorsos de carta (uno por modo: lluvia, noche y día) usando CSS propio (gradientes + patrones + doble marco)
+- [x] Aplicar según `data-theme` en `index.css` (Rainy=madera clásica con veta, Dark=azul marino con radio, Light=emerald con retícula)
+- [x] Igual calidad visual en stock, waste y columnas boca abajo (comparten la clase `.solitaire-card-back`)
+- [x] Mantener compatibilidad con la animación de volteo (`solitaire-card-back` en `isFlipping` y `faceDown`)
+- [x] Verificar responsive (`--card-radius`) y sin impacto de rendimiento; `prefers-reduced-motion` ya respetado globalmente
+- [x] Tests: clase `.solitaire-card-back` + estructura `::before`/`::after` verificadas; reglas por tema cubiertas en `index.css`
+
+**Rama git**: `seo/homepage-audit-p8` (P15 + P16)
+
 ---
 
 ## 🔵 PENDIENTE (Fase SEO, Arquitectura & Internacionalización)
@@ -255,28 +277,6 @@
 | Anuncios (top/bottom/side) | ✅ | `ad-container` responsive, lateral solo ≥1200px, colapso con `:has()` |
 | Footer y páginas (Privacy/Contact) | ⚠️ | No verificados en detalle a 360px; revisar como parte de P13 |
 | Ultrawide (>1920px) | ⚠️ | El tablero queda centrado con `max-w-[1100px]`; validar como parte de P13 |
-
-### P15: Selección de reparto — Turn 1 / Turn 3 (dificultad) ✅ COMPLETADO
-**Objetivo**: Permitir al jugador elegir cuántas cartas se sacan del stock en cada pasada (1 o 3), como en el Klondike clásico.
-
-- [x] Definir modo por defecto (Turn 1) y persistencia de la preferencia (`localStorage` clave `topsolitaire-draw`)
-- [x] Ajustar la lógica de `handleStockClick` en `SolitaireGame.jsx`: saca 1 o 3 cartas del stock al waste según el modo
-- [x] Waste: solo la última carta sacada es jugable; el reciclado vuelve todas boca abajo (compatible con 1 y 3)
-- [x] Selector de "Turn 1 / Turn 3" en la barra de controles (accesible, con `aria-pressed`, `aria-label` y `title`)
-- [x] **i18n**: claves `drawMode` / `drawOne` / `drawThree` / `drawOneHint` / `drawThreeHint` traducidas a los 8 idiomas
-- [x] Tests: `__tests__/draw-mode.test.jsx` verifica selector, persistencia, y comportamiento Turn 1 vs Turn 3
-
-### P16: Visual del dorso de carta — Diseño realista por tema ✅ COMPLETADO
-**Objetivo**: Mejorar la carta boca abajo para que se parezca a una baraja real (borde redondeado, patrón con detalle), con un diseño distinto para cada tema (rainy, dark, light).
-
-- [x] Diseñar 3 dorsos de carta (uno por modo: lluvia, noche y día) usando CSS propio (gradientes + patrones + doble marco)
-- [x] Aplicar según `data-theme` en `index.css` (Rainy=madera clásica con veta, Dark=azul marino con radio, Light=emerald con retícula)
-- [x] Igual calidad visual en stock, waste y columnas boca abajo (comparten la clase `.solitaire-card-back`)
-- [x] Mantener compatibilidad con la animación de volteo (`solitaire-card-back` en `isFlipping` y `faceDown`)
-- [x] Verificar responsive (`--card-radius`) y sin impacto de rendimiento; `prefers-reduced-motion` ya respetado globalmente
-- [x] Tests: clase `.solitaire-card-back` + estructura `::before`/`::after` verificadas; reglas por tema cubiertas en `index.css`
-
-**Rama git**: `seo/homepage-audit-p8` (P15 + P16)
 
 ### P17: Figuras (J, Q, K) — Ilustraciones propias o libres de derechos
 **Objetivo**: Dar a J/Q/K un diseño con representaciones humanas/figuras, usando **imágenes de acceso y uso gratuito** para NO tener problemas de derechos (copyright).
